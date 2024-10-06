@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - Agriland Connect</title>
+    <link rel="stylesheet" href="css/admin_style.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img class="logo" src="images/logo01.png" alt="Agriland Logo">
+        </div>
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="users.html">Users</a></li>
+                <li><a href="listings.html">Listings</a></li>
+                <li><a href="leases.html">Leases</a></li>
+                <li><a href="payments.html">Payments</a></li>
+                <li><a href="settings.html">Settings</a></li>
+            </ul>
+        </nav>
+        <div class="burger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </header>
+
+    <main>
+        <h1>Manage Users</h1>
+        <input type="text" id="searchUser" placeholder="Search users..." onkeyup="filterUsers()">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                <tr>
+                    <td>1</td>
+                    <td>John Doe</td>
+                    <td>john@example.com</td>
+                    <td>Farmer</td>
+                    <td>Male</td>
+                    <td>30</td>
+                    <td>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+                <!-- More users dynamically added here -->
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
+    </footer>
+
+    <script src="js/admin_script.js"></script>
+</body>
+</html>
