@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Agriland Connect</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        /* Social Media Icons Section */
+        .social-media {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Icon Hover Effect */
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Responsive Design for Smaller Devices */
+        @media (max-width: 768px) {
+            .social-media {
+                justify-content: space-between;
+            }
+
+            .social-icon {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .social-media {
+                justify-content: center;
+                flex-direction: column;
+            }
+
+            .social-icon {
+                margin: 10px;
+                width: 25px;
+                height: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="#">
+                    <img src="images/logo.png" alt="Agriland Connect Logo" class="logo-image">
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Section -->
+    <main>
+        <section class="contact">
+            <h1>Contact Us</h1>
+            <p>If you have any questions or feedback, feel free to reach out through any of the following platforms:</p>
+
+            <!-- Social Media Links Section -->
+            <div class="social-media">
+                <a href="mailto:sample1@gmail.com">
+                    <img src="images/gmail.png" alt="Email" class="social-icon">
+                </a>
+                <a href="https://x.com/yourprofile" target="_blank">
+                    <img src="images/twitter.png" alt="X" class="social-icon">
+                </a>
+                <a href="https://facebook.com/yourprofile" target="_blank">
+                    <img src="images/facebook.png" alt="Facebook" class="social-icon">
+                </a>
+                <a href="https://linkedin.com/in/yourprofile" target="_blank">
+                    <img src="images/linkedin.png" alt="LinkedIn" class="social-icon">
+                </a>
+                <a href="https://tiktok.com/@yourprofile" target="_blank">
+                    <img src="images/tiktok.png" alt="TikTok" class="social-icon">
+                </a>
+                <a href="https://instagram.com/yourprofile" target="_blank">
+                    <img src="images/instagram.png" alt="Instagram" class="social-icon">
+                </a>
+            </div>
+        </section>
+
+        <!-- Back Button -->
+        <div class="back-button">
+            <a href="index.html"><button>Back to Home</button></a>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
+    </footer>
+</body>
+</html>
