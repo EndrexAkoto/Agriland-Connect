@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Registration - Agriland Connect</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #23da23; /* A light green to symbolize nature */
+    background-image: url('images/04.jpg'); /* Replace with your chosen image path */
+    background-repeat: no-repeat;
+    background-size: cover; /* Ensures the image covers the whole background */
+    color: #831010;
+    padding: 30px; /* Add some padding for better spacing */
+        }
+
+        /* For the form sections */
+        .form-container {
+            background-color: rgba(71, 236, 85, 0.9); /* White background with slight transparency */
+            border-radius: 4px; /* Rounded corners */
+            padding: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+            max-width: 600px; /* Set a maximum width for larger screens */
+            margin: 0 auto; /* Center the form */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .back-button {
+            background-color: #007BFF;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Farmer Information</h1>
+        <form>
+            <label for="landSize">Size of Land (in acres):</label>
+            <input type="number" id="landSize" name="landSize" required>
+
+            <label for="location">Preferred Location:</label>
+            <input type="text" id="location" name="location" required>
+
+            <label for="cropType">Type of Crops:</label>
+            <input type="text" id="cropType" name="cropType" required>
+
+            <label for="paymentMethod">Means of Payment:</label>
+            <select id="paymentMethod" name="paymentMethod" required>
+                <option value="mobile">Mobile Banking</option>
+                <option value="bank">Bank Transfer</option>
+            </select>
+
+            <button type="submit">Submit</button>
+            <button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+        </form>
+    </div>
+</body>
+</html>
