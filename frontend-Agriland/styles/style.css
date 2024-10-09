@@ -1,14 +1,13 @@
 /* Global Styling */
 /* Set background image for the entire body */
 body {
-    background-image: url('../images/front-view-smiley-woman-holding-box.jpg'); /* Path to your background image */
+    background-image: url('../images/header..jpg'); /* Path to your background image */
     background-size: cover; /* Cover the entire viewport */
     background-position: center; /* Center the background image */
     background-attachment: fixed; /* Keep the background fixed while scrolling */
     margin: 0; /* Remove default margin */
     padding: 0; /* Remove default padding */
 }
-
 
 /* Overlay for text readability */
 .overlay {
@@ -26,8 +25,7 @@ body {
     position: relative; /* Needed for the overlay to position correctly */
     z-index: 2; /* Ensure content is above the overlay */
     padding: 20px; /* Add padding to your content */
-    color: white; /* Change text color for better visibility */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Soft shadow for better visibility */
+    color: rgb(15, 15, 15); /* Change text color for better visibility */
 }
 
 /* Button Class for Reusability */
@@ -48,28 +46,14 @@ body {
 }
 
 /* Header Styling */
-header {
-    background-color: #4CAF50; /* Primary color */
-    padding: 10px;
-    text-align: center;
-}
 
-/* Navigation Bar */
-header nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Logo Styling */
-.logo {
-    max-width: 150px;
-    height: auto;
+.menu-icon {
+    display: none;
 }
 
 /* Navigation Links */
 header nav a {
-    color: #eeeef5;
+    color: #4CAF50; /* Set navbar links to green */
     margin: 0 10px;
     text-decoration: none;
     font-weight: bold;
@@ -150,7 +134,6 @@ header nav a {
 }
 
 /* How It Works Section */
-
 .how-it-works {
     padding: 40px; /* Add padding around the section */
     background-color: #ffffff; /* Background color */
@@ -184,7 +167,6 @@ header nav a {
     height: auto; /* Maintain aspect ratio */
     margin-bottom: 15px; /* Space below the image */
 }
-
 
 /* Our Services Section */
 .services {
@@ -233,26 +215,47 @@ header nav a {
 }
 
 /* Why Choose Agriland Connect Section */
-.why-choose-us {
+.why-choose {
     padding: 40px; /* Add padding to the section */
-    background-color: #ffffff; /* Background color */
-    text-align: center; /* Center-align text */
+    background-color: #f9f9f9; /* Light background for contrast */
+    text-align: center; /* Center the text */
 }
 
-.why-choose-us h2 {
+.why-choose h2 {
     font-size: 2.5rem; /* Heading size */
     margin-bottom: 30px; /* Space below the heading */
     font-family: 'Roboto', sans-serif; /* Set the font family */
 }
 
-.why-choose-us ul {
-    list-style: none; /* Remove default bullet points */
-    padding: 0; /* Remove default padding */
+.why-choose .content {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+    justify-content: center; /* Center items horizontally */
 }
 
-.why-choose-us li {
-    font-size: 1.2rem; /* Adjust font size */
-    margin: 10px 0; /* Space between items */
+.why-choose .image-and-text {
+    display: flex; /* Flex for item layout */
+    flex-direction: column; /* Arrange items vertically */
+    align-items: center; /* Center align content */
+    width: 300px; /* Fixed width for each service item */
+    margin: 20px; /* Space around service items */
+    text-align: center; /* Center the text */
+}
+
+.why-choose .image-and-text img {
+    max-width: 100%; /* Responsive image */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Rounded corners */
+}
+
+.why-choose .image-and-text h3 {
+    font-size: 1.5rem; /* Heading size */
+    margin: 10px 0; /* Space above and below heading */
+}
+
+.why-choose .image-and-text p {
+    font-size: 1rem; /* Text size */
+    color: #666; /* Gray color for text */
 }
 
 /* Hamburger Menu Style */
@@ -289,4 +292,9 @@ header nav a {
     .nav-menu.active {
         display: flex; /* Show when active */
     }
+}
+
+/* Heading Styles */
+h1, h2, h3, h4, h5, h6 {
+    color: #4CAF50; /* Green color for headings */
 }

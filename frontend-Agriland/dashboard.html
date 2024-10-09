@@ -31,6 +31,14 @@
             padding: 0 20px;
         }
 
+        .nav-left img {
+            height: 40px; /* Adjust as needed */
+        }
+
+        .nav-right {
+            position: relative;
+        }
+
         .nav-right a {
             color: #fff;
             text-decoration: none;
@@ -40,6 +48,30 @@
 
         .nav-right a:hover {
             background: #45a049;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown a {
+            color: #333;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown a:hover {
+            background: #f0f0f0;
+        }
+
+        .nav-right:hover .dropdown {
+            display: block;
         }
 
         main {
@@ -60,7 +92,8 @@
         .land-listings,
         .lease-management,
         .recent-activity,
-        .user-role-selection {
+        .user-role-selection,
+        .payment-history {
             margin-bottom: 20px;
         }
 
@@ -108,8 +141,15 @@
 <body>
     <header>
         <nav class="navbar">
+            <div class="nav-left">
+                <img src="./images/logo001.png" alt="Agriland Connect Logo"> <!-- Placeholder logo -->
+            </div>
             <div class="nav-right">
-                <a href="logout.html">Logout</a>
+                <a href="user-profile.html">User Profile</a>
+                <div class="dropdown">
+                    <a href="settings.html">Settings</a>
+                    <a href="logout.html">Logout</a>
+                </div>
             </div>
         </nav>
     </header>
@@ -150,6 +190,18 @@
                 <ul>
                     <li>Lease 1 - Status: Active</li>
                     <li>Lease 2 - Status: Pending</li>
+                </ul>
+            </div>
+
+            <div class="payment-history">
+                <h2>Payment History</h2>
+                <ul>
+                    <li>Payment for Lease 1 (Farmer) - Status: Approved</li>
+                    <li>Payment for Lease 2 (Farmer) - Status: Pending</li>
+                    <li>Payment for Lease 3 (Farmer) - Status: Rejected</li>
+                    <li>Payment for Lease 1 (Landlord) - Status: Approved</li>
+                    <li>Payment for Lease 2 (Landlord) - Status: Pending</li>
+                    <li>Payment for Lease 3 (Landlord) - Status: Rejected</li>
                 </ul>
             </div>
 

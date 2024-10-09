@@ -38,6 +38,38 @@
             transform: scale(1.1);
         }
 
+        /* Contact Form Section */
+        .contact-form {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-form label {
+            margin-bottom: 5px;
+        }
+
+        .contact-form input, .contact-form textarea {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .contact-form button {
+            padding: 10px;
+            background-color: #4CAF50; /* Project Color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-form button:hover {
+            background-color: #45a049; /* Darker shade for hover effect */
+        }
+
         /* Responsive Design for Smaller Devices */
         @media (max-width: 768px) {
             .social-media {
@@ -70,7 +102,7 @@
         <nav class="navbar">
             <div class="logo">
                 <a href="#">
-                    <img src="images/logo.png" alt="Agriland Connect Logo" class="logo-image">
+                    <img src="./images/logo001.png" alt="Agriland Connect Logo" class="logo-image">
                 </a>
             </div>
         </nav>
@@ -103,6 +135,24 @@
                     <img src="images/instagram.png" alt="Instagram" class="social-icon">
                 </a>
             </div>
+
+            <!-- Get in Touch Section -->
+            <h2>Get in Touch</h2>
+            <form class="contact-form" action="mailto:cmuthoni102@gmail.com" method="post" enctype="text/plain">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" required>
+
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
         </section>
 
         <!-- Back Button -->
