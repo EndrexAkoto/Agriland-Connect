@@ -5,33 +5,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Land Listings - Agriland Connect</title>
     <link rel="stylesheet" href="styles/style.css">
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background: #
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-right {
+            position: relative;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .land-listings {
+            padding: 20px;
+        }
+
+        .listing-filters {
+            margin-bottom: 20px;
+        }
+
+        .listing-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background: #fff;
+        }
+
+        .listing-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .button {
+            background-color: #4CAF50; /* Project Color */
+            color: white;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #4CAF50; /* Project Color */
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar">
             <div class="logo">
                 <a href="index.html">
-                    <img src="images/logo.png" alt="Agriland Connect Logo" class="logo-image">
+                    <img src="./images/logo001.png" alt="Agriland Connect Logo" class="logo-image">
                 </a>
             </div>
-            <div class="nav-left">
-                <a href="index.html">Home</a>
-                <a href="leasing-listings.html">Leasing Listings</a>
-                <a href="land-listings.html">Land Listings</a>
-                <a href="about.html">About Us</a>
-                <a href="contact.html">Contact</a>
-            </div>
             <div class="nav-right">
-                <a href="login.html">Login</a>
-                <a href="signup.html">Sign Up</a>
-                <a href="logout.html">Logout</a>
+                <div class="dropdown">
+                    <button>User Profile</button>
+                    <div class="dropdown-content">
+                        <a href="settings.html">Settings</a>
+                        <a href="logout.html">Logout</a>
+                    </div>
+                </div>
             </div>
         </nav>
     </header>
 
     <main>
         <section class="land-listings">
-            <h1>Available Lands for Lease</h1>
+            <h1 style="color: #4CAF50;">Available Lands for Lease</h1>
             <div class="listing-filters">
                 <label for="search">Search:</label>
                 <input type="text" id="search" placeholder="Search by location or size">
@@ -45,7 +132,7 @@
                     <p>Location: Nyandarua County</p>
                     <p>Size: 3 Acres</p>
                     <p>Price: Ksh 15,000 per month</p>
-                    <a href="leasing-listings.html" class="button">View Leasing Options</a>
+                    <a href="full-listing.html" class="button">View Lease Details</a>
                 </div>
                 <div class="listing-card">
                     <img src="images/land2.jpg" alt="Land 2">
@@ -53,7 +140,7 @@
                     <p>Location: Uasin Gishu County</p>
                     <p>Size: 5 Acres</p>
                     <p>Price: Ksh 20,000 per month</p>
-                    <a href="leasing-listings.html" class="button">View Leasing Options</a>
+                    <a href="full-listing.html" class="button">View Lease Details</a>
                 </div>
                 <div class="listing-card">
                     <img src="images/land3.jpg" alt="Land 3">
@@ -61,7 +148,7 @@
                     <p>Location: Nakuru County</p>
                     <p>Size: 10 Acres</p>
                     <p>Price: Ksh 30,000 per month</p>
-                    <a href="leasing-listings.html" class="button">View Leasing Options</a>
+                    <a href="full-listing.html" class="button">View Lease Details</a>
                 </div>
                 <!-- Add more listings as needed -->
             </div>
