@@ -46,18 +46,77 @@ body {
 }
 
 /* Header Styling */
-
-.menu-icon {
-    display: none;
+/* Header Styling */
+header {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between logo and menu */
+    align-items: center; /* Center items vertically */
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Navigation Links */
+header .logo img {
+    height: 70px; /* Adjust the size to your preference */
+}
+
+/* Navigation Menu */
+.nav-menu {
+    display: flex; /* Flexbox for the nav menu */
+    align-items: center; /* Center items vertically */
+    flex-grow: 1; /* Allow the nav menu to take available space */
+    justify-content: space-between; /* Space between left and right sections */
+}
+
+.nav-left {
+    display: flex; /* Flexbox for left menu */
+    justify-content: center; /* Center the links horizontally */
+    flex-grow: 1; /* Allow left section to take available space */
+}
+
+.nav-right {
+    display: flex; /* Flexbox for right menu */
+    justify-content: flex-end; /* Align items to the right */
+}
+
+/* Navigation Links Styling */
 header nav a {
     color: #4CAF50; /* Set navbar links to green */
-    margin: 0 10px;
     text-decoration: none;
     font-weight: bold;
+    margin: 0 10px; /* Margin around links */
 }
+
+
+/* Navigation Links */
+.nav-menu {
+    display: flex;
+    width: 100%; /* Full width for navigation */
+    justify-content: space-between; /* Space between left and right sections */
+    align-items: center; /* Center vertically */
+}
+
+.nav-left {
+    display: flex; /* Flexbox for left menu */
+    justify-content: center; /* Center the links horizontally */
+    flex-grow: 1; /* Allow left section to take available space */
+}
+
+.nav-right {
+    display: flex; /* Flexbox for right menu */
+    justify-content: flex-end; /* Align items to the right */
+}
+
+/* Navigation Links Styling */
+header nav a {
+    color: #4CAF50; /* Set navbar links to green */
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px; /* Margin around links */
+}
+
+
+
 
 /* Mobile Navigation */
 .nav-left, .nav-right {
@@ -87,6 +146,19 @@ header nav a {
 
 .hero button:hover {
     background-color: #45a049; /* Darker shade on hover */
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #4CAF50; /* Theme color */
+    font-size: 0.9rem;
+}
+
+footer p {
+    margin: 0;
 }
 
 /* Mission and Vision Section */
@@ -215,47 +287,101 @@ header nav a {
 }
 
 /* Why Choose Agriland Connect Section */
-.why-choose {
+.why-choose-us {
     padding: 40px; /* Add padding to the section */
     background-color: #f9f9f9; /* Light background for contrast */
     text-align: center; /* Center the text */
 }
 
-.why-choose h2 {
+.why-choose-us h2 {
     font-size: 2.5rem; /* Heading size */
     margin-bottom: 30px; /* Space below the heading */
+    color: #4CAF50; /* Retain heading color */
     font-family: 'Roboto', sans-serif; /* Set the font family */
 }
 
-.why-choose .content {
-    display: flex;
+.why-choose-us ul {
+    display: flex; /* Use Flexbox for layout */
     flex-wrap: wrap; /* Allow items to wrap */
     justify-content: center; /* Center items horizontally */
+    padding: 0; /* Remove default padding */
+    list-style: none; /* Remove bullets */
 }
 
-.why-choose .image-and-text {
+.highlight-box {
     display: flex; /* Flex for item layout */
     flex-direction: column; /* Arrange items vertically */
     align-items: center; /* Center align content */
-    width: 300px; /* Fixed width for each service item */
-    margin: 20px; /* Space around service items */
+    width: 250px; /* Fixed width for each highlight box */
+    margin: 20px; /* Space around each highlight box */
     text-align: center; /* Center the text */
 }
 
-.why-choose .image-and-text img {
+.why-choose-img {
     max-width: 100%; /* Responsive image */
     height: auto; /* Maintain aspect ratio */
     border-radius: 10px; /* Rounded corners */
 }
 
-.why-choose .image-and-text h3 {
-    font-size: 1.5rem; /* Heading size */
-    margin: 10px 0; /* Space above and below heading */
+
+/* How It Works Section */
+.how-it-works {
+    padding: 40px; /* Add padding around the section */
+    background-color: #ffffff; /* Background color */
+    text-align: center; /* Center-align text */
+    font-family: 'Roboto', sans-serif; /* Set the font family */
 }
 
-.why-choose .image-and-text p {
-    font-size: 1rem; /* Text size */
-    color: #666; /* Gray color for text */
+.how-it-works h2 {
+    font-size: 2.5rem; /* Heading size */
+    margin-bottom: 30px; /* Space below the heading */
+}
+
+.how-it-works .steps {
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: center; /* Center-align items */
+    max-width: 1200px; /* Set a maximum width for the container */
+    margin: 0 auto; /* Center the container */
+}
+
+.how-it-works .step {
+    flex: 1; /* Allow flexibility in width */
+    min-width: 300px; /* Set a minimum width */
+    max-width: 400px; /* Set a maximum width */
+    margin: 20px; /* Space around each step */
+    padding: 20px; /* Space inside each step */
+}
+
+.how-it-works .small-image {
+    width: 80%; /* Responsive image width */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 15px; /* Space below the image */
+}
+
+/* Scroll to Top Button */
+.scroll-to-top {
+    position: fixed; /* Fix the button to the viewport */
+    bottom: 20px; /* Position it 20px from the bottom */
+    right: 20px; /* Position it 20px from the right */
+    background-color: #4CAF50; /* Button background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Padding inside the button */
+    font-size: 18px; /* Font size */
+    cursor: pointer; /* Change cursor to pointer */
+    display: none; /* Initially hide the button */
+    z-index: 1000; /* Ensure it's above other content */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.scroll-to-top:hover {
+    background-color: #45a049; /* Darker shade on hover */
+}
+
+.copyright {
+    font-weight: bold;
 }
 
 /* Hamburger Menu Style */
