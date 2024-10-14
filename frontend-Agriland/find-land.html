@@ -32,7 +32,11 @@
         }
 
         .nav-left img {
-            height: 40px; /* Adjust as needed */
+            height: 40px;
+        }
+
+        .user-links {
+            display: none;
         }
 
         .search-section {
@@ -141,6 +145,14 @@
         function goBack() {
             window.history.back();
         }
+
+        const isLoggedIn = false;
+
+        window.onload = function() {
+            if (isLoggedIn) {
+                document.querySelector('.user-links').style.display = 'block';
+            }
+        };
     </script>
 </head>
 <body>
@@ -149,7 +161,7 @@
             <div class="nav-left">
                 <img src="./images/logo001.png" alt="Agriland Connect Logo"> <!-- Placeholder logo -->
             </div>
-            <div class="nav-right">
+            <div class="nav-right user-links">
                 <a href="user-profile.html">User Profile</a>
                 <div class="dropdown">
                     <a href="settings.html">Settings</a>
@@ -188,25 +200,18 @@
 
         <section class="land-listings">
             <h2>Available Land Listings</h2>
+
+            <!-- Land Item Example -->
             <div class="land-item">
-                <img src="land-image-placeholder.jpg" alt="Land Image"> <!-- Placeholder image -->
+                <div class="land-image">
+                    <img src="land-image-placeholder-1.jpg" alt="Land Image 1"> <!-- Placeholder image -->
+                </div>
                 <p><strong>Location:</strong> Example Location</p>
                 <p><strong>Size:</strong> 10 acres</p>
-                <p><strong>Price:</strong> Ksh. 8,000 per month</p>
-                <p><strong>Description:</strong> A beautiful piece of land perfect for farming.</p>
-                <a class="view-full-listing" href="full-listing.html">View Full Listing</a>
+                <a class="view-full-listing" href="full-details.html">View Full Details</a>
             </div>
 
-            <div class="land-item">
-                <img src="land-image-placeholder.jpg" alt="Land Image"> <!-- Placeholder image -->
-                <p><strong>Location:</strong> Another Location</p>
-                <p><strong>Size:</strong> 20 acres</p>
-                <p><strong>Price:</strong> Ksh. 15,000 per month</p>
-                <p><strong>Description:</strong> Ideal for growing crops or livestock.</p>
-                <a class="view-full-listing" href="full-listing.html">View Full Listing</a>
-            </div>
-
-            <!-- More land listings can be added here -->
+            <!-- Additional land items can be added here -->
         </section>
 
         <button class="scroll-up" onclick="scrollToTop()">Scroll Up</button>
