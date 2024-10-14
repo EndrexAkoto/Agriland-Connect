@@ -6,7 +6,7 @@
     <title>Login</title>
     <style>
         body {
-            background-image: url('images/frontImg.jpg'); /* Change this to the desired login background */
+            background-image: url('images/login.jpg'); /* Change this to the desired login background */
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -18,10 +18,10 @@
         }
 
         .container {
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(204, 197, 197, 0.507);
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(238, 230, 230, 0.1);
             width: 90%;
             max-width: 400px;
         }
@@ -35,32 +35,35 @@
             width: 100%;
             padding: 10px;
             border: 1px solid #62056e;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 170px;
+            font-size: 15px;
         }
 
         .button input {
             background-color: #4caf50;
-            color: white;
-            border: none;
+            color: rgba(3, 3, 3, 0.877);
+            border: 1px solid #62056e;
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 100px;
             cursor: pointer;
-            width: 100%;
+            width: 95%;
+            display: block; /* Center the submit button */
+            margin: 0 auto; /* Center the submit button */
         }
 
         .back-button {
             display: block;
-            margin: 20px 0;
+            margin: 40px 0;
             text-align: center;
-            color: #4caf50;
+            color: #06f10e;
             text-decoration: none;
+            font-weight: bold; /* Make the back button bold */
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Login</h2>
+        <h2 style="text-align: center;">Login</h2> <!-- Center the title -->
         <form onsubmit="return redirectToDashboard();">
             <div class="input-box">
                 <input type="email" placeholder="Enter your email" required>
@@ -71,7 +74,9 @@
             <div class="button input-box">
                 <input type="submit" value="Submit">
             </div>
-            <div class="text">Don't have an account? <a href="signup.html">Signup now</a></div>
+            <div class="text" style="text-align: center;"> <!-- Center the text -->
+                Don't have an account? <a href="signup.html">Signup now</a>
+            </div>
         </form>
         <a href="index.html" class="back-button">Back to Home</a>
     </div>
