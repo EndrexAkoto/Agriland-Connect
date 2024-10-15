@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Payments - Agriland Connect</title>
+    <link rel="stylesheet" href="css/admin_style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-image: url('../images/frontImg.jpg'); /* Background image */
+            background-size: cover; /* Ensures the image covers the entire background */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Prevent the image from repeating */
+            color: #333; /* Dark text color */
+        }
+
+        header {
+            background: #4CAF50; /* Project Color */
+            padding: 10px 0;
+            color: white;
+        }
+
+        .logo-container {
+            text-align: center;
+        }
+
+        .logo {
+            width: 100px; /* Adjust logo size */
+        }
+
+        .navbar {
+            text-align: center;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .nav-links li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        main {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8); /* Slightly transparent background for readability */
+            border-radius: 5px;
+            margin: 20px auto;
+            max-width: 900px; /* Limit the width of the main content */
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50; /* Project Color */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50; /* Project Color */
+            color: white;
+        }
+
+        button {
+            background-color: #4CAF50; /* Project Color */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker shade on hover */
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #4CAF50; /* Project Color */
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img class="logo" src="../images/logo001.png" alt="Agriland Logo"> <!-- Update with your new logo path -->
+        </div>
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="users.html">Users</a></li>
+                <li><a href="find_land.html">Find Land</a></li>
+                <li><a href="land_listings.html">Land Listings</a></li>
+                <li><a href="payments.html">Payments</a></li>
+                <li><a href="settings.html">Settings</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Manage Payments</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Farmer Name</th> <!-- New column for Farmer Name -->
+                    <th>Contact</th> <!-- New column for Contact Information -->
+                    <th>Listing</th>
+                    <th>Amount (KSh)</th>
+                    <th>Payment Method</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>John Doe</td> <!-- Example Farmer Name -->
+                    <td>0700 123 456</td> <!-- Example Contact -->
+                    <td>Farm in Nairobi</td>
+                    <td>150,000</td>
+                    <td>Mobile Banking</td>
+                    <td>Paid</td>
+                    <td>01/09/2023</td>
+                    <td><button>View</button></td>
+                </tr>
+                <!-- More payments can be dynamically added here -->
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
+    </footer>
+
+    <script src="js/admin_script.js"></script>
+</body>
+</html>

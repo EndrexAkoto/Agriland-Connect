@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Payment Gateway - Agriland Connect</title>
+</head>
+<body>
+    <header>
+        <img src="./images/logo001.png" alt="Agriland Connect Logo" class="logo"> <!-- Add your logo here -->
+        <nav>
+            <div class="nav-left">
+                <a href="index.html">Home</a>
+                <a href="Find Land">Find Land</a>
+                <a href="Land Listings">Lease Land</a>
+                <a href="user-profile.html">Profile</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="payment.html">Payment</a>
+            </div>
+            <div class="nav-right">
+                <a href="signup.html">Sign Up</a>
+                <a href="login.html">Log In</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        <h2>Payment Gateway</h2>
+        <form id="payment-form">
+            <label for="land">Select Land:</label>
+            <select id="land" required>
+                <option value="">-- Select Land --</option>
+                <option value="Farm A">Farm A</option>
+                <option value="Farm B">Farm B</option>
+            </select>
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" required placeholder="Enter amount">
+            <label for="card-details">Card Details:</label>
+            <input type="text" id="card-details" required placeholder="Card Number">
+            <button type="submit">Make Payment</button>
+        </form>
+        <div id="payment-message"></div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
+    </footer>
+    
+    <script src="main.js"></script>
+</body>
+</html>

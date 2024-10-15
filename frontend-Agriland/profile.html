@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Agriland Connect</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <!-- Logo on the left -->
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo001.png" alt="Agriland Connect Logo" class="logo-image">
+                </a>
+            </div>
+
+            <!-- Left-aligned nav links -->
+            <div class="nav-left">
+                <a href="index.html">Home</a>
+                <div class="dropdown">
+                    <a href="#">Land Listings</a>
+                    <div class="dropdown-content">
+                        <a href="#">Leasing</a>
+                        <a href="#">Listing</a>
+                    </div>
+                </div>
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact</a>
+            </div>
+
+            <!-- Right-aligned login and sign-up links -->
+            <div class="nav-right">
+                <a href="login.html">Login</a>
+                <a href="signup.html">Sign Up</a>
+                <a href="logout.html">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Section -->
+    <main>
+        <section class="profile">
+            <h1>Your Profile</h1>
+            <form action="#" method="POST">
+                <h2>Personal Information</h2>
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+
+                <label for="idNumber">ID Number:</label>
+                <input type="text" id="idNumber" name="idNumber" required>
+
+                <label for="kraPin">KRA PIN:</label>
+                <input type="text" id="kraPin" name="kraPin" required>
+
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" disabled>
+
+                <label for="pobox">P.O. Box:</label>
+                <input type="text" id="pobox" name="pobox" required>
+
+                <label for="county">County of Residence:</label>
+                <input type="text" id="county" name="county" required>
+
+                <label for="town">Town:</label>
+                <input type="text" id="town" name="town" required>
+
+                <h2>Next of Kin Details</h2>
+                <label for="kinName">Next of Kin Name:</label>
+                <input type="text" id="kinName" name="kinName" required>
+
+                <label for="kinRelation">Relation:</label>
+                <input type="text" id="kinRelation" name="kinRelation" required>
+
+                <label for="kinContact">Next of Kin Contact:</label>
+                <input type="tel" id="kinContact" name="kinContact" required>
+
+                <button type="submit">Update Profile</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // JavaScript for calculating age based on date of birth
+        document.getElementById('dob').addEventListener('change', function() {
+            const dob = new Date(this.value);
+            const today = new Date();
+            const age = today.getFullYear() - dob.getFullYear();
+            const monthDifference = today.getMonth() - dob.getMonth();
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            document.getElementById('age').value = age;
+        });
+    </script>
+</body>
+</html>

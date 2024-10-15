@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Agriland Connect</title>
+    <link rel="stylesheet" href="css/admin_style.css">
+
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-image: url('../images/frontImg.jpg'); /* Add your image here */
+            background-size: cover; /* Ensures the image covers the entire background */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Prevent the image from repeating */
+            color: #333; /* Dark text color */
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: rgba(76, 175, 80, 0.8); /* Semi-transparent background for better contrast */
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center; /* Align items vertically in the center */
+            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+        }
+
+        .logo-container {
+            flex: 0 0 auto; /* Allow logo to maintain its size */
+            display: flex;
+            justify-content: flex-start; /* Align logo to the left */
+            margin-right: auto; /* Push navbar to the right */
+        }
+
+        .logo {
+            max-width: 100px;
+        }
+
+        .navbar {
+            flex: 1; /* Allow navbar to take the remaining space */
+            display: flex;
+            justify-content: flex-end; /* Align navbar items to the right */
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            justify-content: flex-end; /* Align links to the right */
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        .burger {
+            display: none; /* Hidden for now, can be styled for mobile later */
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .dashboard {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* Allow boxes to wrap on smaller screens */
+        }
+
+        .box {
+            background-color: rgba(255, 255, 255, 0.9); /* White box with transparency for readability */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            margin: 0 10px;
+            min-width: 200px; /* Minimum width for boxes */
+            box-sizing: border-box; /* Ensure padding doesn't affect width */
+        }
+
+        .box h2 {
+            color: #4CAF50; /* Project Color */
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: rgba(76, 175, 80, 0.8); /* Semi-transparent footer */
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* User Statistics Section */
+        .user-statistics {
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* White background for user stats with transparency */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-statistics h2 {
+            color: #4CAF50; /* Project Color */
+            margin-bottom: 15px;
+        }
+
+        .user-statistics ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .user-statistics li {
+            margin: 5px 0;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column; /* Stack navigation links vertically */
+            }
+
+            .dashboard {
+                flex-direction: column; /* Stack dashboard boxes vertically */
+            }
+
+            .box {
+                margin: 10px 0; /* Add vertical margin */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img class="logo" src="../images/logo001.png" alt="Agriland Logo">
+        </div>
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="users.html">Users</a></li>
+                <li><a href="add-listing.html">Add Listing</a></li> <!-- Updated link -->
+                <li><a href="add-land-lease.html">Add land lease</a></li>
+                <li><a href="payments.html">Payments</a></li>
+                <li><a href="settings.html">Settings</a></li>
+            </ul>
+        </nav>
+        <div class="burger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </header>
+
+    <main>
+        <h1>Welcome to the Admin Dashboard</h1>
+        <section class="dashboard">
+            <div class="box total-users">
+                <h2>Total Users</h2>
+                <p id="totalUsers">120</p>
+            </div>
+            <div class="box total-listings">
+                <h2>Total Listings</h2>
+                <p id="totalListings">58</p>
+            </div>
+            <div class="box active-leases">
+                <h2>Active Leases</h2>
+                <p id="activeLeases">45</p>
+            </div>
+            <div class="box pending-payments">
+                <h2>Pending Payments</h2>
+                <p id="pendingPayments">5</p>
+            </div>
+        </section>
+
+        <section class="user-statistics">
+            <h2>User Statistics</h2>
+            <ul>
+                <li>Total Users: <span id="userCount">120</span></li>
+                <li>New Users: <span id="newUserCount">20</span></li>
+                <li>Farmers: <span id="farmersCount">80</span></li>
+                <li>Landowners: <span id="landownersCount">40</span></li>
+                <li>Gender Distribution: <span id="genderDistribution">Male: 70%, Female: 30%</span></li>
+                <li>Age Bracket: <span id="ageBracket">18-25: 30%, 26-35: 50%, 36-50: 20%</span></li>
+                <li>Active Leases: <span id="activeLeasesCount">45</span></li>
+                <li>Pending Payments: <span id="pendingPaymentsCount">5</span></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
+    </footer>
+
+    <script src="js/admin_script.js"></script>
+</body>
+</html>

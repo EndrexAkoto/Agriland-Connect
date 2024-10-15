@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <style>
+        body {
+            background-image: url('images/login.jpg'); /* Change this to the desired signup background */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.418);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(199, 13, 13, 0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .input-box {
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(173, 10, 165, 0.932);
+            border-radius: 20px;
+            font-size: 16px;
+        }
+
+        .button input {
+            background-color: #4caf50;
+            color: rgba(10, 10, 10, 0.952);
+            border: none;
+            padding: 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .back-button {
+            display: block;
+            margin: 20px 0;
+            text-align: center;
+            color: #08e910;
+            text-decoration: none;
+        }
+
+        .text {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Signup</h2>
+        <form onsubmit="return validateForm();">
+            <div class="input-box">
+                <input type="text" id="name" placeholder="Enter your name" required>
+            </div>
+            <div class="input-box">
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-box">
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            <div class="input-box">
+                <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+            </div>
+            <div class="button input-box">
+                <input type="submit" value="Submit">
+            </div>
+            <div class="text">Already have an account? <a href="login.html">Login now</a></div>
+        </form>
+        <a href="index.html" class="back-button">Back to Home</a>
+    </div>
+
+    <script>
+        function validateForm() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match. Please try again.");
+                return false; // Prevent form submission
+            }
+
+            alert("Signup successful! Redirecting to login page...");
+            window.location.href = "login.html"; // Redirect to login page
+            return false; // Prevent default form submission
+        }
+    </script>
+</body>
+</html>

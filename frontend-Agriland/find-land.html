@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Land - Agriland Connect</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background: #4CAF50;
+            color: #fff;
+            padding: 10px 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-left img {
+            height: 40px;
+        }
+
+        .user-links {
+            display: none;
+        }
+
+        .search-section {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .land-listings {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .land-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .land-item img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .view-full-listing {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            background: #4CAF50;
+            padding: 8px 15px;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .scroll-up, .back-button {
+            margin: 20px;
+            position: fixed;
+            bottom: 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .scroll-up {
+            right: 20px;
+        }
+
+        .back-button {
+            left: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #4CAF50;
+            color: #fff;
+        }
+    </style>
+    <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        const isLoggedIn = false;
+
+        window.onload = function() {
+            if (isLoggedIn) {
+                document.querySelector('.user-links').style.display = 'block';
+            }
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-left">
+                <img src="./images/logo001.png" alt="Agriland Connect Logo"> <!-- Placeholder logo -->
+            </div>
+            <div class="nav-right user-links">
+                <a href="user-profile.html">User Profile</a>
+                <div class="dropdown">
+                    <a href="settings.html">Settings</a>
+                    <a href="logout.html">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="search-section">
+            <h1>Find Land</h1>
+            <label for="location">Location:</label>
+            <input type="text" id="location" placeholder="Enter location">
+
+            <label for="land-size">Land Size:</label>
+            <select id="land-size">
+                <option value="any">Any Size</option>
+                <option value="1-10">1 - 10 acres</option>
+                <option value="11-50">11 - 50 acres</option>
+                <option value="51-100">51 - 100 acres</option>
+                <option value="100+">100+ acres</option>
+            </select>
+
+            <label for="price-range">Price Range:</label>
+            <select id="price-range">
+                <option value="any">Any Price</option>
+                <option value="5000-10000">Ksh. 5,000 - 10,000</option>
+                <option value="11000-15000">Ksh. 11,000 - 15,000</option>
+                <option value="16000-20000">Ksh. 16,000 - 20,000</option>
+                <option value="21000+">Ksh. 21,000+</option>
+            </select>
+
+            <button type="button">Apply Filters</button>
+        </section>
+
+        <section class="land-listings">
+            <h2>Available Land Listings</h2>
+
+            <!-- Land Item Example -->
+            <div class="land-item">
+                <div class="land-image">
+                    <img src="land-image-placeholder-1.jpg" alt="Land Image 1"> <!-- Placeholder image -->
+                </div>
+                <p><strong>Location:</strong> Example Location</p>
+                <p><strong>Size:</strong> 10 acres</p>
+                <a class="view-full-listing" href="full-details.html">View Full Details</a>
+            </div>
+
+            <!-- Additional land items can be added here -->
+        </section>
+
+        <button class="scroll-up" onclick="scrollToTop()">Scroll Up</button>
+        <button class="back-button" onclick="goBack()">Back</button>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
+    </footer>
+</body>
+</html>
