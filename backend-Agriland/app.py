@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from pymongo import MongoClient
 import re
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=os.path.abspath('/home/hp/Desktop/Agriland/Agriland-Connect/frontend-Agriland'), static_folder=os.path.abspath('/home/hp/Desktop/Agriland/Agriland-Connect/frontend-Agriland/images'))
 app.secret_key = 'c30b7150c42e87caef910ca5aebddbcce8309d5f'
 
 client = MongoClient('localhost', 27017)
@@ -12,6 +13,10 @@ users_collection = db['users']
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/images/landleasing01.jpg")
+def promote():
+    return render_template("/images/landleasing01.jpg")
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     msg = ''
@@ -35,7 +40,7 @@ def logout():
     session.pop('id', None)
     session.pop('username', None)
     return redirect(url_for('login'))
-@app.route('/frontend-Agriland/signup', methods=['GET', 'POST'])
+@app.route('/signup.html', methods=['GET', 'POST'])
 def signup():
     msg = ''
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
