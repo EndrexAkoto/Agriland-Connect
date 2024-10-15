@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Transactions - Agriland Connect</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
 </head>
 <body>
     <header>
         <nav class="navbar">
             <div class="logo">
                 <a href="index.html">
-                    <img src="images/logo.png" alt="Agriland Connect Logo" class="logo-image">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Agriland Connect Logo" class="logo-image">
                 </a>
             </div>
             <div class="nav-left">

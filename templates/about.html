@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Agriland Connect</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
 </head>
 <body>
     <!-- Header Section -->
@@ -12,7 +12,7 @@
         <nav class="navbar">
             <div class="logo">
                 <a href="#">
-                    <img src="images/logo.png" alt="Agriland Connect Logo" class="logo-image">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Agriland Connect Logo" class="logo-image">
                 </a>
             </div>
             <!-- Add navigation links here if needed -->
@@ -29,7 +29,7 @@
 
         <!-- Back Button -->
         <div class="back-button">
-            <a href="index.html"><button>Back to Home</button></a>
+            <a href="{{ url_for('index') }}"><button>Back to Home</button></a>
         </div>
     </main>
 

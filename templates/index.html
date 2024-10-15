@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agriland Connect</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+
+
 </head>
 <body>
     <!-- Header Section -->
@@ -12,7 +14,7 @@
         <nav class="navbar">
             <div class="logo">
                 <a href="#">
-                    <img src="images/logo001.png" alt="Agriland Connect Logo" class="logo-image">
+                    <img src="{{ url_for('static', filename='images/logo001.png') }}"alt="Agriland Connect Logo" class="logo-image">
                 </a>
             </div>
 
@@ -22,15 +24,15 @@
 
             <div class="nav-menu" id="navMenu">
                 <div class="nav-left">
-                    <a href="index.html">Home</a>
+                    <a href="{{ url_for('index') }}">Home</a>
                     <a href="leasing.html">Find Land</a>
                     <a href="listing.html">Lease Land</a>
                     <a href="about.html">About Us</a>
                     <a href="contact.html">Contact</a>
                 </div>
                 <div class="nav-right">
-                    <a href="login.html">Login</a>
-                    <a href="signup.html">Sign Up</a>
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{ url_for('signup') }}">Sign Up</a>
                 </div>
             </div>
         </nav>
@@ -49,21 +51,21 @@
             <p>Empowering landowners and urban farmers to work together for sustainable food production and community growth.</p>
             <div class="content">
                 <div class="image-and-text">
-                    <img src="images/02.jpg" alt="Land Leasing Image">
+                    <img src="{{ url_for('static', filename='images/02.jpg') }}" alt="Land Leasing Image">
                     <div class="text">
                         <h3>Land Leasing</h3>
                         <p>We assist landowners in leasing their underutilized land to urban farmers, ensuring a smooth and mutually beneficial agreement for sustainable agriculture.</p>
                     </div>
                 </div>
                 <div class="image-and-text">
-                    <img src="images/03.jpg" alt="Urban Farming Partnership Image">
+                    <img src="{{ url_for('static', filename='images/03.jpg') }}" alt="Urban Farming Partnership Image">
                     <div class="text">
                         <h3>Urban Farming Partnership</h3>
                         <p>We facilitate partnerships between landowners and urban farmers, creating opportunities for collaboration and growth in sustainable food production.</p>
                     </div>
                 </div>
                 <div class="image-and-text">
-                    <img src="images/04.jpg" alt="Community Engagement Image">
+                    <img src="{{ url_for('static', filename='images/04.jpg') }}" alt="Community Engagement Image">
                     <div class="text">
                         <h3>Community Engagement</h3>
                         <p>We promote community engagement by connecting landowners and urban farmers, fostering a sense of shared responsibility for local food production and sustainability.</p>
@@ -79,21 +81,21 @@
     <p>Discover the services we offer to landowners and urban farmers to facilitate the leasing of underutilized land for sustainable food production.</p>
     <div class="content">
         <div class="image-and-text">
-            <img src="images/landleasing01.jpg" alt="Land Leasing">
+            <img src="{{ url_for('static', filename='images/landleasing01.jpg') }}" alt="Land Leasing">
             <div class="text">
                 <h3>Land Leasing</h3>
                 <p>We assist landowners in leasing their underutilized land to urban farmers, ensuring a smooth and mutually beneficial agreement for sustainable agriculture.</p>
             </div>
         </div>
         <div class="image-and-text">
-            <img src="images/landleasing02.jpg" alt="Urban Farming Partnership">
+            <img src="{{ url_for('static', filename='images/landleasing02.jpg') }}" alt="Urban Farming Partnership">
             <div class="text">
                 <h3>Urban Farming Partnership</h3>
                 <p>We facilitate partnerships between landowners and urban farmers, creating opportunities for collaboration and growth in sustainable food production.</p>
             </div>
         </div>
         <div class="image-and-text">
-            <img src="images/landleasing03.jpg" alt="Community Engagement">
+            <img src="{{ url_for('static', filename='images/landleasing03.jpg') }}" alt="Community Engagement">
             <div class="text">
                 <h3>Community Engagement</h3>
                 <p>We promote community engagement by connecting landowners and urban farmers, fostering a sense of shared responsibility for local food production and sustainability.</p>
@@ -119,17 +121,17 @@
             <h2>How It Works</h2>
             <div class="steps">
                 <div class="step">
-                    <img src="images/placeholder.png" alt="List Your Land Image" class="small-image">
+                    <img src="{{ url_for('static', filename='images/placeholder.png') }}" alt="List Your Land Image" class="small-image">
                     <h3>List Your Land</h3>
                     <p>Landowners can easily list their available spaces, providing details and photos.</p>
                 </div>
                 <div class="step">
-                    <img src="images/group.png" alt="Connect & Agree Image" class="small-image">
+                    <img src="{{ url_for('static', filename='images/group.png') }}" alt="Connect & Agree Image" class="small-image">
                     <h3>Connect & Agree</h3>
                     <p>Farmers browse listings, connect with landowners, and establish agreements.</p>
                 </div>
                 <div class="step">
-                    <img src="images/seed.png" alt="Start Growing Image" class="small-image">
+                    <img src="{{ url_for('static', filename='images/seed.png') }}" alt="Start Growing Image" class="small-image">
                     <h3>Start Growing</h3>
                     <p>Begin cultivating the land and growing fresh, local produce for the community.</p>
                 </div>
