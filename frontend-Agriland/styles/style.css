@@ -1,7 +1,7 @@
 /* Global Styling */
 /* Set background image for the entire body */
 body {
-    background-image: url('../images/header..jpg'); /* Path to your background image */
+    background-image: url('../images/header.jpg'); /* Path to your background image */
     background-size: cover; /* Cover the entire viewport */
     background-position: center; /* Center the background image */
     background-attachment: fixed; /* Keep the background fixed while scrolling */
@@ -45,7 +45,6 @@ body {
     transform: scale(1.05); /* Slight scale effect */
 }
 
-/* Header Styling */
 /* Header Styling */
 header {
     display: flex; /* Use flexbox for layout */
@@ -114,9 +113,6 @@ header nav a {
     font-weight: bold;
     margin: 0 10px; /* Margin around links */
 }
-
-
-
 
 /* Mobile Navigation */
 .nav-left, .nav-right {
@@ -312,17 +308,29 @@ footer p {
     display: flex; /* Flex for item layout */
     flex-direction: column; /* Arrange items vertically */
     align-items: center; /* Center align content */
-    width: 250px; /* Fixed width for each highlight box */
-    margin: 20px; /* Space around each highlight box */
+    width: 150px; /* Fixed width for each highlight box */
+    margin: 50px; /* Space around each highlight box */
     text-align: center; /* Center the text */
 }
 
 .why-choose-img {
-    max-width: 100%; /* Responsive image */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 10px; /* Rounded corners */
+    max-width: 60%; /* Reduce image width to 60% of its container */
+    height: auto;   /* Maintain the aspect ratio */
+    border-radius: 20px; /* Keep the rounded corners */
+    margin-bottom: 40px; /* Add space between the image and the text */
 }
 
+/* Style for the titles (Utilize Unused Land, Build Community, etc.) */
+.highlight-box strong {
+    color: #4CAF50; /* Green color for the title */
+    font-weight: bold; /* Keep the titles bold */
+}
+
+/* Style for the descriptions (the text after the titles) */
+.highlight-box .description {
+    color: #000000; /* Black color for the description text */
+    font-weight: normal; /* Normal weight for the description text */
+}
 
 /* How It Works Section */
 .how-it-works {
@@ -354,7 +362,7 @@ footer p {
 }
 
 .how-it-works .small-image {
-    width: 80%; /* Responsive image width */
+    width: 25%; /* Further reduce the image width */
     height: auto; /* Maintain aspect ratio */
     margin-bottom: 15px; /* Space below the image */
 }
