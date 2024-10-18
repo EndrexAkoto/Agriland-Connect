@@ -66,8 +66,8 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    h1 {
-        color: #333;
+    h1, h2 {
+        color: #4CAF50; /* Set headings color */
         margin-bottom: 20px;
     }
 
@@ -172,7 +172,6 @@
     }
 </style>
 
-
     <script>
         async function fetchLandListings() {
             try {
@@ -208,6 +207,19 @@
         window.onload = function() {
             fetchLandListings(); // Call function to fetch listings when the page loads
         };
+
+        // Function to scroll to the top of the page
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Function to navigate back to the previous page
+        function goBack() {
+            window.history.back();
+        }
     </script>
 </head>
 <body>
