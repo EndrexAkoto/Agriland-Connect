@@ -18,6 +18,34 @@
             padding: 20px;
         }
 
+        /* Header Section */
+        header {
+            display: flex;
+            justify-content: space-between; /* Keep space between logo and other elements on larger screens */
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-image {
+            width: 100px; /* Set a default width for the logo */
+        }
+
+        /* Contact Section */
+        .contact {
+            max-width: 800px; /* Set a max width for larger screens */
+            margin: 0 auto; /* Center the contact section */
+        }
+
+        /* Centering the Contact Us Heading */
+        .contact h1 {
+            text-align: center; /* Center the heading */
+            margin-bottom: 20px; /* Add some space below the heading */
+        }
+
         /* Social Media Icons Section */
         .social-media {
             display: flex;
@@ -43,6 +71,8 @@
             margin-top: 40px;
             display: flex;
             flex-direction: column;
+            max-width: 600px; /* Set a max width for the form */
+            margin: 0 auto; /* Center the form */
         }
 
         .contact-form label {
@@ -72,20 +102,35 @@
 
         /* Responsive Design for Smaller Devices */
         @media (max-width: 768px) {
+            header {
+                justify-content: center; /* Center header items on small screens */
+                padding: 10px 0; /* Optional: Add padding for spacing */
+            }
+
+            .logo-image {
+                width: 80px; /* Adjust logo size for smaller screens */
+            }
+
             .social-media {
                 justify-content: space-between;
+                flex-direction: row; /* Horizontal layout on smaller screens */
             }
 
             .social-icon {
                 width: 30px;
                 height: 30px;
             }
+
+            .contact-form {
+                width: 100%; /* Full width on smaller screens */
+                padding: 0 10px; /* Add padding for aesthetics */
+            }
         }
 
         @media (max-width: 480px) {
             .social-media {
                 justify-content: center;
-                flex-direction: column;
+                flex-direction: row; /* Horizontal layout on very small screens */
             }
 
             .social-icon {
@@ -93,19 +138,29 @@
                 width: 25px;
                 height: 25px;
             }
+
+            .contact {
+                padding: 0 10px; /* Add padding for small screens */
+            }
+        }
+
+        /* Small Heading Style for Get in Touch */
+        .contact h2 {
+            font-size: 1.5em; /* Smaller heading */
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center; /* Centered heading */
         }
     </style>
 </head>
 <body>
     <!-- Header Section -->
     <header>
-        <nav class="navbar">
-            <div class="logo">
-                <a href="#">
-                    <img src="./images/logo001.png" alt="Agriland Connect Logo" class="logo-image">
-                </a>
-            </div>
-        </nav>
+        <div class="logo">
+            <a href="#">
+                <img src="./images/logo001.png" alt="Agriland Connect Logo" class="logo-image">
+            </a>
+        </div>
     </header>
 
     <!-- Main Section -->
