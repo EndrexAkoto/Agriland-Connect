@@ -179,8 +179,128 @@ def editprofile():
     # For GET requests, render the edit profile form
     return render_template('edit-profile.html', msg=msg)
 
+@app.route('/farmer.html', methods=['GET', 'POST'])
+def farmer():
+    if request.method == 'POST':
+        # Get form data
+        land_size = request.form.get('landSize')
+        location = request.form.get('location')
+        crop_type = request.form.get('cropType')
+        payment_method = request.form.get('paymentMethod')
+
+        # Validate form data
+        if not land_size or not location or not crop_type or not payment_method:
+            return render_template('farmer.html', msg='Please fill out all fields!')
+        
+        # Create land request data dictionary
+        land_request_data = {
+            'land_size': land_size,
+            'location': location,
+            'crop_type': crop_type,
+            'payment_method': payment_method
+        }
+
+        # Insert the land request into MongoDB
+        try:
+            db['farmer'].insert_one(land_request_data)
+            msg = 'Land request submitted successfully!'
+        except Exception as e:
+            msg = f"An error occurred while submitting your request: {str(e)}"
+
+        # Render the form again with a success/failure message
+        return render_template('farmer.html', msg=msg)
+
+    # Render the form if method is GET
+    return render_template('farmer.html', msg='')
 
 
+@app.route('/landlord.html', methods=['GET', 'POST'])
+def landlord():
+    if request.method == 'POST':
+        # Get form data
+        land_size = request.form.get('landSize')
+        location = request.form.get('location')
+        price_per_acre = request.form.get('pricePerAcre')
+        amenities = request.form.get('amenities')
+        road_access = request.form.get('roadAccess')
+        fencing = request.form.get('fencing')
+        title_deed = request.form.get('titleDeed')
+        lease_duration = request.form.get('leaseDuration')
+        payment_frequency = request.form.get('paymentFrequency')
+
+        # Process uploaded files (farm images)
+        files = request.files.getlist('farmImages')
+        image_filenames = []
+
+        if files:
+            for file in files:
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    image_filenames.append(filename)
+        
+        # Validate form data
+        if not (land_size and location and price_per_acre and amenities and road_access and fencing and title_deed and lease_duration and payment_frequency and image_filenames):
+            return render_template('landlord.html', msg='Please fill out all fields and upload images!')
+        
+        # Create land listing data dictionary
+        land_listing_data = {
+            'land_size': land_size,
+            'location': location,
+            'price_per_acre': price_per_acre,
+            'amenities': amenities,
+            'road_access': road_access,
+            'fencing': fencing,
+            'title_deed': title_deed,
+            'farm_images': image_filenames,  # Save filenames for reference
+            'lease_duration': lease_duration,
+            'payment_frequency': payment_frequency
+        }
+
+        # Insert the land listing into MongoDB
+        try:
+            db['land_listings'].insert_one(land_listing_data)
+            msg = 'Land listing submitted successfully!'
+        except Exception as e:
+            msg = f"An error occurred while submitting your listing: {str(e)}"
+
+        # Render the form again with a success/failure message
+        return render_template('landlord.html', msg=msg)
+
+    # Render the form if method is GET
+    return render_template('landlord.html', msg='')
+
+@app.route('/land-listings.html')
+def landlistings():
+    return render_template('land-listings.html')
+
+@app.route('/leasing-listings.html')
+def leasinglistings():
+    return render_template('leasing-listing.html')
+
+@app.route('/find-land.html')
+def findland():
+    return render_template('find-land.html')
+
+@app.route('/payment.html')
+def payment():
+    return render_template('payment.html')
+
+@app.route('/transactions.html')
+def transactions():
+    return render_template('transactiond.html')
+
+@app.route('/user-profile.html')
+def userprofile():
+    return render_template('user-profile.html')
+
+@app.route('/lease-agreements.html')
+def leaseagreements():
+    return render_template('lease-agreements.html')
+
+@app.route('/full-listings.html')
+def fulllistings():
+    return render_template('full-listings.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
