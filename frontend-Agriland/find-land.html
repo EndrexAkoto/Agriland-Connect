@@ -4,154 +4,209 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find Land - Agriland Connect</title>
+   
     <style>
-        /* Basic Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    /* Basic Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f9f9f9;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f9f9f9;
+    }
 
-        header {
-            background: #4CAF50;
-            color: #fff;
-            padding: 10px 0;
-        }
+    header {
+        background: #4CAF50;
+        color: #fff;
+        padding: 10px 0;
+    }
 
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+    }
+
+    .nav-left img {
+        height: 80px;
+    }
+
+    .user-links {
+        display: none;
+    }
+
+    /* Mobile Responsive: Center logo on smaller screens */
+    @media (max-width: 768px) {
         .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
+            justify-content: center;
         }
 
         .nav-left img {
-            height: 40px;
+            display: block;
+            margin: 0 auto;
         }
 
+        /* Hide user-links on mobile if needed */
         .user-links {
             display: none;
         }
+    }
 
-        .search-section {
-            max-width: 800px;
-            margin: 20px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+    .search-section {
+        max-width: 800px;
+        margin: 20px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-        }
+    h1 {
+        color: #333;
+        margin-bottom: 20px;
+    }
 
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
+    label {
+        display: block;
+        margin: 10px 0 5px;
+    }
 
-        select, input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
+    select, input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
 
-        button {
-            padding: 10px 20px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+    button {
+        padding: 10px 20px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
 
-        button:hover {
-            background: #45a049;
-        }
+    button:hover {
+        background: #45a049;
+    }
 
-        .land-listings {
-            max-width: 800px;
-            margin: 20px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+    .land-listings {
+        max-width: 800px;
+        margin: 20px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-        .land-item {
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
-        }
+    .land-item {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+    }
 
-        .land-item img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 10px;
-        }
+    .land-item img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+    }
 
-        .view-full-listing {
-            display: inline-block;
-            margin-top: 10px;
-            text-decoration: none;
-            background: #4CAF50;
-            padding: 8px 15px;
-            color: white;
-            border-radius: 5px;
-        }
+    .view-full-listing {
+        display: inline-block;
+        margin-top: 10px;
+        text-decoration: none;
+        background: #4CAF50;
+        padding: 8px 15px;
+        color: white;
+        border-radius: 5px;
+    }
 
-        .scroll-up, .back-button {
-            margin: 20px;
-            position: fixed;
-            bottom: 20px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    /* Adjust Scroll Up and Back Button Styles */
+    .scroll-up, .back-button {
+        margin: 20px; /* Maintain spacing */
+        background: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        position: fixed; /* Keep them fixed */
+        z-index: 1000; /* Ensure they stay on top */
+    }
 
+    /* Positioning for Scroll Up Button */
+    .scroll-up {
+        right: 20px;
+        bottom: 80px; /* Adjust position above the footer */
+    }
+
+    /* Positioning for Back Button */
+    .back-button {
+        left: 20px;
+        bottom: 80px; /* Adjust position above the footer */
+    }
+
+    footer {
+        text-align: center;
+        padding: 10px 0;
+        background: #4CAF50;
+        color: #fff;
+    }
+
+    /* Additional adjustments for mobile */
+    @media (max-width: 768px) {
         .scroll-up {
-            right: 20px;
+            bottom: 80px; /* Adjust for mobile */
         }
 
         .back-button {
-            left: 20px;
+            bottom: 80px; /* Adjust for mobile */
         }
+    }
+</style>
 
-        footer {
-            text-align: center;
-            padding: 10px 0;
-            background: #4CAF50;
-            color: #fff;
-        }
-    </style>
+
     <script>
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        async function fetchLandListings() {
+            try {
+                const response = await fetch('/api/lands'); // Flask API endpoint
+                const data = await response.json();
+
+                displayLandListings(data);
+            } catch (error) {
+                console.error('Error fetching land listings:', error);
+            }
         }
 
-        function goBack() {
-            window.history.back();
-        }
+        // Function to dynamically render land listings
+        function displayLandListings(landList) {
+            const listingsSection = document.querySelector('.land-listings');
+            listingsSection.innerHTML = '<h2>Available Land Listings</h2>'; // Reset content
 
-        const isLoggedIn = false;
+            landList.forEach(land => {
+                const landItem = `
+                    <div class="land-item">
+                        <div class="land-image">
+                            <img src="${land.image_url}" alt="Land Image">
+                        </div>
+                        <p><strong>Location:</strong> ${land.location}</p>
+                        <p><strong>Size:</strong> ${land.size} acres</p>
+                        <a class="view-full-listing" href="full-details.html?id=${land.id}">View Full Details</a>
+                    </div>
+                `;
+                listingsSection.innerHTML += landItem;
+            });
+        }
 
         window.onload = function() {
-            if (isLoggedIn) {
-                document.querySelector('.user-links').style.display = 'block';
-            }
+            fetchLandListings(); // Call function to fetch listings when the page loads
         };
     </script>
 </head>
@@ -200,18 +255,7 @@
 
         <section class="land-listings">
             <h2>Available Land Listings</h2>
-
-            <!-- Land Item Example -->
-            <div class="land-item">
-                <div class="land-image">
-                    <img src="land-image-placeholder-1.jpg" alt="Land Image 1"> <!-- Placeholder image -->
-                </div>
-                <p><strong>Location:</strong> Example Location</p>
-                <p><strong>Size:</strong> 10 acres</p>
-                <a class="view-full-listing" href="full-details.html">View Full Details</a>
-            </div>
-
-            <!-- Additional land items can be added here -->
+            <!-- Listings will be dynamically loaded here -->
         </section>
 
         <button class="scroll-up" onclick="scrollToTop()">Scroll Up</button>
