@@ -126,31 +126,16 @@
             </div>
 
             <div class="listing-cards">
+                {% for listing in land_listings %}
                 <div class="listing-card">
-                    <img src="images/land1.jpg" alt="Land 1">
-                    <h2>Farm Land A</h2>
-                    <p>Location: Nyandarua County</p>
-                    <p>Size: 3 Acres</p>
-                    <p>Price: Ksh 15,000 per month</p>
+                    <img src="{{ url_for('static', filename=listing['farm_image']) }}" alt="Land Image">
+                    <h2>Farm Land {{ loop.index }}</h2>
+                    <p>Location: {{ listing['location'] }}</p>
+                    <p>Size: {{ listing['land_size'] }} Acres</p>
+                    <p>Price: Ksh {{ listing['price_per_acre'] }} per month</p>
                     <a href="full-listing.html" class="button">View Lease Details</a>
                 </div>
-                <div class="listing-card">
-                    <img src="images/land2.jpg" alt="Land 2">
-                    <h2>Farm Land B</h2>
-                    <p>Location: Uasin Gishu County</p>
-                    <p>Size: 5 Acres</p>
-                    <p>Price: Ksh 20,000 per month</p>
-                    <a href="full-listing.html" class="button">View Lease Details</a>
-                </div>
-                <div class="listing-card">
-                    <img src="images/land3.jpg" alt="Land 3">
-                    <h2>Farm Land C</h2>
-                    <p>Location: Nakuru County</p>
-                    <p>Size: 10 Acres</p>
-                    <p>Price: Ksh 30,000 per month</p>
-                    <a href="full-listing.html" class="button">View Lease Details</a>
-                </div>
-                <!-- Add more listings as needed -->
+                {% endfor %}
             </div>
         </section>
     </main>

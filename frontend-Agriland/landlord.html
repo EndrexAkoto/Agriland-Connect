@@ -82,7 +82,7 @@
 <body>
     <div class="form-container">
         <h1>Landlord Information Form</h1>
-        <form>
+        <form method="post" enctype="multipart/form-data">
             <label for="landSize">Land Size (in acres):</label>
             <input type="number" id="landSize" name="landSize" required>
 
@@ -125,7 +125,13 @@
 
             <button type="submit">Submit</button>
             <button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+            {% if msg %}
+            <p style="color: red">{{ msg }}</p>
+            {% endif %}
         </form>
     </div>
+    {%  if msg %}
+    <p style="color: green">{{ msg }}</p>
+    {%  endif %}
 </body>
 </html>

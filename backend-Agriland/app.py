@@ -1,16 +1,29 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session, send_from_directory
+from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 import re
 import os
 
-app = Flask(__name__, template_folder=os.path.abspath('/home/hp/Agrilandproj/Agriland-Connect/frontend-Agriland'), static_folder=os.path.abspath('/home/hp/Desktop/Agriland/Agriland-Connect/frontend-Agriland/images'))
+static_folder=os.path.abspath('/home/hp/Agrilandproj/Agriland-Connect/frontend-Agriland/images')
+app = Flask(__name__, template_folder=os.path.abspath('/home/hp/Agrilandproj/Agriland-Connect/frontend-Agriland'), static_folder=static_folder)
 app.secret_key = 'c30b7150c42e87caef910ca5aebddbcce8309d5f'
 
 client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
 users_collection = db['users']
 profiles_collection = db['profiles']
+land_collection = db['land_listings']
 frontend_path = '/home/hp/Desktop/Agriland/Agriland-Connect/frontend-Agriland'
+
+# Define the folder to upload images to
+
+app.config['UPLOAD_FOLDER'] = static_folder
+
+# Define allowed file extensions for images
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # CSs and Images
 @app.route('/admin/css/<path:filename>')
@@ -39,7 +52,7 @@ def serve_styles(filename):
 #  USER HTMLS
 @app.route("/")
 def index():
-    return send_from_directory(frontend_path, 'index.html')
+    return render_template('index.html')
 
 @app.route('/login.html', methods=['GET', 'POST'])
 def login():
@@ -228,20 +241,21 @@ def landlord():
         lease_duration = request.form.get('leaseDuration')
         payment_frequency = request.form.get('paymentFrequency')
 
-        # Process uploaded files (farm images)
-        files = request.files.getlist('farmImages')
-        image_filenames = []
+        # Process single uploaded file (farm image)
+        file = request.files.get('farmImages')
+        image_filename = None
 
-        if files:
-            for file in files:
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    image_filenames.append(filename)
+        print(f"land_size: {land_size}, location: {location}, image: {file}")
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+            image_filename = filename
         
         # Validate form data
-        if not (land_size and location and price_per_acre and amenities and road_access and fencing and title_deed and lease_duration and payment_frequency and image_filenames):
-            return render_template('landlord.html', msg='Please fill out all fields and upload images!')
+        if not (land_size and location and price_per_acre and amenities and road_access and fencing and title_deed and lease_duration and payment_frequency and image_filename):
+            return render_template('landlord.html', msg='Please fill out all fields and upload an image!')
         
         # Create land listing data dictionary
         land_listing_data = {
@@ -252,14 +266,14 @@ def landlord():
             'road_access': road_access,
             'fencing': fencing,
             'title_deed': title_deed,
-            'farm_images': image_filenames,  # Save filenames for reference
+            'farm_image': image_filename,  # Save filename for reference
             'lease_duration': lease_duration,
             'payment_frequency': payment_frequency
         }
 
         # Insert the land listing into MongoDB
         try:
-            db['land_listings'].insert_one(land_listing_data)
+            land_collection.insert_one(land_listing_data)
             msg = 'Land listing submitted successfully!'
         except Exception as e:
             msg = f"An error occurred while submitting your listing: {str(e)}"
@@ -272,7 +286,12 @@ def landlord():
 
 @app.route('/land-listings.html')
 def landlistings():
-    return render_template('land-listings.html')
+    land_listings = land_collection.find()
+    return render_template('land-listings.html',  land_listings=land_listings)
+
+@app.route('/full-listing.html')
+def fulllisting():
+    return render_template('full-listing.html')
 
 @app.route('/leasing-listings.html')
 def leasinglistings():
