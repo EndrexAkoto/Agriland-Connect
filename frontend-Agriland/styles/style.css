@@ -1,7 +1,7 @@
 /* Global Styling */
 /* Set background image for the entire body */
 body {
-    background-image: url('../images/hero01.jpg'); /* Path to your background image */
+    background-image: url('.../images/hero01.jpg'); /* Path to your background image */
     background-size: cover; /* Cover the entire viewport */
     background-position: center; /* Center the background image */
     background-attachment: fixed; /* Keep the background fixed while scrolling */
