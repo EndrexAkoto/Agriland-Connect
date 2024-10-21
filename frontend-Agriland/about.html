@@ -3,39 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>About Us - Agriland Connect</title>
     <link rel="stylesheet" href="styles/style.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #4CAF50;
+            padding: 10px 20px;
+        }
+
+        header .logo {
+            display: inline-block;
+        }
+
+        header .logo img {
+            width: 200px;
+            height: auto;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .menu li {
+            margin: 0 15px;
+        }
+
+        .menu li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .auth-menu {
+            display: flex;
+            list-style: none;
+            justify-content: flex-end;
+        }
+
+        .auth-menu li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* About Section */
+        #about-agriland {
+            background-color: white;
+            padding: 40px;
+            max-width: 800px;
+            margin: 40px auto;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #about-agriland h1, #about-agriland h2 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        #about-agriland p {
+            font-size: 18px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        #about-agriland ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        #about-agriland ul li {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #4CAF50;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            #about-agriland {
+                padding: 20px;
+            }
+
+            #about-agriland h1, #about-agriland h2 {
+                font-size: 22px;
+            }
+
+            #about-agriland p {
+                font-size: 16px;
+            }
+
+            header .logo img {
+                width: 150px;
+            }
+
+            .menu, .auth-menu {
+                flex-direction: column;
+                align-items: center;
+                padding: 10px 0;
+            }
+
+            .menu li, .auth-menu li {
+                margin: 10px 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header Section -->
+
     <header>
-        <nav class="navbar">
-            <div class="logo">
-                <a href="#">
-                    <img src="images/logo.png" alt="Agriland Connect Logo" class="logo-image">
-                </a>
-            </div>
-            <!-- Add navigation links here if needed -->
+        <div class="logo">
+            <img src="./images/logo001.png" alt="Agriland Connect Logo">
+        </div>
+        <nav>
+            <ul class="menu centered-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="find-land.html">Find Land</a></li>
+                <li><a href="land-listings.html">Land Listings</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <ul class="auth-menu right-menu">
+                <li><a href="login.html">Login</a></li>
+                <li><a href="signup.html">Sign Up</a></li>
+            </ul>
         </nav>
     </header>
 
+    <section id="about-agriland">
+        <h1>About Agriland Connect</h1>
+        <h2>Our Mission</h2>
+        <p>At Agriland Connect, our mission is to bridge the gap between farmers seeking land and landowners looking to lease their property. We believe in fostering sustainable agriculture by making land access easier and more efficient for everyone involved.</p>
+        <p>Our platform aims to revolutionize the way agricultural land is leased, promoting transparency, fairness, and mutual benefit for both farmers and landowners.</p>
 
-    <!-- Main Section -->
-    <main>
-        <section class="about">
-            <h1>About Agriland Connect</h1>
-            <p>Agriland Connect is dedicated to bridging the gap between farmers and landowners...</p>
-        </section>
+        <h2>Our Story</h2>
+        <p>Founded in 2024, Agriland Connect was born out of a recognition of the challenges faced by both new and experienced farmers in finding suitable land for cultivation. Our founders, having experienced these difficulties firsthand, set out to create a solution that would make the land leasing process smoother and more accessible.</p>
+        <p>Since our inception, we've been dedicated to developing a user-friendly platform that connects farmers with landowners, streamlining the search process and facilitating meaningful connections in the agricultural community.</p>
 
-        <!-- Back Button -->
-        <div class="back-button">
-            <a href="index.html"><button>Back to Home</button></a>
-        </div>
-    </main>
+        <h2>Our Values</h2>
+        <ul>
+            <li>Sustainability: Promoting environmentally friendly farming practices</li>
+            <li>Transparency: Ensuring clear and honest communication between all parties</li>
+            <li>Innovation: Continuously improving our platform to meet user needs</li>
+            <li>Community: Fostering a supportive network of farmers and landowners</li>
+            <li>Accessibility: Making land leasing opportunities available to farmers of all backgrounds</li>
+        </ul>
+    </section>
 
-    <!-- Footer Section -->
     <footer>
-        <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
+        <p>&copy; 2024 Agriland Connect. All Rights Reserved.</p>
     </footer>
+
 </body>
 </html>
