@@ -162,7 +162,18 @@
             </div>
 
             <div class="listing-cards">
+                {% for listing in land_listings %}
+                <div class="listing-card">
+                    <img src="{{ url_for('static', filename=listing['farm_image']) }}" alt="Land Image">
+                    <h2>Farm Land {{ loop.index }}</h2>
+                    <p>Location: {{ listing['location'] }}</p>
+                    <p>Size: {{ listing['land_size'] }} Acres</p>
+                    <p>Price: Ksh {{ listing['price_per_acre'] }} per month</p>
+                    <a href="full-listing.html" class="button">View Lease Details</a>
+                </div>
+                {% endfor %}
                 <!-- Listings will be dynamically inserted here -->
+     main
             </div>
 
             <button onclick="window.history.back();">Back</button> <!-- Back button -->
