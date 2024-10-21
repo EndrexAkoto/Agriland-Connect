@@ -142,7 +142,7 @@
     <header>
         <nav class="navbar">
             <div class="nav-left">
-                <img src="./images/logo001.png" alt="Agriland Connect Logo"> <!-- Placeholder logo -->
+                <img src="./images/logo001.png" alt="Agriland Connect Logo">
             </div>
             <div class="nav-right">
                 <a href="user-profile.html">User Profile</a>
@@ -156,17 +156,19 @@
 
     <main>
         <section class="dashboard">
-            <h1>Welcome, [User's Name]</h1>
+            <h1>Welcome, {{ user_data.name }}</h1> <!-- Dynamic User Name -->
             <div class="profile-overview">
                 <h2>Your Profile</h2>
-                <p>Email: [User's Email]</p>
+                <p>Email: {{ user_data.email }}</p> <!-- Dynamic User Email -->
                 <a href="edit-profile.html">Edit Profile</a>
             </div>
 
             <div class="notifications-section">
                 <h2>Notifications</h2>
                 <ul id="notification-list">
-                    <!-- Notifications will be inserted here dynamically -->
+                    {% for notification in notifications %}
+                        <li>{{ notification.message }}</li> <!-- Assuming each notification has a message -->
+                    {% endfor %}
                 </ul>
             </div>
 
@@ -179,8 +181,9 @@
             <div class="land-listings">
                 <h2>Your Land Listings</h2>
                 <ul>
-                    <li><a href="#">Land Listing 1</a> - <button>Edit</button> <button>Delete</button></li>
-                    <li><a href="#">Land Listing 2</a> - <button>Edit</button> <button>Delete</button></li>
+                    {% for listing in land_listings %}
+                        <li><a href="#">{{ listing.title }}</a> - <button>Edit</button> <button>Delete</button></li>
+                    {% endfor %}
                 </ul>
                 <a href="create-listing.html">Create New Listing</a>
             </div>
@@ -188,35 +191,5 @@
             <div class="lease-management">
                 <h2>Your Leases</h2>
                 <ul>
-                    <li>Lease 1 - Status: Active</li>
-                    <li>Lease 2 - Status: Pending</li>
-                </ul>
-            </div>
-
-            <div class="payment-history">
-                <h2>Payment History</h2>
-                <ul>
-                    <li>Payment for Lease 1 (Farmer) - Status: Approved</li>
-                    <li>Payment for Lease 2 (Farmer) - Status: Pending</li>
-                    <li>Payment for Lease 3 (Farmer) - Status: Rejected</li>
-                    <li>Payment for Lease 1 (Landlord) - Status: Approved</li>
-                    <li>Payment for Lease 2 (Landlord) - Status: Pending</li>
-                    <li>Payment for Lease 3 (Landlord) - Status: Rejected</li>
-                </ul>
-            </div>
-
-            <div class="recent-activity">
-                <h2>Recent Activity</h2>
-                <ul>
-                    <li>Updated Land Listing 1</li>
-                    <li>Requested Lease for Land Listing 2</li>
-                </ul>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+                    {% for lease in leases %}
+                    

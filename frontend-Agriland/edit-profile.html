@@ -14,13 +14,13 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-image: url('images/dashboard.jpg'); /* Ensure the path is correct */
+            background-image: url('images/promote.jpg'); /* Ensure the path is correct */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            min-height: 150vh;
         }
 
         /* Navbar styling */
@@ -36,6 +36,14 @@
         .navbar h2 {
             color: white;
             margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo {
+            margin-right: 10px; /* Space between logo and title */
+            max-width: 50px; /* Adjust as necessary */
+            height: auto;
         }
 
         .navbar ul {
@@ -63,7 +71,7 @@
             background-color: #f8eeee;
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 8 8px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 600px;
             margin: 40px auto;
@@ -183,7 +191,8 @@
 
     <!-- Navbar Section -->
     <div class="navbar">
-        <h2>Agriland Connect</h2>
+        <img src="images/logo001.png" alt="Logo" class="logo" />
+
         <ul>
             <li><a href="dashboard.html">Dashboard</a></li>
             <li><a href="settings.html">Settings</a></li>
@@ -221,19 +230,22 @@
             </select>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email">
+            <input type="email" id="email" name="email" placeholder="Enter your email" readonly>
 
             <label for="phone">Phone Number:</label>
-            <input type="text" id="phone" name="phone" placeholder="Enter your phone number">
+            <input type="text" id="phone" name="phone" placeholder="Enter your phone number" readonly>
 
             <label for="idNumber">ID Number:</label>
-            <input type="text" id="idNumber" name="idNumber" placeholder="Enter your ID number">
+            <input type="text" id="idNumber" name="idNumber" placeholder="Enter your ID number" readonly>
 
             <label for="kraPin">KRA PIN:</label>
-            <input type="text" id="kraPin" name="kraPin" placeholder="Enter your KRA PIN">
+            <input type="text" id="kraPin" name="kraPin" placeholder="Enter your KRA PIN" readonly>
 
             <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" name="dob">
+            <input type="date" id="dob" name="dob" onchange="calculateAge()">
+
+            <label for="age">Age:</label>
+            <input type="text" id="age" name="age" placeholder="Calculated age" readonly>
 
             <label for="pobox">P.O. Box:</label>
             <input type="text" id="pobox" name="pobox" placeholder="Enter your P.O. Box">
@@ -258,7 +270,7 @@
             </select>
 
             <label for="nextOfKinPhone">Next of Kin Phone Number:</label>
-            <input type="text" id="nextOfKinPhone" name="nextOfKinPhone" placeholder="Enter next of kin phone number">
+            <input type="text" id="nextOfKinPhone" name="nextOfKinPhone" placeholder="Enter next of kin phone number" readonly>
 
             <label for="nextOfKinIdNumber">Next of Kin ID Number:</label>
             <input type="text" id="nextOfKinIdNumber" name="nextOfKinIdNumber" placeholder="Enter next of kin ID number">
@@ -266,29 +278,44 @@
             <label for="nextOfKinKraPin">Next of Kin KRA PIN:</label>
             <input type="text" id="nextOfKinKraPin" name="nextOfKinKraPin" placeholder="Enter next of kin KRA PIN">
 
-            <button type="submit">Save Changes</button>
+            <label for="nextOfKinPobox">Next of Kin P.O. Box:</label>
+            <input type="text" id="nextOfKinPobox" name="nextOfKinPobox" placeholder="Enter next of kin P.O. Box">
+
+            <label for="nextOfKinCounty">Next of Kin County of Residence:</label>
+            <input type="text" id="nextOfKinCounty" name="nextOfKinCounty" placeholder="Enter next of kin county">
+
+            <label for="nextOfKinTown">Next of Kin Town:</label>
+            <input type="text" id="nextOfKinTown" name="nextOfKinTown" placeholder="Enter next of kin town">
+
+            <button type="submit">Save Profile</button>
         </form>
-        
-        <!-- Notification Message -->
-        <div class="notification" id="notification">
-            Profile updated successfully!
+
+        <!-- Notification Section -->
+        <div id="notification" class="notification">
+            Profile saved successfully!
         </div>
     </div>
 
+    <!-- Optional JavaScript for form submission -->
     <script>
-        document.getElementById('edit-profile-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
-
-            // Display the notification
-            const notification = document.getElementById('notification');
-            notification.style.display = 'block';
-
-            // Redirect after 2 seconds
-            setTimeout(() => {
-                // Redirect to the dashboard (change to your actual dashboard URL)
-                window.location.href = 'dashboard.html';
-            }, 2000);
+        // Dummy form submission
+        document.getElementById('edit-profile-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form from submitting normally
+            document.getElementById('notification').style.display = 'block'; // Show success message
         });
+
+        // Age calculation based on date of birth
+        function calculateAge() {
+            const dob = document.getElementById('dob').value;
+            const dobDate = new Date(dob);
+            const currentDate = new Date();
+            let age = currentDate.getFullYear() - dobDate.getFullYear();
+            const monthDiff = currentDate.getMonth() - dobDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < dobDate.getDate())) {
+                age--;
+            }
+            document.getElementById('age').value = age;
+        }
     </script>
 
 </body>

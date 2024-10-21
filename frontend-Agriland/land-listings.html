@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Land Listings - Agriland Connect</title>
-    <link rel="stylesheet" href="styles/style.css">
     <style>
         /* Basic Reset */
         * {
@@ -20,23 +19,30 @@
         }
 
         header {
-            background: #
+            background: #fff; /* Set your header background */
+            padding: 5px 0; /* Add some padding */
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            padding: 5px 20px; /* Add padding for top/bottom and left/right */
         }
 
-        .nav-left, .nav-right {
-            display: flex;
-            gap: 15px;
+        .logo {
+            display: flex; /* Added to ensure correct alignment */
+            align-items: center; /* Center items vertically */
+        }
+
+        .logo-image {
+            max-width: 100px; /* Adjust the size as needed */
+            height: auto; /* Keep aspect ratio */
         }
 
         .nav-right {
-            position: relative;
+            display: flex; /* Ensures the dropdown is aligned correctly */
+            align-items: center; /* Centers dropdown vertically */
         }
 
         .dropdown {
@@ -66,6 +72,7 @@
         }
 
         .listing-card {
+            display: flex; /* Changed to flex for alignment */
             border: 1px solid #ddd;
             border-radius: 5px;
             padding: 10px;
@@ -74,9 +81,14 @@
         }
 
         .listing-card img {
-            width: 100%;
+            width: 450px; /* Fixed size for the image */
             height: auto;
-            border-radius: 5px;
+            border-radius: 10px;
+            margin-right: 20px; /* Space between image and text */
+        }
+
+        .listing-details {
+            flex: 1; /* Allow this section to take remaining space */
         }
 
         .button {
@@ -86,13 +98,37 @@
             text-align: center;
             text-decoration: none;
             border-radius: 5px;
+            display: inline-block; /* Ensure the button appears inline */
+            margin-top: 10px; /* Space above the button */
         }
 
         footer {
             text-align: center;
-            padding: 10px 0;
+            padding: 5px 0;
             background: #4CAF50; /* Project Color */
             color: #fff;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column; /* Stack elements on smaller screens */
+                align-items: center;
+            }
+
+            .nav-right {
+                width: 100%; /* Full width for nav-right on mobile */
+                justify-content: center; /* Center the dropdown on mobile */
+            }
+
+            .listing-card {
+                flex-direction: column; /* Stack image and text on smaller screens */
+                align-items: center; /* Center items */
+            }
+
+            .listing-card img {
+                margin: 0 0 10px 0; /* Margin adjustments for mobile */
+            }
         }
     </style>
 </head>
@@ -126,6 +162,7 @@
             </div>
 
             <div class="listing-cards">
+<<<<<<< HEAD
                 {% for listing in land_listings %}
                 <div class="listing-card">
                     <img src="{{ url_for('static', filename=listing['farm_image']) }}" alt="Land Image">
@@ -136,12 +173,42 @@
                     <a href="full-listing.html" class="button">View Lease Details</a>
                 </div>
                 {% endfor %}
+=======
+                <!-- Listings will be dynamically inserted here -->
+>>>>>>> db65189baf5b2069d4fa51230b6b35437d23bb7a
             </div>
+
+            <button onclick="window.history.back();">Back</button> <!-- Back button -->
         </section>
     </main>
 
     <footer>
         <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/api/land-listings') // Adjust to your actual endpoint
+                .then(response => response.json())
+                .then(data => {
+                    const listingsContainer = document.querySelector('.listing-cards');
+                    data.forEach(listing => {
+                        const listingCard = `
+                            <div class="listing-card">
+                                <img src="${listing.imageUrl}" alt="${listing.name}">
+                                <div class="listing-details">
+                                    <h2 style="color: #4CAF50;">${listing.name}</h2>
+                                    <p>Location: ${listing.location}</p>
+                                    <p>Size: ${listing.size} Acres</p>
+                                    <p>Price: Ksh ${listing.price} per month</p>
+                                    <a href="full-listing.html?id=${listing._id}" class="button">View Lease Details</a>
+                                </div>
+                            </div>`;
+                        listingsContainer.innerHTML += listingCard; // Add the new card to the container
+                    });
+                })
+                .catch(error => console.error('Error fetching listings:', error));
+        });
+    </script>
 </body>
 </html>
