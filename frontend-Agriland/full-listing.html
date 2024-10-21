@@ -22,12 +22,57 @@
             background: #4CAF50; /* Project Color */
             color: #fff;
             padding: 10px 0;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         header img {
-            width: 100px; /* Adjust the width of the logo */
-            margin-bottom: 10px; /* Space between the logo and the heading */
+            width: 80px; /* Smaller logo */
+            margin-right: 15px;
+        }
+
+        .user-profile {
+            position: relative;
+            display: inline-block;
+            margin-right: 20px;   
+        }
+
+        .user-profile h2 {
+            font-size: 16px;
+            margin: 0;
+            color: black; /* Change font color to black */
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 150px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .user-profile:hover .dropdown {
+            display: block;
+        }
+
+        .dropdown a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown a:hover {
+            background-color: #f1f1f1;
         }
 
         main {
@@ -40,7 +85,7 @@
         }
 
         h1, h2 {
-            color: #4CAF50; /* Project Color */
+            color: #4CAF50;
             margin-bottom: 10px;
         }
 
@@ -48,7 +93,7 @@
             display: inline-block;
             margin-bottom: 20px;
             padding: 10px 15px;
-            background: #4CAF50; /* Project Color */
+            background: #4CAF50;
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -80,42 +125,32 @@
             padding: 5px;
         }
 
-        /* User Profile Dropdown */
-        .user-profile {
-            position: relative;
+        /* Payment Button Styling */
+        .payment-button {
             display: inline-block;
-            margin-top: 10px;
-            margin-left: 20px;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
         }
 
-        .dropdown {
+        .payment-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Hide Payment Button for Unauthenticated Users */
+        .hidden {
             display: none;
-            position: absolute;
-            background-color: white;
-            min-width: 150px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-        .user-profile:hover .dropdown {
-            display: block;
-        }
-
-        .dropdown a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .dropdown a:hover {
-            background-color: #f1f1f1;
         }
 
         footer {
             text-align: center;
             padding: 10px 0;
-            background: #4CAF50; /* Project Color */
+            background: #4CAF50;
             color: #fff;
             position: relative;
             bottom: 0;
@@ -125,8 +160,10 @@
 </head>
 <body>
     <header>
-        <img src="path/to/logo.png" alt="Agriland Connect Logo"> <!-- Placeholder for Logo -->
-        <h1>Full Land Listing</h1>
+        <div class="logo-container">
+            <img src="./images/logo001.png" alt="Agriland Connect Logo"> <!-- Placeholder for Logo -->
+            <h1>Agriland Connect</h1>
+        </div>
         <div class="user-profile">
             <h2>User Profile</h2>
             <div class="dropdown">
@@ -184,6 +221,9 @@
                     </select>
                 </li>
             </ul>
+
+            <!-- Payment Button -->
+            <button id="payment-button" class="payment-button hidden" onclick="triggerMpesaPayment()">Proceed to Payment with M-Pesa</button>
         </div>
 
         <div class="amenities">
@@ -221,5 +261,18 @@
     <footer>
         <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
     </footer>
+
+    <script>
+        // Simulating user authentication (fetch from backend in actual implementation)
+        var isLoggedIn = true; // Change this value based on login state
+
+        if (isLoggedIn) {
+            document.getElementById('payment-button').classList.remove('hidden');
+        }
+
+        function triggerMpesaPayment() {
+            alert("M-Pesa Payment Integration Coming Soon...");
+        }
+    </script>
 </body>
 </html>

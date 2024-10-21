@@ -1,7 +1,7 @@
 /* Global Styling */
 /* Set background image for the entire body */
 body {
-    background-image: url('../images/header.jpg'); /* Path to your background image */
+    background-image: url('.../images/hero01.jpg'); /* Path to your background image */
     background-size: cover; /* Cover the entire viewport */
     background-position: center; /* Center the background image */
     background-attachment: fixed; /* Keep the background fixed while scrolling */
@@ -20,7 +20,7 @@ body {
     z-index: 1; /* Ensure overlay is above the background but below content */
 }
 
-/* Style your content */
+/* Style your content Our Mission*/
 .content {
     position: relative; /* Needed for the overlay to position correctly */
     z-index: 2; /* Ensure content is above the overlay */
@@ -51,12 +51,12 @@ header {
     justify-content: space-between; /* Space between logo and menu */
     align-items: center; /* Center items vertically */
     padding: 10px 20px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.034);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 header .logo img {
-    height: 70px; /* Adjust the size to your preference */
+    height: 80px; /* Adjust the size to your preference */
 }
 
 /* Navigation Menu */
@@ -83,7 +83,7 @@ header nav a {
     color: #4CAF50; /* Set navbar links to green */
     text-decoration: none;
     font-weight: bold;
-    margin: 0 10px; /* Margin around links */
+    margin: 0 20px; /* Margin around links */
 }
 
 
@@ -122,10 +122,10 @@ header nav a {
 /* Hero Section */
 .hero {
     text-align: center;
-    padding: 100px 10px;
-    background: url('../images/hero.jpg') no-repeat center center;
+    padding: 100px 70px;
+    background: url('../images/hero01.jpg') no-repeat center center;
     background-size: cover;
-    color: rgb(234, 234, 247);
+    color: #2C3E50;
     position: relative;
 }
 
@@ -148,9 +148,9 @@ header nav a {
 footer {
     text-align: center;
     padding: 20px 0;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: #2C3E50;
     color: #4CAF50; /* Theme color */
-    font-size: 0.9rem;
+    font-size: 1.3rem;
 }
 
 footer p {
@@ -160,7 +160,7 @@ footer p {
 /* Mission and Vision Section */
 .mission-vision {
     padding: 40px;
-    background-color: #f9f9f9; /* Light background */
+    background-color: #ffffff57; /* Light background */
     text-align: center;
 }
 
@@ -204,7 +204,7 @@ footer p {
 /* How It Works Section */
 .how-it-works {
     padding: 40px; /* Add padding around the section */
-    background-color: #ffffff; /* Background color */
+    background-color: #ffffffaf; /* Background color */
     text-align: center; /* Center-align text */
     font-family: 'Roboto', sans-serif; /* Set the font family */
 }
@@ -242,7 +242,7 @@ footer p {
     flex-direction: column;
     align-items: center; /* Centering the section */
     padding: 40px; /* Add padding to the section */
-    background-color: #f9f9f9; /* Light background for contrast */
+    background-color: #ffffffaf; /* Light background for contrast */
 }
 
 .services h2 {
@@ -285,7 +285,7 @@ footer p {
 /* Why Choose Agriland Connect Section */
 .why-choose-us {
     padding: 40px; /* Add padding to the section */
-    background-color: #f9f9f9; /* Light background for contrast */
+    background-color: #ffffffaf; /* Light background for contrast */
     text-align: center; /* Center the text */
 }
 
@@ -335,7 +335,7 @@ footer p {
 /* How It Works Section */
 .how-it-works {
     padding: 40px; /* Add padding around the section */
-    background-color: #ffffff; /* Background color */
+    background-color: #ffffffaf; /* Background color */
     text-align: center; /* Center-align text */
     font-family: 'Roboto', sans-serif; /* Set the font family */
 }
