@@ -109,7 +109,7 @@
     </header>
 
     <div class="form-container">
-        <form id="listing-form">
+        <form id="listing-form" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="location">Location:</label>
                 <input type="text" id="location" name="location" required>
@@ -137,6 +137,9 @@
 
             <button type="submit" class="submit-button">Add Listing</button>
         </form>
+        {%  if msg %}
+        <p style="color: red">{{ msg }}</p>
+        {%  endif %}
     </div>
 
     <a href="index.html" class="back-button">Back to Admin Panel</a> <!-- Link to the admin panel -->

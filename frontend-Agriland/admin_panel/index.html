@@ -175,33 +175,33 @@
         <section class="dashboard">
             <div class="box total-users">
                 <h2>Total Users</h2>
-                <p id="totalUsers">120</p>
+                <p id="totalUsers">{{ stats['Total Users'] }}</p>
             </div>
             <div class="box total-listings">
                 <h2>Total Listings</h2>
-                <p id="totalListings">58</p>
+                <p id="totalListings">{{ stats['Landowners'] }}</p>
             </div>
             <div class="box active-leases">
                 <h2>Active Leases</h2>
-                <p id="activeLeases">45</p>
+                <p id="activeLeases">{{ stats['Active Leases'] }}</p>
             </div>
             <div class="box pending-payments">
                 <h2>Pending Payments</h2>
-                <p id="pendingPayments">5</p>
+                <p id="pendingPayments">{{ stats['Pending Payments'] }}</p>
             </div>
         </section>
 
         <section class="user-statistics">
             <h2>User Statistics</h2>
             <ul>
-                <li>Total Users: <span id="userCount">120</span></li>
-                <li>New Users: <span id="newUserCount">20</span></li>
-                <li>Farmers: <span id="farmersCount">80</span></li>
-                <li>Landowners: <span id="landownersCount">40</span></li>
-                <li>Gender Distribution: <span id="genderDistribution">Male: 70%, Female: 30%</span></li>
-                <li>Age Bracket: <span id="ageBracket">18-25: 30%, 26-35: 50%, 36-50: 20%</span></li>
-                <li>Active Leases: <span id="activeLeasesCount">45</span></li>
-                <li>Pending Payments: <span id="pendingPaymentsCount">5</span></li>
+                <li>Total Users: <span id="userCount">{{ stats['Total Users'] }}</span></li>
+                <li>New Users: <span id="newUserCount">{{ stats['New Users'] }}</span></li>
+                <li>Farmers: <span id="farmersCount">{{ stats['Farmers'] }}</span></li>
+                <li>Landowners: <span id="landownersCount">{{ stats['Landowners'] }}</span></li>
+                <li>Gender Distribution: <span id="genderDistribution">Male: {{ stats['Gender Distribution']['Male'] | round(2) }}%, Female: {{ stats['Gender Distribution']['Female'] | round(2) }}%</span></li>
+                <li>Age Bracket: <span id="ageBracket">18-25: {{ stats['Age Bracket']['18-25'] | round(2) }}%, 26-35: {{ stats['Age Bracket']['26-35'] | round(2) }}%, 36-50: {{ stats['Age Bracket']['36-50'] | round(2) }}%</span></li>
+                <li>Active Leases: <span id="activeLeasesCount">{{ stats['Active Leases'] }}</span></li>
+                <li>Pending Payments: <span id="pendingPaymentsCount">{{ stats['Pending Payments'] }}</span></li>
             </ul>
         </section>
     </main>
