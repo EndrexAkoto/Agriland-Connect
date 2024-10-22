@@ -1,5 +1,7 @@
-# File: db.py
+from dotenv import load_dotenv
 from pymongo import MongoClient
+import os
 
-client = MongoClient('localhost', 27017)
+mongo_uri = os.getenv("MONGO_URI")
+client = MongoClient(mongo_uri)
 db = client['Agriconnect']
