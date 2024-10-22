@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-    <!-- Header Section -->
     <header>
         <nav class="navbar">
             <div class="logo">
@@ -17,7 +16,7 @@
             </div>
 
             <div class="menu-icon" onclick="toggleMenu()">
-                &#9776; <!-- Hamburger icon -->
+                &#9776;
             </div>
 
             <div class="nav-menu" id="navMenu">
@@ -27,6 +26,7 @@
                     <a href="land-listings.html">Land Listings</a>
                     <a href="about.html">About Us</a>
                     <a href="contact.html">Contact</a>
+                    <a href="admin_panel/users.html">Manage Users</a> <!-- New link for user management -->
                 </div>
                 <div class="nav-right">
                     <a href="login.html">Login</a>
@@ -36,14 +36,35 @@
         </nav>
     </header>
 
-    <!-- Main Section -->
     <main>
         <section class="hero">
             <h1>Find Your Ideal Land for Lease</h1>
             <p>Browse through land listings across Kenya, tailored to your needs.</p>
         </section>
 
-        <!-- Mission and Vision Section -->
+        <section class="dashboard">
+            <h2>Admin Dashboard</h2>
+            <div class="dashboard-metrics">
+                <div class="metric">
+                    <h3>Total Listings</h3>
+                    <p id="totalListings">0</p> <!-- Update dynamically -->
+                </div>
+                <div class="metric">
+                    <h3>Total Users</h3>
+                    <p id="totalUsers">0</p> <!-- Update dynamically -->
+                </div>
+                <div class="metric">
+                    <h3>Total Transactions</h3>
+                    <p id="totalTransactions">0</p> <!-- Update dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <section class="search">
+            <input type="text" placeholder="Search for land..." id="searchInput">
+            <button onclick="searchListings()">Search</button>
+        </section>
+
         <section class="mission-vision">
             <h2>Our Mission and Vision</h2>
             <p>Empowering landowners and urban farmers to work together for sustainable food production and community growth.</p>
@@ -59,7 +80,7 @@
                     <img src="images/community.jpg" alt="Urban Farming Partnership Image">
                     <div class="text">
                         <h3>Community Sustainability</h3>
-                        <p>We believe in fostering community sustainability through the utilization of underutilized land for local food production, promoting a healthier and more self-sufficient community. </p>
+                        <p>We believe in fostering community sustainability through the utilization of underutilized land for local food production, promoting a healthier and more self-sufficient community.</p>
                     </div>
                 </div>
                 <div class="image-and-text">
@@ -72,7 +93,6 @@
             </div>
         </section>
 
-        <!-- Our Services Section -->
         <section class="services">
             <h2>Our Services</h2>
             <p>Discover the services we offer to landowners and urban farmers to facilitate the leasing of underutilized land for sustainable food production.</p>
@@ -101,32 +121,28 @@
             </div>
         </section>
 
-        <!-- Why Choose Us Section -->
-        <!-- Why Choose Us Section -->
-    <section class="why-choose-us">
-    <h2>Why Choose Agriland Connect?</h2>
-    <ul>
-        <li class="highlight-box">
-            <img src="images/unutilized.jpeg" alt="Utilize Unused Land" class="why-choose-img">
-            <strong>Utilize Unused Land:</strong> <span class="description">Transform vacant lots and underutilized spaces into productive urban farms.</span>
-        </li>
-        <li class="highlight-box">
-            <img src="images/build.jpeg" alt="Build Community" class="why-choose-img">
-            <strong>Build Community:</strong> <span class="description">Foster connections between landowners, farmers, and local food enthusiasts.</span>
-        </li>
-        <li class="highlight-box">
-            <img src="images/promote.jpeg" alt="Promote Sustainability" class="why-choose-img">
-            <strong>Promote Sustainability:</strong> <span class="description">Reduce food miles and increase access to fresh, locally-grown produce.</span>
-        </li>
-        <li class="highlight-box">
-            <img src="images/dollar.jpeg" alt="Generate Income" class="why-choose-img">
-            <strong>Generate Income:</strong> <span class="description">Create new revenue streams for landowners and opportunities for urban farmers.</span>
-        </li>
-    </ul>
-    </section>
+        <section class="why-choose-us">
+            <h2>Why Choose Agriland Connect?</h2>
+            <ul>
+                <li class="highlight-box">
+                    <img src="images/unutilized.jpeg" alt="Utilize Unused Land" class="why-choose-img">
+                    <strong>Utilize Unused Land:</strong> <span class="description">Transform vacant lots and underutilized spaces into productive urban farms.</span>
+                </li>
+                <li class="highlight-box">
+                    <img src="images/build.jpeg" alt="Build Community" class="why-choose-img">
+                    <strong>Build Community:</strong> <span class="description">Foster connections between landowners, farmers, and local food enthusiasts.</span>
+                </li>
+                <li class="highlight-box">
+                    <img src="images/promote.jpeg" alt="Promote Sustainability" class="why-choose-img">
+                    <strong>Promote Sustainability:</strong> <span class="description">Reduce food miles and increase access to fresh, locally-grown produce.</span>
+                </li>
+                <li class="highlight-box">
+                    <img src="images/dollar.jpeg" alt="Generate Income" class="why-choose-img">
+                    <strong>Generate Income:</strong> <span class="description">Create new revenue streams for landowners and opportunities for urban farmers.</span>
+                </li>
+            </ul>
+        </section>
 
-
-        <!-- How It Works Section -->
         <section class="how-it-works">
             <h2>How It Works</h2>
             <div class="steps">
@@ -148,10 +164,8 @@
             </div>
         </section>
 
-        <!-- Scroll to Top Button -->
         <button class="scroll-to-top" id="scrollToTopBtn">&#8679;</button>
 
-        <!-- Footer Section -->
         <footer>
             <p style="font-weight: bold;">&copy; 2024 Agriland Connect. All rights reserved.</p>
         </footer>
@@ -177,6 +191,23 @@
             function toggleMenu() {
                 const navMenu = document.getElementById('navMenu');
                 navMenu.classList.toggle('active'); // Toggle active class to show/hide menu
+            }
+
+            // Fetch dashboard metrics
+            async function fetchMetrics() {
+                const response = await fetch('/api/metrics'); // Update the endpoint according to your Flask backend
+                const data = await response.json();
+                document.getElementById('totalListings').innerText = data.totalListings;
+                document.getElementById('totalUsers').innerText = data.totalUsers;
+                document.getElementById('totalTransactions').innerText = data.totalTransactions;
+            }
+
+            window.onload = fetchMetrics; // Fetch metrics when the page loads
+
+            function searchListings() {
+                const searchValue = document.getElementById('searchInput').value;
+                // Implement your search logic here (e.g., fetch matching listings from the backend)
+                console.log('Search for:', searchValue);
             }
         </script>
     </main>
