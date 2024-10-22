@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unapproved Land Listings - Agriland Admin</title>
+    <style>
+        /* Global Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Theme Color */
+        :root {
+            --primary-color: #2d8a3e;
+            --secondary-color: #f1f1f1;
+            --text-color: #333;
+            --button-color: #fff;
+            --button-background: #2d8a3e;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            padding: 1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Listings Section */
+        .unapproved-listings {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .unapproved-listings h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color); /* Use theme color */
+        }
+
+        #listingsContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .listing {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #fafafa;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .listing h3 {
+            margin: 0 0 10px;
+            font-size: 1.2em;
+            color: var(--primary-color); /* Use theme color */
+        }
+
+        .listing-details {
+            margin: 10px 0;
+        }
+
+        .listing .images {
+            display: flex;
+            gap: 10px;
+        }
+
+        .listing .images img {
+            max-width: 150px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            margin: 1em 0;
+            border-collapse: collapse;
+            background-color: var(--secondary-color);
+        }
+
+        table th, table td {
+            padding: 1em;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: var(--button-color);
+        }
+
+        /* Button Styles */
+        button {
+            background-color: var(--button-background);
+            color: var(--button-color);
+            border: none;
+            padding: 0.3em 0.7em; /* Smaller padding for reduced size */
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-size: 0.85em; /* Decreased font size */
+            width: auto; /* Adjust width to content */
+            max-width: 150px; /* Optional: Set a max width */
+            display: inline-block; /* Ensure it only takes the space it needs */
+        }
+
+
+        button:hover {
+            background-color: #24682c;
+        }
+
+        button:focus {
+            outline: 2px solid #ffbf47;
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 1em;
+            background-color: var(--primary-color);
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Responsive Adjustments */
+        @media screen and (max-width: 480px) {
+            header {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .logo-container {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            table th, table td {
+                font-size: 0.7em;
+                padding: 0.5em;
+            }
+
+            button {
+                padding: 0.4em;
+            }
+
+            footer {
+                font-size: 0.8em;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="../images/logo001.png" alt="Agriland Logo" class="logo">
+        </div>
+    </header>
+    <main>
+        <div class="unapproved-listings">
+            <h2>Unapproved Land Listings</h2>
+            <div id="listingsContainer">
+                <!-- Dynamically fetched unapproved listings will be injected here -->
+                <!-- Example of a dynamically inserted unapproved listing -->
+                <div class="listing">
+                    <h3>User: John Doe</h3>
+                    <div class="listing-details">
+                        <p><strong>Size:</strong> 5 acres</p>
+                        <p><strong>Location:</strong> Nairobi, Kenya</p>
+                        <p><strong>Amenities:</strong> Water, Electricity</p>
+                        <p><strong>Price:</strong> $50,000</p>
+                    </div>
+                    <div class="images">
+                        <!-- Dynamically loaded images -->
+                        <img src="../images/01.jpg" alt="Land Image 1"> <!-- Placeholder for testing, to be replaced by dynamic image -->
+                        <img src="../images/02.jpg" alt="Land Image 2">
+                        <img src="../images/01.jpg" alt="Land Image 3">
+                        <img src="../images/03.jpg" alt="Land Image 4">
+                        <img src="../backend-Agriland/routes/user.py" alt="Land Image 5">
+                    </div>
+                    <button onclick="approveListing('John Doe', '5 acres', 'Nairobi, Kenya', 'Water, Electricity', '$50,000')">Approve</button>
+                    <button onclick="rejectListing('John Doe')">Reject</button>
+                    <button onclick="setPendingVerification('John Doe')">Pending Verification</button>
+                </div>
+                <!-- End of example listing -->
+            </div>
+        </div>
+    </main>
+    <footer>
+        &copy; 2024 Agriland. All Rights Reserved.
+    </footer>
+
+    <script>
+        // Example functions to handle listing approvals/rejections
+        function approveListing(user, size, location, amenities, price) {
+            const confirmation = confirm(`Are you sure you want to approve the land listing for ${user}?`);
+            if (confirmation) {
+                alert(`${user}'s land listing has been approved!`);
+                window.location.href = "land-listings.html";
+            }
+        }
+
+        function rejectListing(user) {
+            const reason = prompt(`Please provide a reason for rejecting ${user}'s listing:`);
+            if (reason) {
+                alert(`${user}'s land listing has been rejected due to: ${reason}`);
+            }
+        }
+
+        function setPendingVerification(user) {
+            const confirmation = confirm(`Set ${user}'s land listing to pending verification?`);
+            if (confirmation) {
+                alert(`${user}'s land listing is pending verification.`);
+            }
+        }
+
+        // Placeholder for dynamically fetching land listings from the backend
+        // e.g., via a fetch or axios call once backend integration is ready.
+    </script>
+</body>
+</html>
