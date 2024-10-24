@@ -106,12 +106,35 @@
             max-height: 100px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+        /* Logo Styles */
+        header {
+            text-align: left; /* Default alignment for larger screens */
+        }
+
+        header img {
+            width: 100px; /* Set the width of the logo */
+            margin-bottom: 10px; /* Space below the logo */
+        }
+
+        @media (max-width: 600px) {
+            header {
+                text-align: center; /* Center align header for mobile */
+            }
+            header img {
+                margin: 0 auto; /* Center the logo */
+            }
+     temp-branch
         }
     </style>
 </head>
 <body>
     <header>
+
         <img src="../images/logo001.png" alt="Agriland Connect Logo" style="width: 100px; margin-bottom: 10px;">
+
+        <img src="../images/logo001.png" alt="Agriland Connect Logo"> <!-- Update with your logo path -->
+ temp-branch
         <h1 style="text-align: center;">Add Land for Lease</h1>
     </header>
 
