@@ -1,5 +1,4 @@
 /* Global Styling */
-/* Global Styling */
 /* Set background image for the entire body */
 body {
     background-image: url('.../images/hero01.jpg'); /* Path to your background image */
@@ -93,7 +92,7 @@ header nav a {
     padding: 100px 70px;
     background: url('../images/hero01.jpg') no-repeat center center;
     background-size: cover;
-    color: #2C3E50;
+    color: #04f310;
     position: relative;
 }
 
@@ -116,7 +115,7 @@ header nav a {
 footer {
     text-align: center;
     padding: 20px 0;
-    background-color: #2C3E50;
+    background-color: #2c502e;
     color: #4CAF50; /* Theme color */
     font-size: 1.3rem;
 }
@@ -328,9 +327,7 @@ footer p {
 .contact button:hover {
     background-color: #45a049; /* Darker shade on hover */
 }
- Ensure overlay is above the background but below content */
-}
-
+ 
 /* Style your content Our Mission*/
 .content {
     position: relative; /* Needed for the overlay to position correctly */
