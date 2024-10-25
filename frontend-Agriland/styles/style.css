@@ -1,141 +1,172 @@
-/* Global Styling */
-/* Global Styling */
-/* Set background image for the entire body */
+/* Global Styles */
 body {
-    background-image: url('.../images/hero01.jpg'); /* Path to your background image */
-    background-size: cover; /* Cover the entire viewport */
-    background-position: center; /* Center the background image */
-    background-attachment: fixed; /* Keep the background fixed while scrolling */
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
 }
 
-/* Overlay for text readability */
+/* Header Styling */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.034);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* Added for positioning child elements */
+}
+
+/* Logo Styling */
+header .logo img {
+    height: 80px; /* Logo size */
+}
+
+/* Navigation Menu */
+.nav-menu {
+    display: flex; /* Default to flex for desktop */
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; /* Make full width */
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+}
+
+header nav a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 20px;
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none; /* Default hidden on desktop */
+    cursor: pointer;
+    /* Align hamburger icon to the right */
+    margin-left: auto; /* Pushes the hamburger to the right */
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: flex-start; /* Align to the start */
+    }
+
+    .hamburger {
+        display: flex; /* Show hamburger icon */
+        justify-content: flex-end; /* Align to the right */
+        margin-top: 10px; /* Adjust vertical position */
+        margin-right: 20px; /* Adjust horizontal position */
+    }
+
+    header .nav-menu {
+        flex-direction: column; /* Change to column for mobile */
+        display: none; /* Initially hidden */
+        position: absolute; /* Overlay on top of the content */
+        top: 60px; /* Position below the header */
+        left: 0;
+        right: 0;
+        background-color: rgba(255, 255, 255, 0.9); /* Background for dropdown */
+        z-index: 10; /* Bring above other content */
+    }
+
+    header .nav-menu.active {
+        display: flex; /* Show when active */
+    }
+
+    .nav-left, .nav-right {
+        flex-direction: column; /* Stack links vertically */
+        align-items: center; /* Center items */
+        width: 100%; /* Full width */
+    }
+
+    header nav a {
+        padding: 10px 15px; /* Adjust padding for mobile */
+        text-align: center; /* Center text */
+        width: 100%; /* Full width for easier clicking */
+        margin: 5px 0; /* Spacing between items */
+    }
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 100px 70px;
+    background: url('../images/hero01.jpg') no-repeat center center;
+    background-size: cover;
+    color: #f0f7f1;
+    position: relative;
+}
+
+.hero button {
+    background-color: #F4CA50;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2rem;
+}
+
+/* Text Overlay for readability */
 .overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
-    z-index: 1; /* Ensure overlay is above the background but below content */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    z-index: 1; /* Above background, below content */
 }
 
-/* Style your content Our Mission*/
-.content {
-    position: relative; /* Needed for the overlay to position correctly */
-    z-index: 2; /* Ensure content is above the overlay */
-    padding: 20px; /* Add padding to your content */
-    color: rgb(15, 15, 15); /* Change text color for better visibility */
-}
-
-/* Button Class for Reusability */
+/* Reusable Button Class */
 .btn {
-    background-color: #4CAF50; /* Primary color */
+    background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Added transform for scale effect */
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 /* Button Hover Effect */
 .btn:hover {
-    background-color: #45a049; /* Darker shade on hover */
-    transform: scale(1.05); /* Slight scale effect */
+    background-color: #45a049; /* Darker shade */
+    transform: scale(1.05); /* Slight scale */
 }
 
-/* Header Styling */
-header {
-    display: flex; /* Use flexbox for layout */
-    justify-content: space-between; /* Space between logo and menu */
-    align-items: center; /* Center items vertically */
-    padding: 10px 20px;
-    background-color: rgba(255, 255, 255, 0.034);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-header .logo img {
-    height: 80px; /* Adjust the size to your preference */
-}
-
-/* Navigation Menu */
-.nav-menu {
-    display: flex; /* Flexbox for the nav menu */
-    align-items: center; /* Center items vertically */
-    flex-grow: 1; /* Allow the nav menu to take available space */
-    justify-content: space-between; /* Space between left and right sections */
-}
-
-.nav-left {
-    display: flex; /* Flexbox for left menu */
-    justify-content: center; /* Center the links horizontally */
-    flex-grow: 1; /* Allow left section to take available space */
-}
-
-.nav-right {
-    display: flex; /* Flexbox for right menu */
-    justify-content: flex-end; /* Align items to the right */
-}
-
-/* Navigation Links Styling */
-header nav a {
-    color: #4CAF50; /* Set navbar links to green */
-    text-decoration: none;
-    font-weight: bold;
-    margin: 0 20px; /* Margin around links */
-}
-
-/* Hero Section */
-.hero {
-    text-align: center;
-    padding: 100px 70px;
-    background: url('../images/hero01.jpg') no-repeat center center;
-    background-size: cover;
-    color: #2C3E50;
-    position: relative;
-}
-
-/* Button Styling in Hero Section */
-.hero button {
-    background-color: #F4CA50; /* Primary color */
-    color: white;
-    padding: 15px 30px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 1.2rem;
-}
-
-.hero button:hover {
-    background-color: #45a049; /* Darker shade on hover */
+/* Button Focus Effect */
+.btn:focus {
+    outline: 2px solid #4CAF50; /* Outline effect for accessibility */
+    outline-offset: 2px;
 }
 
 /* Footer Styling */
 footer {
     text-align: center;
     padding: 20px 0;
-    background-color: #2C3E50;
-    color: #4CAF50; /* Theme color */
+    background-color: #2c502e;
+    color: #4CAF50;
     font-size: 1.3rem;
 }
 
-footer p {
-    margin: 0;
-}
-
-/* Mission and Vision Section */
+/* Section: Mission and Vision */
 .mission-vision {
     padding: 40px;
-    background-color: #ffffff57; /* Light background */
+    background-color: #ffffff57; /* Semi-transparent background */
     text-align: center;
 }
 
 .mission-vision h2 {
     font-size: 2.5rem;
     margin-bottom: 30px;
-    font-family: 'Roboto', sans-serif; /* Set the font family */
 }
 
 .mission-vision .content {
@@ -169,577 +200,148 @@ footer p {
     font-size: 1rem;
 }
 
-/* How It Works Section */
+/* Section: How It Works */
 .how-it-works {
-    padding: 40px; /* Add padding around the section */
-    background-color: #ffffffaf; /* Background color */
-    text-align: center; /* Center-align text */
-    font-family: 'Roboto', sans-serif; /* Set the font family */
+    padding: 40px;
+    background-color: #ffffffaf;
+    text-align: center;
 }
 
 .how-it-works h2 {
-    font-size: 2.5rem; /* Heading size */
-    margin-bottom: 30px; /* Space below the heading */
+    font-size: 2.5rem;
+    margin-bottom: 30px;
 }
 
 .how-it-works .steps {
-    display: flex; /* Use flexbox for layout */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    justify-content: center; /* Center-align items */
-    max-width: 1200px; /* Set a maximum width for the container */
-    margin: 0 auto; /* Center the container */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* Space between items */
+    max-width: 1200px;
+    margin: 0 auto; /* Center content */
 }
 
 .how-it-works .step {
-    flex: 1; /* Allow flexibility in width */
-    min-width: 300px; /* Set a minimum width */
-    max-width: 400px; /* Set a maximum width */
-    margin: 20px; /* Space around each step */
-    padding: 20px; /* Space inside each step */
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    margin: 20px;
+    padding: 20px;
 }
 
 .how-it-works .small-image {
-    width: 25%; /* Further reduce the image width */
-    height: auto; /* Maintain aspect ratio */
-    margin-bottom: 15px; /* Space below the image */
+    width: 20%;
+    height: auto;
+    margin-bottom: 10px;
 }
 
-/* Our Services Section */
+/* Section: Services */
 .services {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centering the section */
-    padding: 40px; /* Add padding to the section */
-    background-color: #ffffffaf; /* Light background for contrast */
+    align-items: center;
+    padding: 40px;
+    background-color: #ffffffaf;
 }
 
 .services h2 {
-    font-size: 2.5rem; /* Adjust font size */
-    margin-bottom: 30px; /* Space below the heading */
-    font-family: 'Roboto', sans-serif; /* Set the font family */
+    font-size: 2.5rem;
+    margin-bottom: 30px;
 }
 
 .services .content {
     display: flex;
-    flex-wrap: wrap; /* Allow items to wrap */
-    justify-content: center; /* Center items horizontally */
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .services .image-and-text {
-    display: flex; /* Flex for item layout */
-    flex-direction: column; /* Arrange items vertically */
-    align-items: center; /* Center align content */
-    width: 300px; /* Fixed width for each service item */
-    margin: 20px; /* Space around service items */
-    text-align: center; /* Center the text */
-}
-
-.services .image-and-text img {
-    max-width: 100%; /* Responsive image */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 10px; /* Rounded corners */
-}
-
-.services .image-and-text h3 {
-    font-size: 1.5rem; /* Heading size */
-    margin: 10px 0; /* Space above and below heading */
-}
-
-.services .image-and-text p {
-    font-size: 1rem; /* Text size */
-    color: #666; /* Gray color for text */
-}
-
-/* Why Choose Agriland Connect Section */
-.why-choose-us {
-    padding: 40px; /* Add padding to the section */
-    background-color: #ffffffaf; /* Light background for contrast */
-    text-align: center; /* Center the text */
-}
-
-.why-choose-us h2 {
-    font-size: 2.5rem; /* Heading size */
-    margin-bottom: 30px; /* Space below the heading */
-    color: #4CAF50; /* Retain heading color */
-    font-family: 'Roboto', sans-serif; /* Set the font family */
-}
-
-.why-choose-us ul {
-    display: flex; /* Use Flexbox for layout */
-    flex-wrap: wrap; /* Allow items to wrap */
-    justify-content: center; /* Center items horizontally */
-    padding: 0; /* Remove default padding */
-    list-style: none; /* Remove bullets */
-}
-
-.highlight-box {
-    display: flex; /* Flex for item layout */
-    flex-direction: column; /* Arrange items vertically */
-    align-items: center; /* Center align content */
-    width: 150px; /* Fixed width for each highlight box */
-    margin: 50px; /* Space around each highlight box */
-    text-align: center; /* Center the text */
-}
-
-.why-choose-img {
-    max-width: 60%; /* Reduce image width to 60% of its container */
-    height: auto;   /* Maintain the aspect ratio */
-    border-radius: 20px; /* Keep the rounded corners */
-}
-
-/* Contact Section */
-.contact {
-    padding: 40px; /* Add padding around the section */
-    background-color: #ffffffaf; /* Light background */
-    text-align: center; /* Center-align text */
-}
-
-.contact h2 {
-    font-size: 2.5rem; /* Adjust heading size */
-    margin-bottom: 30px; /* Space below the heading */
-    font-family: 'Roboto', sans-serif; /* Set the font family */
-}
-
-.contact form {
-    max-width: 600px; /* Maximum width for the form */
-    margin: 0 auto; /* Center the form */
-}
-
-.contact input,
-.contact textarea {
-    width: 100%; /* Full width inputs */
-    padding: 10px; /* Add padding */
-    margin: 10px 0; /* Margin around inputs */
-    border: 1px solid #ccc; /* Border styling */
-    border-radius: 5px; /* Rounded corners */
-}
-
-/* Button for Submit */
-.contact button {
-    background-color: #4CAF50; /* Primary color */
-    color: white; /* Text color */
-    padding: 10px 20px; /* Padding */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer on hover */
-    transition: background-color 0.3s ease; /* Smooth transition */
-}
-
-.contact button:hover {
-    background-color: #45a049; /* Darker shade on hover */
-}
- Ensure overlay is above the background but below content */
-}
-
-/* Style your content Our Mission*/
-.content {
-    position: relative; /* Needed for the overlay to position correctly */
-    z-index: 2; /* Ensure content is above the overlay */
-    padding: 20px; /* Add padding to your content */
-    color: rgb(15, 15, 15); /* Change text color for better visibility */
-}
-
-/* Button Class for Reusability */
-.btn {
-    background-color: #4CAF50; /* Primary color */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.3s ease; /* Added transform for scale effect */
-}
-
-/* Button Hover Effect */
-.btn:hover {
-    background-color: #45a049; /* Darker shade on hover */
-    transform: scale(1.05); /* Slight scale effect */
-}
-
-/* Header Styling */
-header {
-    display: flex; /* Use flexbox for layout */
-    justify-content: space-between; /* Space between logo and menu */
-    align-items: center; /* Center items vertically */
-    padding: 10px 20px;
-    background-color: rgba(255, 255, 255, 0.034);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-header .logo img {
-    height: 80px; /* Adjust the size to your preference */
-}
-
-/* Navigation Menu */
-.nav-menu {
-    display: flex; /* Flexbox for the nav menu */
-    align-items: center; /* Center items vertically */
-    flex-grow: 1; /* Allow the nav menu to take available space */
-    justify-content: space-between; /* Space between left and right sections */
-}
-
-.nav-left {
-    display: flex; /* Flexbox for left menu */
-    justify-content: center; /* Center the links horizontally */
-    flex-grow: 1; /* Allow left section to take available space */
-}
-
-.nav-right {
-    display: flex; /* Flexbox for right menu */
-    justify-content: flex-end; /* Align items to the right */
-}
-
-/* Navigation Links Styling */
-header nav a {
-    color: #4CAF50; /* Set navbar links to green */
-    text-decoration: none;
-    font-weight: bold;
-    margin: 0 20px; /* Margin around links */
-}
-
-
-/* Navigation Links */
-.nav-menu {
-    display: flex;
-    width: 100%; /* Full width for navigation */
-    justify-content: space-between; /* Space between left and right sections */
-    align-items: center; /* Center vertically */
-}
-
-.nav-left {
-    display: flex; /* Flexbox for left menu */
-    justify-content: center; /* Center the links horizontally */
-    flex-grow: 1; /* Allow left section to take available space */
-}
-
-.nav-right {
-    display: flex; /* Flexbox for right menu */
-    justify-content: flex-end; /* Align items to the right */
-}
-
-/* Navigation Links Styling */
-header nav a {
-    color: #4CAF50; /* Set navbar links to green */
-    text-decoration: none;
-    font-weight: bold;
-    margin: 0 10px; /* Margin around links */
-}
-
-/* Mobile Navigation */
-.nav-left, .nav-right {
-    display: flex;
-}
-
-/* Hero Section */
-.hero {
-    text-align: center;
-    padding: 100px 70px;
-    background: url('../images/hero01.jpg') no-repeat center center;
-    background-size: cover;
-    color: #2C3E50;
-    position: relative;
-}
-
-/* Button Styling in Hero Section */
-.hero button {
-    background-color: #F4CA50; /* Primary color */
-    color: white;
-    padding: 15px 30px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 1.2rem;
-}
-
-.hero button:hover {
-    background-color: #45a049; /* Darker shade on hover */
-}
-
-/* Footer Styling */
-footer {
-    text-align: center;
-    padding: 20px 0;
-    background-color: #2C3E50;
-    color: #4CAF50; /* Theme color */
-    font-size: 1.3rem;
-}
-
-footer p {
-    margin: 0;
-}
-
-/* Mission and Vision Section */
-.mission-vision {
-    padding: 40px;
-    background-color: #ffffff57; /* Light background */
-    text-align: center;
-}
-
-.mission-vision h2 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    font-family: 'Roboto', sans-serif; /* Set the font family */
-}
-
-.mission-vision .content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
-}
-
-.mission-vision .image-and-text {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 300px;
+    margin: 20px;
     text-align: center;
 }
 
-.mission-vision img {
+.services img {
     max-width: 100%;
     height: auto;
     border-radius: 10px;
-    margin-bottom: 15px;
 }
 
-.mission-vision h3 {
+.services h3 {
     font-size: 1.5rem;
-    margin-bottom: 10px;
+    margin: 10px 0;
 }
 
-.mission-vision p {
+.services p {
     font-size: 1rem;
+    color: #070606;
 }
 
-/* How It Works Section */
-.how-it-works {
-    padding: 40px; /* Add padding around the section */
-    background-color: #ffffffaf; /* Background color */
-    text-align: center; /* Center-align text */
-    font-family: 'Roboto', sans-serif; /* Set the font family */
-}
-
-.how-it-works h2 {
-    font-size: 2.5rem; /* Heading size */
-    margin-bottom: 30px; /* Space below the heading */
-}
-
-.how-it-works .steps {
-    display: flex; /* Use flexbox for layout */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    justify-content: center; /* Center-align items */
-    max-width: 1200px; /* Set a maximum width for the container */
-    margin: 0 auto; /* Center the container */
-}
-
-.how-it-works .step {
-    flex: 1; /* Allow flexibility in width */
-    min-width: 300px; /* Set a minimum width */
-    max-width: 400px; /* Set a maximum width */
-    margin: 20px; /* Space around each step */
-    padding: 20px; /* Space inside each step */
-}
-
-.how-it-works .small-image {
-    width: 80%; /* Responsive image width */
-    height: auto; /* Maintain aspect ratio */
-    margin-bottom: 15px; /* Space below the image */
-}
-
-/* Our Services Section */
-.services {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centering the section */
-    padding: 40px; /* Add padding to the section */
-    background-color: #ffffffaf; /* Light background for contrast */
-}
-
-.services h2 {
-    font-size: 2.5rem; /* Adjust font size */
-    margin-bottom: 30px; /* Space below the heading */
-    font-family: 'Roboto', sans-serif; /* Set the font family */
-}
-
-.services .content {
-    display: flex;
-    flex-wrap: wrap; /* Allow items to wrap */
-    justify-content: center; /* Center items horizontally */
-}
-
-.services .image-and-text {
-    display: flex; /* Flex for item layout */
-    flex-direction: column; /* Arrange items vertically */
-    align-items: center; /* Center align content */
-    width: 300px; /* Fixed width for each service item */
-    margin: 20px; /* Space around service items */
-    text-align: center; /* Center the text */
-}
-
-.services .image-and-text img {
-    max-width: 100%; /* Responsive image */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 10px; /* Rounded corners */
-}
-
-.services .image-and-text h3 {
-    font-size: 1.5rem; /* Heading size */
-    margin: 10px 0; /* Space above and below heading */
-}
-
-.services .image-and-text p {
-    font-size: 1rem; /* Text size */
-    color: #666; /* Gray color for text */
-}
-
-/* Why Choose Agriland Connect Section */
+/* Section: Why Choose Us */
 .why-choose-us {
-    padding: 40px; /* Add padding to the section */
-    background-color: #ffffffaf; /* Light background for contrast */
-    text-align: center; /* Center the text */
+    padding: 40px;
+    background-color: #ffffffaf;
+    text-align: center;
 }
 
 .why-choose-us h2 {
-    font-size: 2.5rem; /* Heading size */
-    margin-bottom: 30px; /* Space below the heading */
-    color: #4CAF50; /* Retain heading color */
-    font-family: 'Roboto', sans-serif; /* Set the font family */
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #4CAF50; /* Use theme color for the main heading */
+}
+
+/* Apply theme color to all headings (h3, h4) and any bold text */
+.why-choose-us h3, .why-choose-us h4, .why-choose-us strong {
+    color: #4CAF50; /* Apply theme color */
+    font-size: 1.5rem;
+    margin: 10px 0; /* Add spacing for better layout */
+}
+
+/* Ensure any paragraph tags within 'why-choose-us' also inherit proper styles */
+.why-choose-us p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: #333; /* Default text color */
 }
 
 .why-choose-us ul {
-    display: flex; /* Use Flexbox for layout */
-    flex-wrap: wrap; /* Allow items to wrap */
-    justify-content: center; /* Center items horizontally */
-    padding: 0; /* Remove default padding */
-    list-style: none; /* Remove bullets */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    list-style: none;
 }
 
 .highlight-box {
-    display: flex; /* Flex for item layout */
-    flex-direction: column; /* Arrange items vertically */
-    align-items: center; /* Center align content */
-    width: 150px; /* Fixed width for each highlight box */
-    margin: 50px; /* Space around each highlight box */
-    text-align: center; /* Center the text */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+    margin: 50px;
+    text-align: center;
 }
 
 .why-choose-img {
-    max-width: 60%; /* Reduce image width to 60% of its container */
-    height: auto;   /* Maintain the aspect ratio */
-    border-radius: 20px; /* Keep the rounded corners */
-    margin-bottom: 40px; /* Add space between the image and the text */
+    max-width: 60%;
+    height: auto;
+    border-radius: 20px;
 }
 
-/* Style for the titles (Utilize Unused Land, Build Community, etc.) */
-.highlight-box strong {
-    color: #4CAF50; /* Green color for the title */
-    font-weight: bold; /* Keep the titles bold */
-}
-
-/* Style for the descriptions (the text after the titles) */
-.highlight-box .description {
-    color: #000000; /* Black color for the description text */
-    font-weight: normal; /* Normal weight for the description text */
-}
-
-/* How It Works Section */
-.how-it-works {
-    padding: 40px; /* Add padding around the section */
-    background-color: #ffffffaf; /* Background color */
-    text-align: center; /* Center-align text */
-    font-family: 'Roboto', sans-serif; /* Set the font family */
-}
-
-.how-it-works h2 {
-    font-size: 2.5rem; /* Heading size */
-    margin-bottom: 30px; /* Space below the heading */
-}
-
-.how-it-works .steps {
-    display: flex; /* Use flexbox for layout */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    justify-content: center; /* Center-align items */
-    max-width: 1200px; /* Set a maximum width for the container */
-    margin: 0 auto; /* Center the container */
-}
-
-.how-it-works .step {
-    flex: 1; /* Allow flexibility in width */
-    min-width: 300px; /* Set a minimum width */
-    max-width: 400px; /* Set a maximum width */
-    margin: 20px; /* Space around each step */
-    padding: 20px; /* Space inside each step */
-}
-
-.how-it-works .small-image {
-    width: 25%; /* Further reduce the image width */
-    height: auto; /* Maintain aspect ratio */
-    margin-bottom: 15px; /* Space below the image */
-}
-
-/* Scroll to Top Button */
-.scroll-to-top {
-    position: fixed; /* Fix the button to the viewport */
-    bottom: 20px; /* Position it 20px from the bottom */
-    right: 20px; /* Position it 20px from the right */
-    background-color: #4CAF50; /* Button background color */
-    color: white; /* Text color */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Rounded corners */
-    padding: 10px 15px; /* Padding inside the button */
-    font-size: 18px; /* Font size */
-    cursor: pointer; /* Change cursor to pointer */
-    display: none; /* Initially hide the button */
-    z-index: 1000; /* Ensure it's above other content */
-    transition: background-color 0.3s; /* Smooth transition */
-}
-
-.scroll-to-top:hover {
-    background-color: #45a049; /* Darker shade on hover */
-}
-
-.copyright {
-    font-weight: bold;
-}
-
-/* Hamburger Menu Style */
-.menu-icon {
-    display: none; /* Hidden by default */
-    font-size: 30px;
-    cursor: pointer;
-    color: white;
-}
-
-/* Mobile Navigation Menu */
-.nav-menu {
-    display: flex;
-    justify-content: space-between;
-}
-
-.nav-left, .nav-right {
-    display: flex;
-    justify-content: space-between;
-}
-
-/* Show hamburger icon on mobile */
-@media (max-width: 768px) {
-    .menu-icon {
-        display: block; /* Show on mobile */
-    }
-
-    .nav-menu {
-        display: none; /* Hidden by default */
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .nav-menu.active {
-        display: flex; /* Show when active */
-    }
-}
-
-/* Heading Styles */
+/* Theme color for all headings */
 h1, h2, h3, h4, h5, h6 {
-    color: #4CAF50; /* Green color for headings */
+    color: #4CAF50; /* Replace this with your specific theme color if needed */
+}
+
+/* Specific Heading Adjustments (if needed) */
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
 }

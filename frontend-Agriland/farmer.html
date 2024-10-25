@@ -10,7 +10,7 @@
             font-family: Arial, sans-serif;
             line-height: 1.6;
             background-color: #23da23; /* A light green to symbolize nature */
-            background-image: url('images/04.jpg'); /* Replace with your chosen image path */
+            background-image: url('images/01.jpg'); /* Replace with your chosen image path */
             background-repeat: no-repeat;
             background-size: cover; /* Ensures the image covers the whole background */
             color: #831010;
@@ -75,7 +75,7 @@
 </head>
 <body>
     <div class="form-container">
-        <h1>Farmer Information</h1>
+        <h1>Farmer's Information</h1>
         <form action="/submit-farmer-info" method="POST">
             <label for="landSize">Size of Land (in acres):</label>
             <input type="number" id="landSize" name="landSize" required>
@@ -85,6 +85,12 @@
 
             <label for="cropType">Type of Crops:</label>
             <input type="text" id="cropType" name="cropType" required>
+
+            <label for="budgetPerAcre">Budget per Acre (in Kenyan Shillings):</label>
+            <input type="number" id="budgetPerAcre" name="budgetPerAcre" required>
+
+            <label for="leaseDuration">Duration for Leasing (e.g., "6 months" or "2 years"):</label>
+            <input type="text" id="leaseDuration" name="leaseDuration" placeholder="e.g., 6 months or 2 years" required>
 
             <label for="paymentMethod">Means of Payment:</label>
             <select id="paymentMethod" name="paymentMethod" required>

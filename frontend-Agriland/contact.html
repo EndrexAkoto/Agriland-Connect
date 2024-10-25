@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact - Agriland Connect</title>
     <link rel="stylesheet" href="styles/style.css">
-
     <style>
         /* General Reset */
         * {
@@ -21,6 +20,8 @@
 
         /* Header Section */
         header {
+            background-color: #4CAF50; /* Theme Color */
+            padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -44,6 +45,7 @@
         .contact h1 {
             text-align: center;
             margin-bottom: 20px;
+            color: #4CAF50;
         }
 
         /* Social Media Icons Section */
@@ -81,14 +83,14 @@
         .contact-form input, .contact-form textarea {
             padding: 10px;
             margin-bottom: 20px;
-            border: 1px solid #ddd;
+            border: 1px solid #310ff0;
             border-radius: 5px;
         }
 
         .contact-form button {
             padding: 10px;
             background-color: #4CAF50;
-            color: white;
+            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -105,6 +107,26 @@
             color: green;
             margin-top: 20px;
             font-weight: bold;
+        }
+
+        /* Back Button */
+        .back-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-button button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button button:hover {
+            background-color: #45a049;
         }
 
         /* Responsive Design */

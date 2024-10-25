@@ -14,7 +14,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-image: url('images/promote.jpg'); /* Ensure the path is correct */
+            background-image: url('images/logout.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -41,8 +41,8 @@
         }
 
         .navbar .logo {
-            margin-right: 10px; /* Space between logo and title */
-            max-width: 50px; /* Adjust as necessary */
+            margin-right: 10px;
+            max-width: 50px;
             height: auto;
         }
 
@@ -92,7 +92,7 @@
         .profile-picture-container img {
             width: 120px;
             height: 120px;
-            border-radius: 50%; /* Makes it round */
+            border-radius: 50%;
             object-fit: cover;
             border: 3px solid #4caf50;
         }
@@ -166,23 +166,13 @@
 
         /* Notification styling */
         .notification {
-            display: none; /* Hidden by default */
+            display: none;
             background-color: #4caf50;
             color: white;
             padding: 10px;
             border-radius: 5px;
             margin-top: 20px;
             text-align: center;
-        }
-
-        /* Styling the form fields */
-        input[type="text"], input[type="email"], input[type="date"] {
-            transition: border 0.3s ease;
-        }
-
-        input[type="text"]::placeholder, input[type="email"]::placeholder {
-            font-style: italic;
-            color: #aaa;
         }
 
     </style>
@@ -192,7 +182,6 @@
     <!-- Navbar Section -->
     <div class="navbar">
         <img src="images/logo001.png" alt="Logo" class="logo" />
-
         <ul>
             <li><a href="dashboard.html">Dashboard</a></li>
             <li><a href="settings.html">Settings</a></li>
@@ -223,10 +212,8 @@
 
             <label for="gender">Gender:</label>
             <select id="gender" name="gender">
-                <option value="">Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
-                <option value="other">Other</option>
             </select>
 
             <label for="email">Email:</label>
@@ -237,6 +224,10 @@
 
             <label for="idNumber">ID Number:</label>
             <input type="text" id="idNumber" name="idNumber" placeholder="Enter your ID number" readonly>
+
+            <!-- ID Image Upload Section -->
+            <label for="idImage">Upload ID Image:</label>
+            <input type="file" id="idImage" name="idImage" accept="image/*">
 
             <label for="kraPin">KRA PIN:</label>
             <input type="text" id="kraPin" name="kraPin" placeholder="Enter your KRA PIN" readonly>
@@ -263,10 +254,8 @@
 
             <label for="nextOfKinGender">Next of Kin Gender:</label>
             <select id="nextOfKinGender" name="nextOfKinGender">
-                <option value="">Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
-                <option value="other">Other</option>
             </select>
 
             <label for="nextOfKinPhone">Next of Kin Phone Number:</label>
@@ -275,48 +264,16 @@
             <label for="nextOfKinIdNumber">Next of Kin ID Number:</label>
             <input type="text" id="nextOfKinIdNumber" name="nextOfKinIdNumber" placeholder="Enter next of kin ID number">
 
-            <label for="nextOfKinKraPin">Next of Kin KRA PIN:</label>
-            <input type="text" id="nextOfKinKraPin" name="nextOfKinKraPin" placeholder="Enter next of kin KRA PIN">
+            <!-- Next of Kin ID Image Upload Section -->
+            <label for="nextOfKinIdImage">Upload Next of Kin ID Image:</label>
+            <input type="file" id="nextOfKinIdImage" name="nextOfKinIdImage" accept="image/*">
 
-            <label for="nextOfKinPobox">Next of Kin P.O. Box:</label>
-            <input type="text" id="nextOfKinPobox" name="nextOfKinPobox" placeholder="Enter next of kin P.O. Box">
+            <button type="submit">Save Changes</button>
 
-            <label for="nextOfKinCounty">Next of Kin County of Residence:</label>
-            <input type="text" id="nextOfKinCounty" name="nextOfKinCounty" placeholder="Enter next of kin county">
-
-            <label for="nextOfKinTown">Next of Kin Town:</label>
-            <input type="text" id="nextOfKinTown" name="nextOfKinTown" placeholder="Enter next of kin town">
-
-            <button type="submit">Save Profile</button>
+            <!-- Success Notification -->
+            <div id="notification" class="notification">Profile updated successfully!</div>
         </form>
-
-        <!-- Notification Section -->
-        <div id="notification" class="notification">
-            Profile saved successfully!
-        </div>
     </div>
-
-    <!-- Optional JavaScript for form submission -->
-    <script>
-        // Dummy form submission
-        document.getElementById('edit-profile-form').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent form from submitting normally
-            document.getElementById('notification').style.display = 'block'; // Show success message
-        });
-
-        // Age calculation based on date of birth
-        function calculateAge() {
-            const dob = document.getElementById('dob').value;
-            const dobDate = new Date(dob);
-            const currentDate = new Date();
-            let age = currentDate.getFullYear() - dobDate.getFullYear();
-            const monthDiff = currentDate.getMonth() - dobDate.getMonth();
-            if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < dobDate.getDate())) {
-                age--;
-            }
-            document.getElementById('age').value = age;
-        }
-    </script>
 
 </body>
 </html>
