@@ -131,7 +131,6 @@
             display: inline-block; /* Ensure it only takes the space it needs */
         }
 
-
         button:hover {
             background-color: #24682c;
         }
@@ -182,6 +181,23 @@
             }
         }
 
+        /* Back Button */
+        .back-button {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        .back-button:hover {
+            background-color: #24682c;
+        }
+
     </style>
 </head>
 <body>
@@ -193,6 +209,7 @@
     <main>
         <div class="unapproved-listings">
             <h2>Unapproved Land Listings</h2>
+            <a href="index.html" class="back-button">Back to Admin Panel</a> <!-- Added Back Button -->
             <div id="listingsContainer">
                 <!-- Dynamically fetched unapproved listings will be injected here -->
                 <!-- Example of a dynamically inserted unapproved listing -->

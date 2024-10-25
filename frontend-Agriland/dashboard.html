@@ -192,4 +192,57 @@
                 <h2>Your Leases</h2>
                 <ul>
                     {% for lease in leases %}
-                    
+    <li>
+        <p>{{ lease.land.title }} - Expires on {{ lease.expiration_date }}</p>
+        <button>Renew Lease</button>
+        <button>View Details</button>
+    </li>
+{% endfor %}
+</ul>
+<a href="new-lease.html">Add New Lease</a>
+</div>
+
+<div class="payment-history">
+<h2>Payment History</h2>
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Transaction ID</th>
+        <th>Status</th>
+    </tr>
+    {% for payment in payments %}
+    <tr>
+        <td>{{ payment.date }}</td>
+        <td>{{ payment.amount }}</td>
+        <td>{{ payment.transaction_id }}</td>
+        <td>{{ payment.status }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+
+<div class="recent-activity">
+<h2>Recent Activity</h2>
+<ul>
+    {% for activity in recent_activities %}
+    <li>{{ activity.description }}</li>
+    {% endfor %}
+</ul>
+</div>
+</section>
+</main>
+
+<footer>
+    <p>&copy; 2024 Agriland Connect. All Rights Reserved.</p>
+</footer>
+
+<script>
+    // JavaScript to handle dropdown menu visibility on mobile and profile features
+    document.querySelector('.nav-right').addEventListener('click', function () {
+        const dropdown = document.querySelector('.dropdown');
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    });
+</script>
+</body>
+</html>
