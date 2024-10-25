@@ -15,10 +15,6 @@
                 </a>
             </div>
 
-            <div class="menu-icon" onclick="toggleMenu()">
-                &#9776;
-            </div>
-
             <div class="nav-menu" id="navMenu">
                 <div class="nav-left">
                     <a href="index.html">Home</a>
@@ -31,6 +27,10 @@
                     <a href="login.html">Login</a>
                     <a href="signup.html">Sign Up</a>
                 </div>
+            </div>
+
+            <div class="menu-icon" onclick="toggleMenu()">
+                &#9776; <!-- Hamburger icon for mobile view only -->
             </div>
         </nav>
     </header>
@@ -144,47 +144,47 @@
         <footer>
             <p style="font-weight: bold;">&copy; 2024 Agriland Connect. All rights reserved.</p>
         </footer>
-
-        <script>
-            // Scroll to Top Button functionality
-            window.onscroll = function() {
-                const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                    scrollToTopBtn.style.display = "block";
-                } else {
-                    scrollToTopBtn.style.display = "none";
-                }
-            };
-
-            document.getElementById('scrollToTopBtn').onclick = function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            };
-
-            function toggleMenu() {
-                const navMenu = document.getElementById('navMenu');
-                navMenu.classList.toggle('active'); // Toggle active class to show/hide menu
-            }
-
-            // Fetch dashboard metrics
-            async function fetchMetrics() {
-                const response = await fetch('/api/metrics'); // Update the endpoint according to your Flask backend
-                const data = await response.json();
-                document.getElementById('totalListings').innerText = data.totalListings;
-                document.getElementById('totalUsers').innerText = data.totalUsers;
-                document.getElementById('totalTransactions').innerText = data.totalTransactions;
-            }
-
-            window.onload = fetchMetrics; // Fetch metrics when the page loads
-
-            function searchListings() {
-                const searchValue = document.getElementById('searchInput').value;
-                // Implement your search logic here (e.g., fetch matching listings from the backend)
-                console.log('Search for:', searchValue);
-            }
-        </script>
     </main>
+
+    <script>
+        // Scroll to Top Button functionality
+        window.onscroll = function() {
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
+
+        document.getElementById('scrollToTopBtn').onclick = function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        };
+
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active'); // Toggle active class to show/hide menu
+        }
+
+        // Fetch dashboard metrics
+        async function fetchMetrics() {
+            const response = await fetch('/api/metrics'); // Update the endpoint according to your Flask backend
+            const data = await response.json();
+            document.getElementById('totalListings').innerText = data.totalListings;
+            document.getElementById('totalUsers').innerText = data.totalUsers;
+            document.getElementById('totalTransactions').innerText = data.totalTransactions;
+        }
+
+        window.onload = fetchMetrics; // Fetch metrics when the page loads
+
+        function searchListings() {
+            const searchValue = document.getElementById('searchInput').value;
+            // Implement your search logic here (e.g., fetch matching listings from the backend)
+            console.log('Search for:', searchValue);
+        }
+    </script>
 </body>
 </html>
