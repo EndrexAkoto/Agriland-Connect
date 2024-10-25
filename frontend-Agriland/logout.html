@@ -65,7 +65,13 @@
     <div class="logout-container">
         <h1>Logout Successful</h1>
         <p>You have been logged out of your account.</p>
-        <button class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+        <button class="back-button" onclick="window.location.href='index.html'">Back to Homepage</button>
     </div>
+    <script>
+        // Optional: Automatically redirect to the homepage after a few seconds
+        setTimeout(function () {
+            window.location.href = 'index.html';
+        }, 5000); // Redirect after 5 seconds
+    </script>
 </body>
 </html>

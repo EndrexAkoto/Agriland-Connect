@@ -6,56 +6,191 @@
     <title>User Profile - Agriland Connect</title>
     <link rel="stylesheet" href="styles/style.css">
     <script src="scripts/main.js" defer></script>
+    <style>
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8f8f8;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            width: 100%;
+            background-color: #4caf50; /* Theme color */
+            padding: 10px 20px;
+            display: flex;
+            align-items: center; /* Align items vertically */
+        }
+
+        .logo-container {
+            flex-grow: 1; /* Allow logo to take available space */
+            display: flex;
+            justify-content: flex-start; /* Align logo to the left */
+        }
+
+        .logo-container img {
+            max-width: 120px;
+            height: auto;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-actions button {
+            background-color: #fff;
+            color: #4caf50; /* Text color matches theme */
+            border: 1px solid #4caf50;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .nav-actions button:hover {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        /* Profile Section */
+        .user-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .profile-picture {
+            position: relative;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .profile-picture img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #4caf50;
+        }
+
+        .upload-btn {
+            display: block;
+            margin-top: 10px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .upload-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Footer Styling */
+        footer {
+            margin-top: auto;
+            width: 100%;
+            background-color: #4caf50; /* Theme color */
+            text-align: center;
+            padding: 10px 0;
+            color: white;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                align-items: center; /* Center navbar items on mobile */
+            }
+
+            .logo-container {
+                justify-content: center; /* Center logo on mobile */
+                width: 100%; /* Take full width */
+            }
+
+            .nav-actions {
+                flex-direction: column; /* Stack buttons on mobile */
+                align-items: center;
+            }
+
+            .nav-actions button {
+                width: 100%; /* Full width for mobile buttons */
+                margin: 5px 0; /* Add some margin */
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header Section -->
+
+    <!-- Navbar Section -->
     <header>
         <nav class="navbar">
-            <div class="nav-left">
-                <a href="index.html">Home</a>
-                <a href="land-listings.html">Land Listings</a>
-                <a href="about.html">About Us</a>
-                <a href="contact.html">Contact</a>
+            <div class="logo-container">
+                <img src="images/logo001.png" alt="Agriland Connect Logo">
             </div>
-            <div class="nav-right">
-                <a href="login.html">Login</a>
-                <a href="signup.html">Sign Up</a>
+            <div class="nav-actions">
+                <button onclick="openProfile()">Profile</button>
+                <button onclick="openSettings()">Settings</button>
+                <button onclick="logout()">Logout</button>
             </div>
         </nav>
     </header>
 
     <!-- Main User Profile Section -->
-    <main>
-        <section class="user-profile">
-            <h1>Your Profile</h1>
-            <div class="profile-info">
-                <h2>Personal Information</h2>
-                <form id="profile-form">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
-
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-
-                    <label for="phone">Phone Number:</label>
-                    <input type="tel" id="phone" name="phone">
-
-                    <button type="submit">Update Profile</button>
-                </form>
-            </div>
-
-            <div class="lease-history">
-                <h2>Lease History</h2>
-                <ul id="lease-history-list">
-                    <!-- Lease history items will be populated here -->
-                </ul>
-            </div>
-        </section>
-    </main>
+    <section class="user-profile">
+        <!-- Profile Picture -->
+        <div class="profile-picture">
+            <img src="images/default-profile.png" alt="User Profile Picture" id="profile-pic">
+            <input type="file" class="upload-btn" accept="image/*" onchange="uploadProfilePicture()">
+        </div>
+    </section>
 
     <!-- Footer Section -->
     <footer>
         <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
     </footer>
+
+    <script>
+        function uploadProfilePicture() {
+            const input = document.querySelector('.upload-btn');
+            const profilePic = document.getElementById('profile-pic');
+            const file = input.files[0];
+            if (file) {
+                profilePic.src = URL.createObjectURL(file);
+            }
+        }
+
+        function logout() {
+            window.location.href = "logout.html";
+        }
+
+        function openSettings() {
+            alert("Settings will be available soon!");
+        }
+
+        function openProfile() {
+            alert("Profile section will be available soon!");
+        }
+    </script>
+
 </body>
 </html>

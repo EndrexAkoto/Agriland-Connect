@@ -57,6 +57,13 @@ function populateLeaseHistory() {
     })
 }
 
+// Logout function
+function logout() {
+    // Simulate logout process (clear session, etc.)
+    // Redirect to home page
+    window.location.href = 'index.html'
+}
+
 // Mock data for user leases, notifications, and payment statuses
 const userLeases = [
     { id: 1, land: 'Farm A', date: '2024-01-15', status: 'Active' },
@@ -126,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('lease-list')) {
         populateLeaseList()      // Populate lease list
         populateNotifications()  // Populate notifications
-        populatePaymentStatuses()// Populate payment statuses
+        populatePaymentStatuses() // Populate payment statuses
     }
 
     const hamburgerMenu = document.getElementById('hamburger-menu')
@@ -154,5 +161,11 @@ document.addEventListener('DOMContentLoaded', function () {
             // Reset the form
             event.target.reset()
         })
+    }
+
+    // Logout button event
+    const logoutButton = document.getElementById('logout-button')
+    if (logoutButton) {
+        logoutButton.addEventListener('click', logout)
     }
 })
