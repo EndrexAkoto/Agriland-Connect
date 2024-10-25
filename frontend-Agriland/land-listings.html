@@ -19,30 +19,30 @@
         }
 
         header {
-            background: #fff; /* Set your header background */
-            padding: 5px 0; /* Add some padding */
+            background: #4CAF50; /* Set header background to theme color */
+            padding: 5px 0;
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 5px 20px; /* Add padding for top/bottom and left/right */
+            padding: 5px 20px;
         }
 
         .logo {
-            display: flex; /* Added to ensure correct alignment */
-            align-items: center; /* Center items vertically */
+            display: flex;
+            align-items: center;
         }
 
         .logo-image {
-            max-width: 100px; /* Adjust the size as needed */
-            height: auto; /* Keep aspect ratio */
+            max-width: 70px;
+            height: auto;
         }
 
         .nav-right {
-            display: flex; /* Ensures the dropdown is aligned correctly */
-            align-items: center; /* Centers dropdown vertically */
+            display: flex;
+            align-items: center;
         }
 
         .dropdown {
@@ -72,7 +72,7 @@
         }
 
         .listing-card {
-            display: flex; /* Changed to flex for alignment */
+            display: flex;
             border: 1px solid #ddd;
             border-radius: 5px;
             padding: 10px;
@@ -81,53 +81,53 @@
         }
 
         .listing-card img {
-            width: 450px; /* Fixed size for the image */
+            width: 450px;
             height: auto;
             border-radius: 10px;
-            margin-right: 20px; /* Space between image and text */
+            margin-right: 20px;
         }
 
         .listing-details {
-            flex: 1; /* Allow this section to take remaining space */
+            flex: 1;
         }
 
         .button {
-            background-color: #4CAF50; /* Project Color */
+            background-color: #4CAF50;
             color: white;
             padding: 10px;
             text-align: center;
             text-decoration: none;
             border-radius: 5px;
-            display: inline-block; /* Ensure the button appears inline */
-            margin-top: 10px; /* Space above the button */
+            display: inline-block;
+            margin-top: 10px;
         }
 
         footer {
             text-align: center;
             padding: 5px 0;
-            background: #4CAF50; /* Project Color */
+            background: #4CAF50;
             color: #fff;
         }
 
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
             nav {
-                flex-direction: column; /* Stack elements on smaller screens */
+                flex-direction: column;
                 align-items: center;
             }
 
             .nav-right {
-                width: 100%; /* Full width for nav-right on mobile */
-                justify-content: center; /* Center the dropdown on mobile */
+                width: 100%;
+                justify-content: center;
             }
 
             .listing-card {
-                flex-direction: column; /* Stack image and text on smaller screens */
-                align-items: center; /* Center items */
+                flex-direction: column;
+                align-items: center;
             }
 
             .listing-card img {
-                margin: 0 0 10px 0; /* Margin adjustments for mobile */
+                margin: 0 0 10px 0;
             }
         }
     </style>
@@ -139,15 +139,6 @@
                 <a href="index.html">
                     <img src="./images/logo001.png" alt="Agriland Connect Logo" class="logo-image">
                 </a>
-            </div>
-            <div class="nav-right">
-                <div class="dropdown">
-                    <button>User Profile</button>
-                    <div class="dropdown-content">
-                        <a href="settings.html">Settings</a>
-                        <a href="logout.html">Logout</a>
-                    </div>
-                </div>
             </div>
         </nav>
     </header>
@@ -175,7 +166,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/land-listings') // Adjust to your actual endpoint
+            fetch('/api/land-listings')
                 .then(response => response.json())
                 .then(data => {
                     const listingsContainer = document.querySelector('.listing-cards');
@@ -191,7 +182,7 @@
                                     <a href="full-listing.html?id=${listing._id}" class="button">View Lease Details</a>
                                 </div>
                             </div>`;
-                        listingsContainer.innerHTML += listingCard; // Add the new card to the container
+                        listingsContainer.innerHTML += listingCard;
                     });
                 })
                 .catch(error => console.error('Error fetching listings:', error));
