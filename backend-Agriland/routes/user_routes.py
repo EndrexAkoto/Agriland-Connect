@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory
-from models.user import get_user_by_email, create_user
+from models.user import get_user_by_email, create_user, authenticate_user
 
 import re
 import os
