@@ -92,7 +92,19 @@
 <body>
     <div class="form-container">
         <h1>Landlord Information Form</h1>
+ HEAD
+HEAD
+        <form method="post" enctype="multipart/form-data">
+
         <form action="/submit-landlord-info" method="POST" enctype="multipart/form-data">
+ db65189baf5b2069d4fa51230b6b35437d23bb7a
+
+
+        <form method="post" enctype="multipart/form-data">
+
+        <form action="/submit-landlord-info" method="POST" enctype="multipart/form-data">
+         main
+ a36c5428293cd638a91294f962d54e30053f618f
             <label for="landSize">Land Size (in acres):</label>
             <input type="number" id="landSize" name="landSize" required>
 
@@ -136,8 +148,12 @@
 
             <button type="submit">Submit</button>
             <button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+            {% if msg %}
+            <p style="color: red">{{ msg }}</p>
+            {% endif %}
         </form>
     </div>
+
 
     <script>
         let uploadedImages = []; // Array to store uploaded images
@@ -165,5 +181,10 @@
             event.target.value = ''; // Clear the file input after upload
         });
     </script>
+
+    {%  if msg %}
+    <p style="color: green">{{ msg }}</p>
+    {%  endif %}
+
 </body>
 </html>
