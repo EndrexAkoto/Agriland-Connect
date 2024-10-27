@@ -76,7 +76,7 @@
 <body>
     <div class="form-container">
         <h1>Farmer's Information</h1>
-        <form action="/submit-farmer-info" method="POST">
+        <form action="/farmer.html" method="POST">
             <label for="landSize">Size of Land (in acres):</label>
             <input type="number" id="landSize" name="landSize" required>
 
@@ -101,6 +101,9 @@
             <button type="submit">Submit</button>
             <button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
         </form>
+        {% if msg  %}
+        <p style="color: red">{{ msg }}</p>
+        {% endif %}
     </div>
 </body>
 </html>

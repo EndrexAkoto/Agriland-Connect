@@ -209,30 +209,39 @@
     <main>
         <div class="unapproved-listings">
             <h2>Unapproved Land Listings</h2>
-            <a href="index.html" class="back-button">Back to Admin Panel</a> <!-- Added Back Button -->
+            <a href="index.html" class="back-button">Back to Admin Panel</a>
             <div id="listingsContainer">
                 <!-- Dynamically fetched unapproved listings will be injected here -->
-                <!-- Example of a dynamically inserted unapproved listing -->
+                {% for listing in land_listings %}
                 <div class="listing">
-                    <h3>User: John Doe</h3>
-                    <div class="listing-details">
-                        <p><strong>Size:</strong> 5 acres</p>
-                        <p><strong>Location:</strong> Nairobi, Kenya</p>
-                        <p><strong>Amenities:</strong> Water, Electricity</p>
-                        <p><strong>Price:</strong> $50,000</p>
-                    </div>
-                    <div class="images">
-                        <!-- Dynamically loaded images -->
-                        <img src="../images/01.jpg" alt="Land Image 1"> <!-- Placeholder for testing, to be replaced by dynamic image -->
-                        <img src="../images/02.jpg" alt="Land Image 2">
-                        <img src="../images/01.jpg" alt="Land Image 3">
-                        <img src="../images/03.jpg" alt="Land Image 4">
-                        <img src="../backend-Agriland/routes/user.py" alt="Land Image 5">
-                    </div>
-                    <button onclick="approveListing('John Doe', '5 acres', 'Nairobi, Kenya', 'Water, Electricity', '$50,000')">Approve</button>
-                    <button onclick="rejectListing('John Doe')">Reject</button>
-                    <button onclick="setPendingVerification('John Doe')">Pending Verification</button>
+                    <form method="POST" action="/approve_listing">  <!-- Update action URL as needed -->
+                        <h3>User: {{ listing.user_name }}</h3>
+                        <input type="hidden" name="_id" value="{{ listing._id }}">
+                        <div class="listing-details">
+                            <label>Size:</label>
+                            <input type="text" name="land_size" value="{{ listing.land_size }}" required>
+                            
+                            <label>Location:</label>
+                            <input type="text" name="location" value="{{ listing.location }}" required>
+                            
+                            <label>Amenities:</label>
+                            <input type="text" name="amenities" value="{{ listing.amenities }}" required>
+                            
+                            <label>Price:</label>
+                            <input type="text" name="price_per_acre" value="{{ listing.price_per_acre }}" required>
+                        </div>
+                        <div class="images">
+                            <!-- Loop through the images array and display each image -->
+                            {% for image in listing.images %}
+                            <img src="{{ image }}" alt="Land Image">
+                            {% endfor %}
+                        </div>
+                        <button type="submit">Approve</button>
+                        <button type="button" onclick="rejectListing('{{ listing.user_name }}')">Reject</button>
+                        <button type="button" onclick="setPendingVerification('{{ listing.user_name }}')">Pending Verification</button>
+                    </form>
                 </div>
+                {% endfor %}
                 <!-- End of example listing -->
             </div>
         </div>
@@ -242,7 +251,7 @@
     </footer>
 
     <script>
-        // Example functions to handle listing approvals/rejections
+        // JavaScript functions for handling actions like approval or rejection
         function approveListing(user, size, location, amenities, price) {
             const confirmation = confirm(`Are you sure you want to approve the land listing for ${user}?`);
             if (confirmation) {
@@ -264,9 +273,6 @@
                 alert(`${user}'s land listing is pending verification.`);
             }
         }
-
-        // Placeholder for dynamically fetching land listings from the backend
-        // e.g., via a fetch or axios call once backend integration is ready.
     </script>
 </body>
 </html>
