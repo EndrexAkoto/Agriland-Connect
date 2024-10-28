@@ -39,9 +39,9 @@ def extract_and_validate_form_data():
     }
 
     # Validate required fields
-    required_fields = [profile_data['first_name'], profile_data['last_name'], profile_data['phone'], profile_data['id_number'], profile_data['kra_pin'], profile_data['dob']]
-    if not all(required_fields):
-        return None, None, 'Please fill out all required fields!'
+    # required_fields = [profile_data['first_name'], profile_data['last_name'], profile_data['phone'], profile_data['id_number'], profile_data['kra_pin'], profile_data['dob']]
+    # if not all(required_fields):
+    #     return None, None, 'Please fill out all required fields!'
     
     return profile_data, next_of_kin_data, ''
 
