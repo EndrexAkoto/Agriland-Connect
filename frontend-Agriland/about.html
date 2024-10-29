@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>About Us - Agriland Connect</title>
     <link rel="stylesheet" href="styles/style.css">
     <style>
         /* General Styles */
@@ -127,34 +126,49 @@
         }
 
         /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            #about-agriland {
-                padding: 20px;
-            }
-
-            #about-agriland h1, #about-agriland h2 {
-                font-size: 22px;
-            }
-
-            #about-agriland p {
-                font-size: 16px;
-            }
-
-            header .logo img {
-                width: 150px;
-            }
-
-            .menu, .auth-menu {
-                flex-direction: column;
-                align-items: center;
-                padding: 10px 0;
-            }
-
-            .menu li, .auth-menu li {
-                margin: 10px 0;
-            }
+    @media (max-width: 768px) {
+        #about-agriland {
+            padding: 20px;
         }
-    </style>
+
+        #about-agriland h1, #about-agriland h2 {
+            font-size: 22px;
+        }
+
+        #about-agriland p {
+            font-size: 16px;
+        }
+
+        header .logo {
+            width: 100%;
+            display: flex;
+            justify-content: center; /* Center the logo */
+        }
+
+        header .logo img {
+            width: 90px; /* Smaller logo for mobile */
+        }
+
+        nav {
+            padding: 1px 0; /* Reduce navbar height on mobile */
+        }
+
+        .menu, .auth-menu {
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .menu {
+            width: 50%;
+            justify-content: center; /* Center the menu */
+        }
+
+        .menu li, .auth-menu li {
+            margin: 5px 0;
+        }
+    }
+</style>
 </head>
 <body>
 
@@ -162,11 +176,6 @@
         <div class="logo">
             <img src="./images/logo001.png" alt="Agriland Connect Logo">
         </div>
-        <nav>
-            <ul class="menu centered-menu">
-                <li><a href="about.html">About Us</a></li>
-            </ul>
-        </nav>
     </header>
 
     <section id="about-agriland">
