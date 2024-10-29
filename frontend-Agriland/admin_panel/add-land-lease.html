@@ -4,32 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Land for Lease - Agriland Connect</title>
-    <link rel="stylesheet" href="../styles/styles.css"> <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="../styles/styles.css">
     <style>
         /* Admin Panel Specific Styles */
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
-            background-image: url('../images/frontImg.jpg'); /* Background image */
-            background-size: cover; /* Ensures the image covers the entire background */
-            background-position: center; /* Center the image */
-            background-repeat: no-repeat; /* Prevent the image from repeating */
-            color: #333; /* Dark text color */
+            background-image: url('../images/frontImg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333;
         }
 
         .form-container {
             max-width: 600px;
             margin: 20px auto;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.9); /* White background with transparency for readability */
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .form-container h2 {
-            color: #4CAF50; /* Project Color */
+            color: #4CAF50;
             margin-bottom: 15px;
-            text-align: center; /* Center the title */
+            text-align: center;
         }
 
         .form-group {
@@ -51,12 +51,8 @@
             border-radius: 5px;
         }
 
-        .form-group input[type="file"] {
-            padding: 5px;
-        }
-
         .submit-button {
-            background: #4CAF50; /* Project Color */
+            background: #4CAF50;
             color: white;
             padding: 10px;
             border: none;
@@ -73,7 +69,7 @@
         footer {
             text-align: center;
             padding: 10px 0;
-            background: #4CAF50; /* Project Color */
+            background: #4CAF50;
             color: #fff;
             position: relative;
             bottom: 0;
@@ -85,7 +81,7 @@
             display: inline-block;
             margin: 20px auto;
             padding: 10px 15px;
-            background: #4CAF50; /* Project Color */
+            background: #4CAF50;
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -96,11 +92,26 @@
         .back-button:hover {
             background: #45a049;
         }
+
+        /* Image Preview Styles */
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .image-preview img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
     <header>
-        <img src="../images/logo001.png" alt="Agriland Connect Logo" style="width: 100px; margin-bottom: 10px;"> <!-- Update with your logo path -->
+        <img src="../images/logo001.png" alt="Agriland Connect Logo" style="width: 100px; margin-bottom: 10px;">
         <h1 style="text-align: center;">Add Land for Lease</h1>
     </header>
 
@@ -127,18 +138,52 @@
             </div>
 
             <div class="form-group">
-                <label for="images">Upload Images (Max 4):</label>
+                <label for="images">Upload Images (Max 5):</label>
                 <input type="file" id="images" name="images" accept="image/*" multiple required>
+                <div class="image-preview" id="multi-image-preview"></div>
             </div>
 
             <button type="submit" class="submit-button">Add Lease</button>
         </form>
     </div>
 
-    <a href="index.html" class="back-button">Back to Admin Panel</a> <!-- Link to the admin panel -->
+    <a href="index.html" class="back-button">Back to Admin Panel</a>
 
     <footer>
         <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
     </footer>
+
+    <script>
+        // Multiple Images Preview
+        const imagesInput = document.getElementById('images');
+        const multiImagePreview = document.getElementById('multi-image-preview');
+        const selectedImages = [];
+
+        imagesInput.addEventListener('change', () => {
+            const files = Array.from(imagesInput.files);
+            multiImagePreview.innerHTML = ''; // Clear previous previews
+
+            // Check if the file limit exceeds 5
+            if (files.length + selectedImages.length > 5) {
+                alert('You can only upload a maximum of 5 images.');
+                imagesInput.value = ''; // Clear the file input
+                return;
+            }
+
+            // Add selected files to the array and display images
+            files.forEach(file => {
+                if (!selectedImages.includes(file)) {
+                    selectedImages.push(file); // Add the file to the selected images array
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        const imgElement = document.createElement('img');
+                        imgElement.src = event.target.result;
+                        multiImagePreview.appendChild(imgElement);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
