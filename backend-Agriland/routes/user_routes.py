@@ -128,10 +128,10 @@ def farmer():
 @user_routes.route('/user-profile.html')
 def userprofile():
     # Check if user is logged in and 'user_email' is in session
-    if 'user_email' not in session:
+    if 'email' not in session:
         return redirect(url_for('user.login'))  # Redirect to login if not in session
 
-    user_email = session['user_email']
+    user_email = session['email']
     user_profile = users_collection.find_one({'email': user_email})
     return render_template('user-profile.html', user_profile=user_profile)
 
