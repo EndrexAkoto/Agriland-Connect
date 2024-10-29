@@ -24,3 +24,11 @@ def add_listing_with_images(location, size, price, description, image_paths):
         'images': image_paths
     }
     add_land_listing(land_data)
+
+def get_unapproved_land_listings():
+    listings = land_collection.find({'approved': False})
+    # Convert ObjectId to string for each listing
+    return [{**listing, '_id': str(listing['_id'])} for listing in listings]
+
+def add_land_listing(land_data):
+    land_collection.insert_one(land_data)
