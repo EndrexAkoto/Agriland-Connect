@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Agriland Connect</title>
-    <link rel="stylesheet" href="css/admin_style.css">
+    <link rel="stylesheet" href="css/admin_style..css">
 
     <style>
         /* General Body Styles */
@@ -44,6 +44,7 @@
             flex: 1; /* Allow navbar to take the remaining space */
             display: flex;
             justify-content: flex-end; /* Align navbar items to the right */
+            position: relative; /* Position relative to control the dropdown */
         }
 
         .nav-links {
@@ -70,6 +71,32 @@
 
         .burger {
             display: none; /* Hidden for now, can be styled for mobile later */
+            flex-direction: column; /* Stack burger icon vertically */
+            cursor: pointer; /* Change cursor to pointer */
+        }
+
+        .burger div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 3px 0; /* Space between lines */
+        }
+
+        .close-btn {
+            display: none; /* Hidden by default */
+            background-color: rgba(76, 175, 80, 0.8);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            position: absolute;
+            bottom: 15px; /* Position at the bottom of the menu */
+            right: 15px; /* Align to the right */
+            border-radius: 50%; /* Rounded button */
+            width: 40px;
+            height: 40px;
+            font-size: 20px; /* Size of the 'X' */
+            text-align: center; /* Center the 'X' */
         }
 
         main {
@@ -135,7 +162,31 @@
         /* Responsive Styles */
         @media (max-width: 768px) {
             .nav-links {
+                display: none; /* Hide regular nav links */
                 flex-direction: column; /* Stack navigation links vertically */
+                position: absolute; /* Position absolute for dropdown */
+                background-color: rgba(76, 175, 80, 0.8); /* Match header background */
+                top: 60px; /* Position below the header */
+                right: 0; /* Align to the right */
+                width: 100%; /* Full width */
+                z-index: 1000; /* Ensure it appears above other elements */
+            }
+
+            .nav-links.active {
+                display: flex; /* Show links when active */
+            }
+
+            .logo-container {
+                justify-content: center; /* Center logo in mobile view */
+                width: 100%; /* Full width for centering */
+            }
+
+            .burger {
+                display: flex; /* Show burger icon */
+            }
+
+            .close-btn {
+                display: block; /* Show close button when menu is open */
             }
 
             .dashboard {
@@ -164,7 +215,23 @@
                 <li><a href="settings.html">Settings</a></li>
             </ul>
         </nav>
+        <div class="burger" id="burger">
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
+        <nav class="navbar">
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="users.html">Users</a></li>
+                <li><a href="unapproved_uploads.html">Unapproved Uploads</a></li>
+                <li><a href="add-listing.html">Add Listing</a></li>
+                <li><a href="add-land-lease.html">Add Land Lease</a></li>
+                <li><a href="payments.html">Payments</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><button class="close-btn" id="closeBtn">✖</button></li> <!-- X button added here -->
+            </ul>
+        </nav>
     </header>
 
     <main>
@@ -207,6 +274,22 @@
         <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
     </footer>
 
-    <script src="js/admin_script.js"></script>
+    <script>
+        const burger = document.getElementById('burger');
+        const navLinks = document.getElementById('navLinks');
+        const closeBtn = document.getElementById('closeBtn');
+
+        // Toggle navigation menu
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            closeBtn.style.display = 'block'; // Show close button when menu is open
+        });
+
+        // Close navigation menu
+        closeBtn.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            closeBtn.style.display = 'none'; // Hide close button when menu is closed
+        });
+    </script>
 </body>
 </html>
