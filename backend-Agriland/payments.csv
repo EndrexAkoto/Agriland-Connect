@@ -1,0 +1,5 @@
+Payment ID,Landlord ID,Lease ID,Amount Paid,Date of Payment,Payment Method,Payment Status
+001,LND123,LS001,15000,2024-09-20,Mobile Payment,Completed
+002,LND456,LS002,20000,2024-10-01,Bank Transfer,Completed
+003,LND789,LS003,10000,2024-10-05,Cash,Pending
+004,LND123,LS004,30000,2024-10-08,Mobile Payment,Completed
