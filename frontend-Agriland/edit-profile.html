@@ -5,175 +5,180 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <style>
+
         /* General reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url('images/logout.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: flex;
-            flex-direction: column;
-            min-height: 150vh;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url('images/logout.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        flex-direction: column;
+        min-height: 150vh;
+    }
 
-        /* Navbar styling */
-        .navbar {
-            background-color: #4caf50;
-            padding: 15px;
-            text-align: center;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    /* Navbar styling */
+    .navbar {
+        background-color: #4caf50;
+        padding: 15px;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        .navbar h2 {
-            color: white;
-            margin: 0;
-            display: flex;
-            align-items: center;
-        }
+    .navbar h2 {
+        color: white;
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
 
-        .navbar .logo {
-            margin-right: 10px;
-            max-width: 50px;
-            height: auto;
-        }
+    .navbar .logo {
+        width: 50px;
+        height: 50px; /* Set height to match width for a perfect circle */
+        border-radius: 50%; /* Makes it circular */
+        object-fit: cover; /* Ensures the image fills the container without distortion */
+        display: block;
+        margin: 0 auto; /* Centers the logo horizontally */
+    }
 
-        .navbar ul {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-        }
+    .navbar ul {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+    }
 
-        .navbar ul li {
-            display: inline;
-        }
+    .navbar ul li {
+        display: inline;
+    }
 
-        .navbar ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    .navbar ul li a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
 
-        .navbar ul li a:hover {
-            text-decoration: underline;
-        }
+    .navbar ul li a:hover {
+        text-decoration: underline;
+    }
 
-        /* Main container for edit profile */
+    /* Main container for edit profile */
+    .edit-profile-container {
+        background-color: #f8eeee;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+        margin: 40px auto;
+    }
+
+    h1, h2 {
+        margin-bottom: 15px;
+        color: #4caf50;
+        text-align: center;
+    }
+
+    /* Profile picture styling */
+    .profile-picture-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-picture-container img {
+        width: 120px;
+        height: 120px;
+        border-radius: 150%;
+        object-fit: cover;
+        border: 10px solid #4caf50;
+    }
+
+    .profile-picture-container input {
+        margin-top: 10px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 8px 12px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+    }
+
+    .profile-picture-container input:hover {
+        background-color: #45a049;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+    }
+
+    input[type="text"], input[type="email"], input[type="date"], select {
+        padding: 10px;
+        border: 1px solid #112bc2;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        font-size: 16px;
+        width: 100%;
+    }
+
+    input[type="text"]:focus, input[type="email"]:focus, input[type="date"]:focus, select:focus {
+        border-color: #4caf50;
+        outline: none;
+    }
+
+    button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
         .edit-profile-container {
-            background-color: #f8eeee;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-            margin: 40px auto;
-        }
-
-        h1, h2 {
-            margin-bottom: 15px;
-            color: #4caf50;
-            text-align: center;
-        }
-
-        /* Profile picture styling */
-        .profile-picture-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .profile-picture-container img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #4caf50;
-        }
-
-        .profile-picture-container input {
-            margin-top: 10px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 8px 12px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .profile-picture-container input:hover {
-            background-color: #45a049;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        input[type="text"], input[type="email"], input[type="date"], select {
-            padding: 10px;
-            border: 1px solid #112bc2;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            font-size: 16px;
-            width: 100%;
-        }
-
-        input[type="text"]:focus, input[type="email"]:focus, input[type="date"]:focus, select:focus {
-            border-color: #4caf50;
-            outline: none;
+            width: 90%;
         }
 
         button {
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .edit-profile-container {
-                width: 90%;
-            }
-
-            button {
-                padding: 10px;
-            }
-        }
-
-        /* Notification styling */
-        .notification {
-            display: none;
-            background-color: #4caf50;
-            color: white;
             padding: 10px;
-            border-radius: 5px;
-            margin-top: 20px;
-            text-align: center;
         }
+    }
+
+    /* Notification styling */
+    .notification {
+        display: none;
+        background-color: #4caf50;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 20px;
+        text-align: center;
+    }
+
 
     </style>
 </head>
@@ -182,11 +187,6 @@
     <!-- Navbar Section -->
     <div class="navbar">
         <img src="images/logo001.png" alt="Logo" class="logo" />
-        <ul>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="settings.html">Settings</a></li>
-            <li><a href="logout.html">Logout</a></li>
-        </ul>
     </div>
 
     <!-- Edit Profile Container -->
@@ -216,57 +216,30 @@
                 <option value="female">Female</option>
             </select>
 
+            <!-- Read-Only Fields -->
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" readonly>
+            <input type="email" id="email" name="email" placeholder="Enter your email">
 
             <label for="phone">Phone Number:</label>
-            <input type="text" id="phone" name="phone" placeholder="Enter your phone number" readonly>
+            <input type="text" id="phone" name="phone" placeholder="Enter your phone number">
 
             <label for="idNumber">ID Number:</label>
-            <input type="text" id="idNumber" name="idNumber" placeholder="Enter your ID number" readonly>
+            <input type="text" id="idNumber" name="idNumber" placeholder="Enter your ID number">
 
             <!-- ID Image Upload Section -->
             <label for="idImage">Upload ID Image:</label>
             <input type="file" id="idImage" name="idImage" accept="image/*">
 
             <label for="kraPin">KRA PIN:</label>
-            <input type="text" id="kraPin" name="kraPin" placeholder="Enter your KRA PIN" readonly>
+            <input type="text" id="kraPin" name="kraPin" placeholder="Enter your KRA PIN">
 
-            <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" name="dob" onchange="calculateAge()">
-
-            <label for="age">Age:</label>
-            <input type="text" id="age" name="age" placeholder="Calculated age" readonly>
-
-            <label for="pobox">P.O. Box:</label>
-            <input type="text" id="pobox" name="pobox" placeholder="Enter your P.O. Box">
-
-            <label for="county">County of Residence:</label>
-            <input type="text" id="county" name="county" placeholder="Enter your county of residence">
-
-            <label for="town">Town:</label>
-            <input type="text" id="town" name="town" placeholder="Enter your town">
-
-            <h2>Next of Kin Information</h2>
-
-            <label for="nextOfKinName">Next of Kin Name:</label>
-            <input type="text" id="nextOfKinName" name="nextOfKinName" placeholder="Enter next of kin name">
-
-            <label for="nextOfKinGender">Next of Kin Gender:</label>
-            <select id="nextOfKinGender" name="nextOfKinGender">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-            </select>
-
-            <label for="nextOfKinPhone">Next of Kin Phone Number:</label>
-            <input type="text" id="nextOfKinPhone" name="nextOfKinPhone" placeholder="Enter next of kin phone number" readonly>
-
-            <label for="nextOfKinIdNumber">Next of Kin ID Number:</label>
-            <input type="text" id="nextOfKinIdNumber" name="nextOfKinIdNumber" placeholder="Enter next of kin ID number">
-
-            <!-- Next of Kin ID Image Upload Section -->
-            <label for="nextOfKinIdImage">Upload Next of Kin ID Image:</label>
-            <input type="file" id="nextOfKinIdImage" name="nextOfKinIdImage" accept="image/*">
+            <!-- Script for Conditional Read-Only -->
+            <script>
+                // Makes fields readonly if they have a value, otherwise allows input
+                document.querySelectorAll("#email, #phone, #idNumber, #kraPin").forEach(input => {
+                    if (input.value) input.readOnly = true;
+                });
+            </script>
 
             <button type="submit">Save Changes</button>
 
