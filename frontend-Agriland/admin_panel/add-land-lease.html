@@ -106,6 +106,7 @@
             max-height: 100px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
         /* Logo Styles */
         header {
@@ -124,22 +125,17 @@
             header img {
                 margin: 0 auto; /* Center the logo */
             }
-     temp-branch
         }
     </style>
 </head>
 <body>
     <header>
-
-        <img src="../images/logo001.png" alt="Agriland Connect Logo" style="width: 100px; margin-bottom: 10px;">
-
         <img src="../images/logo001.png" alt="Agriland Connect Logo"> <!-- Update with your logo path -->
- temp-branch
         <h1 style="text-align: center;">Add Land for Lease</h1>
     </header>
 
     <div class="form-container">
-        <form  method="POST" action="/admin/add-land-lease" enctype="multipart/form-data" id="lease-form">
+        <form method="POST" action="/admin/add-land-lease" enctype="multipart/form-data" id="lease-form">
             <div class="form-group">
                 <label for="location">Location:</label>
                 <input type="text" id="location" name="location" required>
