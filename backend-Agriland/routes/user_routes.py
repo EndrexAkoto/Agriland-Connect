@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from models.user import get_user_by_email, create_user, authenticate_user
 from models.profile import *
 from pymongo import MongoClient
+from io import BytesIO
 client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
 
@@ -10,7 +11,9 @@ import os
 
 user_routes = Blueprint('user', __name__)
 frontend_path = '/home/hp/Desktop/Agriland/Agriland-Connect/frontend-Agriland'
-
+admin_collection  = db['admins']
+users_collection = db['users'] 
+fs = db['fs']
 
 @user_routes.route("/")
 def index():
@@ -50,7 +53,8 @@ def login():
             session['loggedin'] = True
             session['id'] = str(user['_id'])
             session['email'] = user['email']
-            session['name'] = user['username'] 
+            session['name'] = user['username']
+            session['user_email'] = user['email']  # Store user_email in session
             msg = 'Logged in successfully!'
             return redirect(url_for('user.dashboard'))
         else:
@@ -121,6 +125,32 @@ def farmer():
 
     # Render the form if method is GET
     return render_template('farmer.html', msg='')
+@user_routes.route('/user-profile.html')
+def userprofile():
+    # Check if user is logged in and 'user_email' is in session
+    if 'user_email' not in session:
+        return redirect(url_for('user.login'))  # Redirect to login if not in session
+
+    user_email = session['user_email']
+    user_profile = users_collection.find_one({'email': user_email})
+    return render_template('user-profile.html', user_profile=user_profile)
+
+@user_routes.route('/image/<image_id>')
+def image(image_id):
+    if 'user_email' not in session:
+        # Redirect to login or return an error if the user is not logged in
+        return redirect(url_for('user.login'))
+    user_email = session['user.email']
+    
+    user_profile = users_collection.find_one({'email': user_email})
+    if not user_profile or 'profile_image_id' not in user_profile:
+        return "Profile image not found", 404
+
+    image_id = user_profile['profile_image_id']
+    grid_out = fs.find_one({'_id': image_id})
+    if grid_out:
+        return send_file(BytesIO(grid_out.read()), mimetype=grid_out.content_type)
+    return "Image not found", 404
 
 # Serve other static files
 @user_routes.route('/images/<path:filename>')

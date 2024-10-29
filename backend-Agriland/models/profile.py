@@ -47,7 +47,7 @@ def extract_and_validate_form_data():
 
 # Step 3: Function to handle image uploads
 def save_images():
-    profile_image = request.files.get('profile-picture')
+    profile_image = request.files.get('idImage')
     next_of_kin_image = request.files.get('nextOfKinIdImage')
     
     profile_image_id = fs.put(profile_image, filename=profile_image.filename) if profile_image else None

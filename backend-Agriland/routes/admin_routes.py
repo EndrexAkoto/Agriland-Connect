@@ -15,7 +15,7 @@ frontend_path = '/home/hp/Desktop/Agriland/Agriland-Connect/frontend-Agriland/ad
 UPLOAD_FOLDER = '/home/hp/Agrilandproj/Agriland-Connect/'
 client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
-users_collection = db['manage_users']
+users_collection = db['users']
 land_listing_collection = db['land_listings']
 
 # Serve the 'index.html' file from the admin panel directory
@@ -147,9 +147,10 @@ def payments():
 def settings():
     return render_template('admin_panel/settings.html')
 
-@admin_routes.route("/admin/users.html")
+@admin_routes.route("/admin/users.html", methods=['GET'])
 def users():
-    return render_template('admin_panel/users.html')
+    users = list(users_collection.find())
+    return render_template('admin_panel/users.html', users=users)
 # Serve CSS files from the 'admin_panel/css' directory
 @admin_routes.route('/admin/css/<path:filename>')
 def serve_admin_css(filename):
@@ -162,6 +163,7 @@ def serve_admin_images(filename):
 
 @admin_routes.route('/manage-users', methods=['GET'])
 def manage_users():
+    users = list(users_collection.find())
     return render_template('manage_users.html')
 
 @admin_routes.route('/api/users', methods=['GET'])
