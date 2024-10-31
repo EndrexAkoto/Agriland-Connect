@@ -5,181 +5,178 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <style>
-
         /* General reset */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-        font-family: Arial, sans-serif;
-        background-image: url('images/logout.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        display: flex;
-        flex-direction: column;
-        min-height: 150vh;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('images/logout.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            min-height: 150vh;
+        }
 
-    /* Navbar styling */
-    .navbar {
-        background-color: #4caf50;
-        padding: 15px;
-        text-align: center;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+        /* Navbar styling */
+        .navbar {
+            background-color: #4caf50;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .navbar h2 {
-        color: white;
-        margin: 0;
-        display: flex;
-        align-items: center;
-    }
+        .navbar h2 {
+            color: white;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
 
-    .navbar .logo {
-        width: 50px;
-        height: 50px; /* Set height to match width for a perfect circle */
-        border-radius: 50%; /* Makes it circular */
-        object-fit: cover; /* Ensures the image fills the container without distortion */
-        display: block;
-        margin: 0 auto; /* Centers the logo horizontally */
-    }
+        .navbar .logo {
+            width: 50px;
+            height: 50px; /* Set height to match width for a perfect circle */
+            border-radius: 50%; /* Makes it circular */
+            object-fit: cover; /* Ensures the image fills the container without distortion */
+            display: block;
+            margin: 0 auto; /* Centers the logo horizontally */
+        }
 
-    .navbar ul {
-        list-style: none;
-        display: flex;
-        gap: 20px;
-    }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
 
-    .navbar ul li {
-        display: inline;
-    }
+        .navbar ul li {
+            display: inline;
+        }
 
-    .navbar ul li a {
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-    }
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-    .navbar ul li a:hover {
-        text-decoration: underline;
-    }
+        .navbar ul li a:hover {
+            text-decoration: underline;
+        }
 
-    /* Main container for edit profile */
-    .edit-profile-container {
-        background-color: #f8eeee;
-        padding: 40px;
-        border-radius: 16px;
-        box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 600px;
-        margin: 40px auto;
-    }
-
-    h1, h2 {
-        margin-bottom: 15px;
-        color: #4caf50;
-        text-align: center;
-    }
-
-    /* Profile picture styling */
-    .profile-picture-container {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .profile-picture-container img {
-        width: 120px;
-        height: 120px;
-        border-radius: 150%;
-        object-fit: cover;
-        border: 10px solid #4caf50;
-    }
-
-    .profile-picture-container input {
-        margin-top: 10px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 8px 12px;
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        border-radius: 15px;
-        cursor: pointer;
-    }
-
-    .profile-picture-container input:hover {
-        background-color: #45a049;
-    }
-
-    form {
-        display: flex;
-        flex-direction: column;
-    }
-
-    label {
-        margin-bottom: 5px;
-        font-weight: bold;
-        color: #555;
-    }
-
-    input[type="text"], input[type="email"], input[type="date"], select {
-        padding: 10px;
-        border: 1px solid #112bc2;
-        border-radius: 5px;
-        margin-bottom: 15px;
-        font-size: 16px;
-        width: 100%;
-    }
-
-    input[type="text"]:focus, input[type="email"]:focus, input[type="date"]:focus, select:focus {
-        border-color: #4caf50;
-        outline: none;
-    }
-
-    button {
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        padding: 12px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    button:hover {
-        background-color: #45a049;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
+        /* Main container for edit profile */
         .edit-profile-container {
-            width: 90%;
+            background-color: #f8eeee;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        h1, h2 {
+            margin-bottom: 15px;
+            color: #4caf50;
+            text-align: center;
+        }
+
+        /* Profile picture styling */
+        .profile-picture-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture-container img {
+            width: 120px;
+            height: 120px;
+            border-radius: 150%;
+            object-fit: cover;
+            border: 10px solid #4caf50;
+        }
+
+        .profile-picture-container input {
+            margin-top: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 8px 12px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .profile-picture-container input:hover {
+            background-color: #45a049;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"], input[type="email"], input[type="date"], select {
+            padding: 10px;
+            border: 1px solid #112bc2;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        input[type="text"]:focus, input[type="email"]:focus, input[type="date"]:focus, select:focus {
+            border-color: #4caf50;
+            outline: none;
         }
 
         button {
-            padding: 10px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
         }
-    }
 
-    /* Notification styling */
-    .notification {
-        display: none;
-        background-color: #4caf50;
-        color: white;
-        padding: 10px;
-        border-radius: 5px;
-        margin-top: 20px;
-        text-align: center;
-    }
+        button:hover {
+            background-color: #45a049;
+        }
 
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .edit-profile-container {
+                width: 90%;
+            }
 
+            button {
+                padding: 10px;
+            }
+        }
+
+        /* Notification styling */
+        .notification {
+            display: none;
+            background-color: #4caf50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -200,7 +197,7 @@
         </div>
 
         <!-- Edit Profile Form -->
-        <form method="post" enctype="multipart/form-data" action="">
+        <form id="edit-profile-form" method="post" enctype="multipart/form-data" action="/your-endpoint-here">
             <label for="firstName">First Name:</label>
             <input type="text" id="firstName" name="firstName" placeholder="Enter your first name">
 
@@ -233,6 +230,14 @@
             <label for="kraPin">KRA PIN:</label>
             <input type="text" id="kraPin" name="kraPin" placeholder="Enter your KRA PIN">
 
+            <!-- Next of Kin Section -->
+            <h2>Next of Kin</h2>
+            <label for="kinName">Name:</label>
+            <input type="text" id="kinName" name="kinName" placeholder="Enter next of kin's name">
+
+            <label for="kinRelationship">Relationship:</label>
+            <input type="text" id="kinRelationship" name="kinRelationship" placeholder="Enter relationship to next of kin">
+
             <!-- Script for Conditional Read-Only -->
             <script>
                 // Makes fields readonly if they have a value, otherwise allows input
@@ -247,8 +252,35 @@
             <div id="notification" class="notification">Profile updated successfully!</div>
         </form>
     </div>
+
     {% if msg  %}
     <p style="color: red;">{{ msg }}</p>
     {% endif %}
+
+    <script>
+        document.getElementById("edit-profile-form").onsubmit = function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            
+            // Handle the form submission via Fetch API
+            const formData = new FormData(this); // 'this' refers to the form
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById("notification").style.display = "block"; // Show success message
+                    setTimeout(() => {
+                        window.location.href = '/home'; // Redirect to homepage after 3 seconds
+                    }, 3000);
+                } else {
+                    // Handle error case
+                    console.error('Failed to update profile');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        };
+    </script>
 </body>
 </html>
