@@ -1,2 +1,4 @@
 node_modules
 package.json
+**/_pycache_/
+*._pycache_

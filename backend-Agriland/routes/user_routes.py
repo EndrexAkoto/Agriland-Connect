@@ -152,6 +152,9 @@ def image(image_id):
         return send_file(BytesIO(grid_out.read()), mimetype=grid_out.content_type)
     return "Image not found", 404
 
+@user_routes.route('/find-land.html')
+def findland():
+    return render_template('find-land.html')
 # Serve other static files
 @user_routes.route('/images/<path:filename>')
 def serve_images(filename):
