@@ -58,6 +58,9 @@ def dashboard():
 
 
 
+@user_routes.route('/find-land.html')
+def findland():
+    return render_template('find-land.html')
 # Serve other static files
 @user_routes.route('/images/<path:filename>')
 def serve_images(filename):
