@@ -3,7 +3,7 @@ from datetime import datetime
 
 client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
-users_collection = db['profiles']  # Use 'profiles' as per your description
+users_collection = db['users']  # Use 'profiles' as per your description
 leases_collection = db['land_listings']
 payments_collection = db['payments']
 

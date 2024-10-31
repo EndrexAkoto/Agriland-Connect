@@ -156,7 +156,7 @@
             <tbody id="userTableBody">
                 {% for user in users %}
                 <tr>
-                    <td>{{ user._id }}</td>
+                    <td>{{ user.id_number or 'N/A' }}</td>
                     <td>{{ user.first_name }} {{ user.last_name }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.role or 'N/A' }}</td>
