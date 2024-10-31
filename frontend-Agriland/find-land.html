@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find Land - Agriland Connect</title>
+    <title>Find Land & Listings - Agriland Connect</title>
    
     <style>
     /* Basic Reset */
@@ -32,7 +32,7 @@
         padding: 0 20px;
     }
 
-    .nav-left img {
+    .nav-left img, .logo-image {
         height: 80px;
     }
 
@@ -46,12 +46,11 @@
             justify-content: center;
         }
 
-        .nav-left img {
+        .nav-left img, .logo-image {
             display: block;
             margin: 0 auto;
         }
 
-        /* Hide user-links on mobile if needed */
         .user-links {
             display: none;
         }
@@ -98,7 +97,7 @@
         background: #45a049;
     }
 
-    .land-listings {
+    .land-listings, .listing-cards {
         max-width: 800px;
         margin: 20px auto;
         background: #fff;
@@ -107,18 +106,21 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    .land-item {
-        border-bottom: 1px solid #ddd;
-        padding: 10px 0;
+    .listing-card, .land-item {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 20px;
+        background: #fff;
     }
 
-    .land-item img {
+    .land-item img, .listing-card img {
         max-width: 100%;
         height: auto;
         margin-bottom: 10px;
     }
 
-    .view-full-listing {
+    .view-full-listing, .button {
         display: inline-block;
         margin-top: 10px;
         text-decoration: none;
@@ -130,27 +132,25 @@
 
     /* Adjust Scroll Up and Back Button Styles */
     .scroll-up, .back-button {
-        margin: 20px; /* Maintain spacing */
+        margin: 20px;
         background: #4CAF50;
         color: white;
         border: none;
         padding: 10px 20px;
         border-radius: 5px;
         cursor: pointer;
-        position: fixed; /* Keep them fixed */
-        z-index: 1000; /* Ensure they stay on top */
+        position: fixed;
+        z-index: 1000;
     }
 
-    /* Positioning for Scroll Up Button */
     .scroll-up {
         right: 20px;
-        bottom: 80px; /* Adjust position above the footer */
+        bottom: 80px;
     }
 
-    /* Positioning for Back Button */
     .back-button {
         left: 20px;
-        bottom: 80px; /* Adjust position above the footer */
+        bottom: 80px;
     }
 
     footer {
@@ -159,42 +159,36 @@
         background: #4CAF50;
         color: #fff;
     }
-
-    /* Additional adjustments for mobile */
-    @media (max-width: 768px) {
-        .scroll-up {
-            bottom: 80px; /* Adjust for mobile */
-        }
-
-        .back-button {
-            bottom: 80px; /* Adjust for mobile */
-        }
-    }
-</style>
+    </style>
 
     <script>
         async function fetchLandListings() {
             try {
-                const response = await fetch('/api/lands'); // Flask API endpoint
+                const response = await fetch('/api/lands');
                 const data = await response.json();
-
                 displayLandListings(data);
             } catch (error) {
                 console.error('Error fetching land listings:', error);
             }
         }
 
-        // Function to dynamically render land listings
+        async function fetchFullLandListings() {
+            try {
+                const response = await fetch('/api/land-listings');
+                const data = await response.json();
+                displayFullLandListings(data);
+            } catch (error) {
+                console.error('Error fetching full listings:', error);
+            }
+        }
+
         function displayLandListings(landList) {
             const listingsSection = document.querySelector('.land-listings');
-            listingsSection.innerHTML = '<h2>Available Land Listings</h2>'; // Reset content
-
+            listingsSection.innerHTML = '<h2>Available Land Listings</h2>';
             landList.forEach(land => {
                 const landItem = `
                     <div class="land-item">
-                        <div class="land-image">
-                            <img src="${land.image_url}" alt="Land Image">
-                        </div>
+                        <img src="${land.image_url}" alt="Land Image">
                         <p><strong>Location:</strong> ${land.location}</p>
                         <p><strong>Size:</strong> ${land.size} acres</p>
                         <a class="view-full-listing" href="full-details.html?id=${land.id}">View Full Details</a>
@@ -204,19 +198,34 @@
             });
         }
 
-        window.onload = function() {
-            fetchLandListings(); // Call function to fetch listings when the page loads
-        };
-
-        // Function to scroll to the top of the page
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+        function displayFullLandListings(data) {
+            const listingsContainer = document.querySelector('.listing-cards');
+            listingsContainer.innerHTML = ''; 
+            data.forEach(listing => {
+                const listingCard = `
+                    <div class="listing-card">
+                        <img src="${listing.imageUrl}" alt="${listing.name}">
+                        <div class="listing-details">
+                            <h2 style="color: #4CAF50;">${listing.name}</h2>
+                            <p>Location: ${listing.location}</p>
+                            <p>Size: ${listing.size} Acres</p>
+                            <p>Price: Ksh ${listing.price} per month</p>
+                            <a href="full-listing.html?id=${listing._id}" class="button">View Lease Details</a>
+                        </div>
+                    </div>`;
+                listingsContainer.innerHTML += listingCard;
             });
         }
 
-        // Function to navigate back to the previous page
+        window.onload = function() {
+            fetchLandListings();
+            fetchFullLandListings();
+        };
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function goBack() {
             window.history.back();
         }
@@ -226,7 +235,7 @@
     <header>
         <nav class="navbar">
             <div class="nav-left">
-                <img src="./images/logo001.png" alt="Agriland Connect Logo"> <!-- Placeholder logo -->
+                <img src="./images/logo001.png" alt="Agriland Connect Logo">
             </div>
             <div class="nav-right user-links">
                 <a href="user-profile.html">User Profile</a>
@@ -243,7 +252,6 @@
             <h1>Find Land</h1>
             <label for="location">Location:</label>
             <input type="text" id="location" placeholder="Enter location">
-
             <label for="land-size">Land Size:</label>
             <select id="land-size">
                 <option value="any">Any Size</option>
@@ -252,7 +260,6 @@
                 <option value="51-100">51 - 100 acres</option>
                 <option value="100+">100+ acres</option>
             </select>
-
             <label for="price-range">Price Range:</label>
             <select id="price-range">
                 <option value="any">Any Price</option>
@@ -261,13 +268,15 @@
                 <option value="16000-20000">Ksh. 16,000 - 20,000</option>
                 <option value="21000+">Ksh. 21,000+</option>
             </select>
-
             <button type="button">Apply Filters</button>
         </section>
 
         <section class="land-listings">
             <h2>Available Land Listings</h2>
-            <!-- Listings will be dynamically loaded here -->
+        </section>
+
+        <section class="listing-cards">
+            <h2>Available Lands for Lease</h2>
         </section>
 
         <button class="scroll-up" onclick="scrollToTop()">Scroll Up</button>

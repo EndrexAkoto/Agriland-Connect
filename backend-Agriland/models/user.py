@@ -4,8 +4,6 @@ client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
 
 users_collection = db['users']
-profiles_collection = db['profiles']
-
 
 # Define user-related functions, e.g., registration, authentication
 def create_user(user_data):

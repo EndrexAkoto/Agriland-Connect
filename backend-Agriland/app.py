@@ -9,10 +9,8 @@ load_dotenv()
 
 app = Flask(__name__, template_folder='../frontend-Agriland', static_folder="../frontend-Agriland")
 frontend_path = '/home/hp/Desktop/Agriland/Agriland-Connect/frontend-Agriland'
-app.secret_key = 'c30b7150c42e87caef910ca5aebddbcce8309d5f' 
-app.config['UPLOAD_FOLDER'] = '/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads'
 
-
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 # Register blueprints
 app.register_blueprint(user_routes)
 app.register_blueprint(admin_routes)
