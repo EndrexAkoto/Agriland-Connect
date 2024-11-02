@@ -230,11 +230,22 @@
                             <label>Price:</label>
                             <input type="text" name="price_per_acre" value="{{ listing.price_per_acre }}" required>
                         </div>
-                        <div class="images">
-                            <!-- Loop through the images array and display each image -->
-                            {% for image in listing.images %}
-                            <img src="{{ image }}" alt="Land Image">
-                            {% endfor %}
+                        {% for listing in listings %}
+                        <div class="listing"> 
+                            <h3>{{ listing.user_name }}'s Listing</h3>
+                            <p>Land Size: {{ listing.land_size }}</p>
+                            <p>Location: {{ listing.location }}</p>
+                            <p>Price per Acre: {{ listing.price_per_acre }}</p>
+                            <p>Amenities: {{ listing.amenities }}</p>
+                            <p>Road Access: {{ listing.road_access }}</p>
+                            <p>Fencing: {{ listing.fencing }}</p>
+                            <p>Lease Duration: {{ listing.lease_duration }}</p>
+                            <p>Payment Frequency: {{ listing.payment_frequency }}</p>
+                            <div class="images">
+                                {% for image in listing.images %}
+                                <img src="{{ image }}" alt="Land Image">
+                                {% endfor %}
+                            </div>
                         </div>
                         <button type="submit">Approve</button>
                         <button type="button" onclick="rejectListing('{{ listing.user_name }}')">Reject</button>
