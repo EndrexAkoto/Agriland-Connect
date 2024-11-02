@@ -1,4 +1,9 @@
 node_modules
 package.json
+<<<<<<< HEAD
 **/__pycache__/
 .env
+=======
+**/_pycache_/
+*._pycache_
+>>>>>>> 704cd48 (hey backend)
