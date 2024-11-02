@@ -1,5 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory
-from models.user import get_user_by_email, create_user
+from models.user import get_user_by_email, create_user, authenticate_user
+from werkzeug.security import check_password_hash
+from pymongo import MongoClient
+
+# Assuming MongoDB setup
+client = MongoClient('mongodb://localhost:27017/')
+db = client['Agriland-Connect']
+users_collection = db['users']
 
 import re
 import os
@@ -45,6 +52,7 @@ def login():
             session['loggedin'] = True
             session['id'] = str(user['_id'])
             session['email'] = user['email']
+            session['name'] = user['username'] 
             msg = 'Logged in successfully!'
             return redirect(url_for('user.dashboard'))
         else:
@@ -52,10 +60,32 @@ def login():
     
     return render_template('login.html', msg=msg)
 
+
 @user_routes.route("/dashboard.html")
 def dashboard():
-    return render_template('dashboard.html')
+    user_data = {
+        "name": session.get("name", "Guest")  # Default to "Guest" if name is not in session
+    }
+    return render_template('dashboard.html', user_data=user_data)
 
+@user_routes.route("/edit-profile.html", methods=['GET', 'POST'])
+def profile():
+    msg = ''
+    if request.method == 'POST':
+        # Extract form data and validate it
+        profile_data, next_of_kin_data, msg = extract_and_validate_form_data()
+        if msg:
+            return render_template('edit-profile.html', msg=msg)
+
+        # Process images
+        profile_image_id, next_of_kin_image_id = save_images()
+
+        # Update or insert profile in the database
+        save_profile_data(profile_data, next_of_kin_data, profile_image_id, next_of_kin_image_id)
+
+        msg = 'Profile updated successfully!' if profiles_collection.find_one({'email': profile_data['email']}) else 'Profile created successfully!'
+    
+    return render_template('edit-profile.html', msg=msg)
 
 
 @user_routes.route('/find-land.html')
