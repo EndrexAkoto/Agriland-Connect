@@ -13,6 +13,10 @@ import os
 admin_routes = Blueprint('admin', __name__)
 frontend_path = '/home/hp/Desktop/Agriland/Agriland-Connect/frontend-Agriland/admin_panel'
 UPLOAD_FOLDER = '/home/hp/Agrilandproj/Agriland-Connect/'
+client = MongoClient('localhost', 27017)
+db = client['Agriconnect']
+users_collection = db['users']
+land_listing_collection = db['land_listings']
 
 # Serve the 'index.html' file from the admin panel directory
 def allowed_file(filename):
@@ -66,6 +70,31 @@ def submit_form():
 
     return render_template('admin_panel/settings.html', msg=msg)
 
+@admin_routes.route("/admin/unapproved_uploads.html")
+def unapproved_uploads():
+    # Query unapproved listings and transform to list, constructing image paths directly in the query result.
+    listings = [
+        {
+            '_id': str(listing['_id']),
+            'user_name': listing.get('user_name', 'Unknown User'),
+            'land_size': listing.get('land_size', 'N/A'),
+            'location': listing.get('location', 'N/A'),
+            'price_per_acre': listing.get('price_per_acre', 'N/A'),
+            'description': listing.get('description', 'N/A'),
+            'amenities': listing.get('amenities', 'N/A'),
+            'road_access': listing.get('road_access', 'N/A'),
+            'fencing': listing.get('fencing', 'N/A'),
+            'title_deed': listing.get('title_deed', 'N/A'),
+            'lease_duration': listing.get('lease_duration', 'N/A'),
+            'payment_frequency': listing.get('payment_frequency', 'N/A'),
+            'images': [f"uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}"]  # Construct image path
+        }
+        for listing in land_listing_collection.find({'approved': 'False'})
+    ]
+
+    return render_template('admin_panel/unapproved_uploads.html', listings=listings)
+
+
 @admin_routes.route("/admin/leases.html")
 def leases():
     return render_template('admin_panel/leases.html')
@@ -84,7 +113,8 @@ def settings():
 
 @admin_routes.route("/admin/users.html")
 def users():
-    return render_template('admin_panel/users.html')
+    users = list(users_collection.find())
+    return render_template('admin_panel/users.html', users= users)
 # Serve CSS files from the 'admin_panel/css' directory
 @admin_routes.route('/admin/css/<path:filename>')
 def serve_admin_css(filename):
