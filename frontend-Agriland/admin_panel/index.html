@@ -4,36 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Agriland Connect</title>
-    <link rel="stylesheet" href="css/admin_style..css">
-
+    
     <style>
         /* General Body Styles */
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
-            background-image: url('../images/frontImg.jpg'); /* Add your image here */
-            background-size: cover; /* Ensures the image covers the entire background */
-            background-position: center; /* Center the image */
-            background-repeat: no-repeat; /* Prevent the image from repeating */
-            color: #333; /* Dark text color */
+            background-image: url('../images/frontImg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333;
             margin: 0;
             padding: 0;
         }
 
         header {
-            background-color: rgba(76, 175, 80, 0.8); /* Semi-transparent background for better contrast */
+            background-color: rgba(76, 175, 80, 0.8);
             color: white;
             padding: 15px;
             display: flex;
-            align-items: center; /* Align items vertically in the center */
-            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+            align-items: center;
+            justify-content: space-between; /* Space between logo and navbar */
+            flex-wrap: wrap;
         }
 
         .logo-container {
-            flex: 0 0 auto; /* Allow logo to maintain its size */
+            flex: 0 0 auto;
             display: flex;
-            justify-content: flex-start; /* Align logo to the left */
-            margin-right: auto; /* Push navbar to the right */
+            justify-content: flex-start;
         }
 
         .logo {
@@ -41,16 +40,14 @@
         }
 
         .navbar {
-            flex: 1; /* Allow navbar to take the remaining space */
-            display: flex;
-            justify-content: flex-end; /* Align navbar items to the right */
-            position: relative; /* Position relative to control the dropdown */
+            flex: 1;
+            position: relative;
         }
 
         .nav-links {
             list-style: none;
             display: flex;
-            justify-content: flex-end; /* Align links to the right */
+            justify-content: flex-end;
             padding: 0;
             margin: 0;
         }
@@ -63,6 +60,8 @@
             color: white;
             text-decoration: none;
             font-weight: bold;
+            display: block; /* Ensure the link takes up space */
+            padding: 10px; /* Add padding for better touch targets */
         }
 
         .nav-links a:hover {
@@ -71,32 +70,29 @@
 
         .burger {
             display: none; /* Hidden for now, can be styled for mobile later */
-            flex-direction: column; /* Stack burger icon vertically */
-            cursor: pointer; /* Change cursor to pointer */
+            flex-direction: column;
+            cursor: pointer;
+            margin-left: auto; /* Push burger icon to the right */
         }
 
         .burger div {
             width: 25px;
             height: 3px;
             background-color: white;
-            margin: 3px 0; /* Space between lines */
+            margin: 3px 0;
         }
 
         .close-btn {
             display: none; /* Hidden by default */
-            background-color: rgba(76, 175, 80, 0.8);
+            background-color: transparent;
             color: white;
             border: none;
-            padding: 10px;
             cursor: pointer;
             position: absolute;
-            bottom: 15px; /* Position at the bottom of the menu */
-            right: 15px; /* Align to the right */
-            border-radius: 50%; /* Rounded button */
-            width: 40px;
-            height: 40px;
-            font-size: 20px; /* Size of the 'X' */
-            text-align: center; /* Center the 'X' */
+            top: 15px; /* Position at the top */
+            left: 15px; /* Align to the left */
+            font-size: 20px;
+            z-index: 1001; /* Ensure it's on top */
         }
 
         main {
@@ -107,29 +103,29 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
-            flex-wrap: wrap; /* Allow boxes to wrap on smaller screens */
+            flex-wrap: wrap;
         }
 
         .box {
-            background-color: rgba(255, 255, 255, 0.9); /* White box with transparency for readability */
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             flex: 1;
             margin: 0 10px;
-            min-width: 200px; /* Minimum width for boxes */
-            box-sizing: border-box; /* Ensure padding doesn't affect width */
+            min-width: 200px;
+            box-sizing: border-box;
         }
 
         .box h2 {
-            color: #4CAF50; /* Project Color */
+            color: #4CAF50;
             margin-bottom: 10px;
         }
 
         footer {
             text-align: center;
             padding: 10px 0;
-            background-color: rgba(76, 175, 80, 0.8); /* Semi-transparent footer */
+            background-color: rgba(76, 175, 80, 0.8);
             color: white;
             position: relative;
             bottom: 0;
@@ -139,14 +135,14 @@
         /* User Statistics Section */
         .user-statistics {
             margin-top: 20px;
-            background-color: rgba(255, 255, 255, 0.9); /* White background for user stats with transparency */
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .user-statistics h2 {
-            color: #4CAF50; /* Project Color */
+            color: #4CAF50;
             margin-bottom: 15px;
         }
 
@@ -163,22 +159,17 @@
         @media (max-width: 768px) {
             .nav-links {
                 display: none; /* Hide regular nav links */
-                flex-direction: column; /* Stack navigation links vertically */
-                position: absolute; /* Position absolute for dropdown */
-                background-color: rgba(76, 175, 80, 0.8); /* Match header background */
+                flex-direction: column;
+                position: absolute;
+                background-color: rgba(76, 175, 80, 0.8);
                 top: 60px; /* Position below the header */
-                right: 0; /* Align to the right */
-                width: 100%; /* Full width */
-                z-index: 1000; /* Ensure it appears above other elements */
+                right: 0;
+                width: 100%;
+                z-index: 1000;
             }
 
             .nav-links.active {
                 display: flex; /* Show links when active */
-            }
-
-            .logo-container {
-                justify-content: center; /* Center logo in mobile view */
-                width: 100%; /* Full width for centering */
             }
 
             .burger {
@@ -205,11 +196,12 @@
             <img class="logo" src="../images/logo001.png" alt="Agriland Logo">
         </div>
         <nav class="navbar">
-            <ul class="nav-links">
+            <ul class="nav-links" id="navLinks">
+                <li><button class="close-btn" id="closeBtn">&times;</button></li>
                 <li><a href="index.html">Dashboard</a></li>
                 <li><a href="users.html">Users</a></li>
-                <li><a href="unapproved_uploads.html">Unapproved_Uploads</a></li> <!-- Updated link -->
-                <li><a href="add-land-lease.html">Add land lease</a></li>
+                <li><a href="unapproved_uploads.html">Unapproved Uploads</a></li>
+                <li><a href="add-land-lease.html">Add Land Lease</a></li>
                 <li><a href="payments.html">Payments</a></li>
                 <li><a href="settings.html">Settings</a></li>
             </ul>
@@ -260,22 +252,17 @@
     <footer>
         <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
     </footer>
-
     <script>
         const burger = document.getElementById('burger');
         const navLinks = document.getElementById('navLinks');
         const closeBtn = document.getElementById('closeBtn');
 
-        // Toggle navigation menu
         burger.addEventListener('click', () => {
             navLinks.classList.toggle('active');
-            closeBtn.style.display = 'block'; // Show close button when menu is open
         });
 
-        // Close navigation menu
         closeBtn.addEventListener('click', () => {
             navLinks.classList.remove('active');
-            closeBtn.style.display = 'none'; // Hide close button when menu is closed
         });
     </script>
 </body>
