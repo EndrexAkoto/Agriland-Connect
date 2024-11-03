@@ -63,6 +63,21 @@
             color: #4CAF50; /* Project Color */
         }
 
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background: #4CAF50; /* Project Color */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background: #45a049; /* Darker shade on hover */
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -112,24 +127,20 @@
         </div>
         <nav class="navbar">
             <ul class="nav-links">
-                <li><a href="index.html">Dashboard</a></li>
-                <li><a href="users.html">Users</a></li>
-                <li><a href="find_land.html">Find Land</a></li>
-                <li><a href="land_listings.html">Land Listings</a></li>
                 <li><a href="payments.html">Payments</a></li>
-                <li><a href="settings.html">Settings</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
         <h1>Manage Payments</h1>
+        <a href="index.html" class="back-button">Back to Dashboard</a> <!-- Back Button -->
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Farmer Name</th> <!-- New column for Farmer Name -->
-                    <th>Contact</th> <!-- New column for Contact Information -->
+                    <th>Farmer Name</th>
+                    <th>Contact</th>
                     <th>Listing</th>
                     <th>Amount (KSh)</th>
                     <th>Payment Method</th>
@@ -141,8 +152,8 @@
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td>John Doe</td> <!-- Example Farmer Name -->
-                    <td>0700 123 456</td> <!-- Example Contact -->
+                    <td>John Doe</td>
+                    <td>0700 123 456</td>
                     <td>Farm in Nairobi</td>
                     <td>150,000</td>
                     <td>Mobile Banking</td>
