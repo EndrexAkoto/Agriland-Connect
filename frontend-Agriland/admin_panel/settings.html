@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Settings - Agriland Connect</title>
-    <link rel="stylesheet" href="css/admin_style.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -107,6 +106,11 @@
             bottom: 0;
             width: 100%;
         }
+
+        .back-button {
+            margin-top: 20px; /* Space above the button */
+            text-align: center; /* Center the button */
+        }
     </style>
 </head>
 <body>
@@ -116,51 +120,66 @@
         </div>
         <nav class="navbar">
             <ul class="nav-links">
-                <li><a href="index.html">Dashboard</a></li>
-                <li><a href="users.html">Users</a></li>
-                <li><a href="find_land.html">Find Land</a></li>
-                <li><a href="land_listings.html">Land Listings</a></li>
-                <li><a href="payments.html">Payments</a></li>
                 <li><a href="settings.html">Settings</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <h1>Admin Settings</h1>
+        <h1>Add User</h1>
         <form method="post" action="">
-            <label for="email">Admin Email:</label>
-            <input type="email" id="email" name="email" value="admin@agriland.com" required>
+            <label for="first-name">First Name:</label>
+            <input type="text" id="first-name" name="first-name" required>
 
-            <label for="password">Change Password:</label>
-            <input type="password" id="password" name="password" required>
+            <label for="middle-name">Middle Name:</label>
+            <input type="text" id="middle-name" name="middle-name">
 
-            <label for="name">Admin Name:</label>
-            <input type="text" id="name" name="name" value="Admin Name" required>
+            <label for="last-name">Last Name:</label>
+            <input type="text" id="last-name" name="last-name" required>
 
-            <label for="phone">Admin Phone:</label>
-            <input type="text" id="phone" name="phone" value="0700 000 000" required>
+            <label for="id-number">ID Number:</label>
+            <input type="text" id="id-number" name="id-number" required>
 
-            <label for="user-role">Default User Role:</label>
-            <select id="user-role" name="user-role" required>
+            <label for="phone">Phone No.:</label>
+            <input type="text" id="phone" name="phone" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="role">Role:</label>
+            <select id="role" name="role" required>
+                <option value="none">None</option>
                 <option value="farmer">Farmer</option>
                 <option value="landlord">Landlord</option>
                 <option value="admin">Admin</option>
             </select>
 
-            <label for="site-status">Site Status:</label>
-            <select id="site-status" name="site-status" required>
-                <option value="active">Active</option>
-                <option value="maintenance">Maintenance</option>
-                <option value="inactive">Inactive</option>
-            </select>
-
-            <button type="submit">Update Settings</button>
+            <button type="submit">Create Account</button>
         </form>
-    </main> 
-    {% if msg  %}
-        <p>msg</p>
-    {%  endif %}
+
+        <h1>Reset User/Admin Password</h1>
+        <form method="post" action="">
+            <label for="reset-email">Email:</label>
+            <input type="email" id="reset-email" name="reset-email" required>
+
+            <button type="submit">Reset Password</button>
+        </form>
+
+        <h1>Terminate Account</h1>
+        <form method="post" action="">
+            <label for="terminate-email">Email:</label>
+            <input type="email" id="terminate-email" name="terminate-email" required>
+
+            <button type="submit">Terminate Account</button>
+        </form>
+        
+        <div class="back-button">
+            <button onclick="window.location.href='index.html'">Back to Dashboard</button>
+        </div>
+    </main>
 
     <footer>
         <p>&copy; 2024 Agriland Connect. All rights reserved.</p>

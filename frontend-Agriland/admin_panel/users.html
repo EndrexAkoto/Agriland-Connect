@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users - Agriland Connect</title>
-    <link rel="stylesheet" href="css/admin_style.css">
+    <link rel="stylesheet" href="css/admin_style..css">
     <style>
         /* General Body Styles */
         body {
@@ -65,6 +65,20 @@
 
         .nav-links a:hover {
             text-decoration: underline;
+        }
+
+        .burger {
+            display: none; /* Hide the hamburger menu by default */
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .burger div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 3px 0;
+            transition: 0.4s;
         }
 
         main {
@@ -131,6 +145,13 @@
         @media (max-width: 768px) {
             .nav-links {
                 flex-direction: column;
+                display: none; /* Hide the menu by default on mobile */
+            }
+            .nav-links.active {
+                display: flex; /* Show the menu when active */
+            }
+            .burger {
+                display: flex; /* Show the hamburger icon on mobile */
             }
         }
     </style>
@@ -147,7 +168,7 @@
                 <li><a href="settings.html">Settings</a></li>
             </ul>
         </nav>
-        <div class="burger">
+        <div class="burger" id="burger">
             <div></div>
             <div></div>
             <div></div>
@@ -194,5 +215,13 @@
     </footer>
 
     <script src="js/admin_script.js"></script>
+    <script>
+        const burger = document.getElementById('burger');
+        const navLinks = document.querySelector('.nav-links');
+
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
