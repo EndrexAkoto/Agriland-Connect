@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, current_app, session
+from flask import Blueprint, render_template, request, current_app, session, redirect, url_for
 from models.land import land_collection  # Import your land model
 from bson import ObjectId  # To work with MongoDB ObjectId
 from utils.helpers import *
@@ -14,7 +14,10 @@ db = client['Agriconnect']
 def landlord():
     if request.method == 'POST':
         user_id = session.get('id')  # Get user ID from session
-        if not user_id:
+        username = session.get('username')
+        print(user_id & username)  # Get username from session
+
+        if not user_id or not username:
             return redirect(url_for('user.login'))  # Redirect if not logged in
 
         # Collect form data
@@ -31,9 +34,10 @@ def landlord():
         if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency]):
             return render_template('landlord.html', msg='Please fill out all fields!')
 
-        # Initialize MongoDB document without images to get its ObjectId
+        # Initialize MongoDB document with user_id and username
         land_listing_data = {
             'user_id': ObjectId(user_id),
+            'username': username,  # Include username in the land listing data
             'land_size': land_size,
             'location': location,
             'price_per_acre': price_per_acre,
@@ -90,6 +94,7 @@ def landlord():
         return render_template('landlord.html', msg='Land listing submitted successfully!')
     
     return render_template('landlord.html', msg='')
+
 
 
 
