@@ -185,7 +185,9 @@
     <div class="navbar">
         <img src="images/logo001.png" alt="Logo" class="logo" />
     </div>
-
+    {% if msg  %}
+            <p style="color: red;">{{ msg }}</p>
+    {% endif %}
     <!-- Edit Profile Container -->
     <div class="edit-profile-container">
         <h1>Edit Your Profile</h1>
@@ -197,7 +199,7 @@
         </div>
 
         <!-- Edit Profile Form -->
-        <form id="edit-profile-form" method="post" enctype="multipart/form-data" action="/your-endpoint-here">
+        <form  method="post" enctype="multipart/form-data" action="">
             <label for="firstName">First Name:</label>
             <input type="text" id="firstName" name="firstName" placeholder="Enter your first name">
 
@@ -247,6 +249,11 @@
             </script>
 
             <button type="submit">Save Changes</button>
+            {% if msg  %}
+            <p style="color: red;">{{ msg }}</p>
+            {% endif %}
+
+            
 
             <!-- Success Notification -->
             <div id="notification" class="notification">Profile updated successfully!</div>
