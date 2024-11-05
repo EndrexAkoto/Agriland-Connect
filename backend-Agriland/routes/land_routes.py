@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 from flask import Blueprint, render_template, request, current_app, session, redirect, url_for
-=======
-from flask import Blueprint, render_template, request, current_app
->>>>>>> parent of 3e68501 (Added changes in the admin panel)
 from models.land import land_collection  # Import your land model
 from bson import ObjectId  # To work with MongoDB ObjectId
 from utils.helpers import *
