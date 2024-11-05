@@ -8,20 +8,10 @@ leases_collection = db['land_listings']
 payments_collection = db['payments']
 
 def calculate_age_bracket(dob):
-    # Check if dob is a string and convert to datetime
-    if isinstance(dob, str):
-        try:
-            dob = datetime.strptime(dob, '%Y-%m-%d')
-        except ValueError:
-            return 'Other'
-    elif not isinstance(dob, datetime):
+    if not isinstance(dob, datetime):
         return 'Other'
-    
-    # Calculate age
     today = datetime.today()
     age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-    
-    # Determine the age bracket
     if 18 <= age <= 25:
         return '18-25'
     elif 26 <= age <= 35:
@@ -35,33 +25,25 @@ def get_user_statistics():
         total_users = users_collection.count_documents({})
         one_month_ago = datetime.today().replace(day=1)
         new_users = users_collection.count_documents({'registration_date': {'$gte': one_month_ago}})
-        farmers = users_collection.count_documents({'role': 'Farmer'})
+        farmers = users_collection.count_documents({'role': 'farmer'})
         landowners = users_collection.count_documents({'role': 'landowner'})
         total_males = users_collection.count_documents({'gender': 'male'})  # Ensure consistent case
         total_females = users_collection.count_documents({'gender': 'female'})  # Ensure consistent case
         male_percentage = (total_males / total_users) * 100 if total_users > 0 else 0
         female_percentage = (total_females / total_users) * 100 if total_users > 0 else 0
 
-        # Initialize age brackets counts
-        age_brackets = {'18-25': 0, '26-35': 0, '36-50': 0}
-        
-        # Process each user's dob to calculate age bracket
         users = users_collection.find({}, {'dob': 1})
+        age_brackets = {'18-25': 0, '26-35': 0, '36-50': 0}
         for user in users:
             dob = user.get('dob')
-            if dob:  # Check if dob exists
+            if dob and isinstance(dob, datetime):  # Ensure dob is a datetime object
                 bracket = calculate_age_bracket(dob)
                 if bracket in age_brackets:
                     age_brackets[bracket] += 1
-        
-        # Calculate age bracket percentages
         age_brackets_percentage = {k: (v / total_users) * 100 if total_users > 0 else 0 for k, v in age_brackets.items()}
 
-        # Retrieve other statistics
-        active_leases = leases_collection.count_documents({'approved': False})
+        active_leases = leases_collection.count_documents({'status': 'active'})
         pending_payments = payments_collection.count_documents({'status': 'pending'})
-        total_listings = leases_collection.count_documents({})
-
 
         return {
             'Total Users': total_users,
@@ -78,8 +60,7 @@ def get_user_statistics():
                 '36-50': age_brackets_percentage['36-50']
             },
             'Active Leases': active_leases,
-            'Pending Payments': pending_payments,
-            'Total Listings': total_listings  
+            'Pending Payments': pending_payments
         }
 
     except Exception as e:
