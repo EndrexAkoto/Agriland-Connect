@@ -12,6 +12,7 @@ client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
 users_collection = db['users']
 land_listing_collection = db['land_listings']
+upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
 
 @land_routes.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -29,10 +30,9 @@ def landlord():
     if request.method == 'POST':
         user_id = session.get('id')  # Get user ID from session
         username = session.get('username')
-        print(user_id & username)  # Get username from session
 
-        if not user_id or not username:
-            return redirect(url_for('user.login'))  # Redirect if not logged in
+        # if not user_id or not username:
+        #     return redirect(url_for('user.login'))  # Redirect if not logged in
 
 
 
