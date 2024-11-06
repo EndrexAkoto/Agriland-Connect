@@ -276,6 +276,20 @@
         </section>
 
         <section class="listing-cards">
+            {% for listing in listings %}
+            <div class="listing-card">
+                <img src="{{ listing.farm_image }}" alt="Land Image" style="width: 100px; height: auto;">
+                <h3>{{ listing.location }}</h3>
+                <p>Size: {{ listing.land_size }} acres</p>
+                <p>Price per Acre: Ksh. {{ listing.price_per_acre }}</p>
+                <p>Amenities: {{ listing.amenities }}</p>
+                <p>Road Access: {{ listing.road_access }}</p>
+                <p>Fencing: {{ listing.fencing }}</p>
+                <p>Lease Duration: {{ listing.lease_duration }}</p>
+                <p>Payment Frequency: {{ listing.payment_frequency }}</p>
+            </div>
+            {% endfor %}
+        </section>
 
         <button class="scroll-up" onclick="scrollToTop()">Scroll Up</button>
         <button class="back-button" onclick="goBack()">Back</button>
@@ -285,4 +299,5 @@
         <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
     </footer>
 </body>
+
 </html>
