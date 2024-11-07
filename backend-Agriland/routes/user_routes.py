@@ -1,12 +1,15 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory
 from models.user import get_user_by_email, create_user, authenticate_user
+from models.profile import *
 from werkzeug.security import check_password_hash
 from pymongo import MongoClient
+from bson.objectid import ObjectId
+from datetime import datetime
 from bson import ObjectId
 
 # Assuming MongoDB setup
 client = MongoClient('mongodb://localhost:27017/')
-db = client['Agriland-Connect']
+db = client['Agriconnect']
 users_collection = db['users']
 
 import re
@@ -35,7 +38,14 @@ def signup():
         elif get_user_by_email(email):
             msg = 'Account already exists!'
         else:
-            create_user({'username': username, 'email': email, 'password': password})
+            # Create user with role set to 'N/A'
+            create_user({
+                'username': username,
+                'email': email,
+                'password': password,
+                'role': 'N/A',
+                'registration_date': datetime.now()   # Set initial role to N/A
+            })
             msg = 'You have successfully registered!'
             return redirect(url_for('user.login'))
     
@@ -53,14 +63,13 @@ def login():
             session['loggedin'] = True
             session['id'] = str(user['_id'])
             session['email'] = user['email']
-            session['name'] = user['username'] 
+            session['name'] = user['username']
             msg = 'Logged in successfully!'
             return redirect(url_for('user.dashboard'))
         else:
             msg = 'Incorrect username/password!'
     
     return render_template('login.html', msg=msg)
-
 
 @user_routes.route("/dashboard.html")
 def dashboard():
@@ -69,24 +78,62 @@ def dashboard():
     }
     return render_template('dashboard.html', user_data=user_data)
 
-@user_routes.route("/edit-profile.html", methods=['GET', 'POST'])
-def profile():
-    msg = ''
+
+@user_routes.route("/farmer.html", methods=['GET', 'POST'])
+def farmer():
     if request.method == 'POST':
-        # Extract form data and validate it
-        profile_data, next_of_kin_data, msg = extract_and_validate_form_data()
-        if msg:
-            return render_template('edit-profile.html', msg=msg)
+        user_id = session.get('id')  # Get user ID from session
+        if not user_id:
+            return redirect(url_for('user.login'))  # Redirect if not logged in
 
-        # Process images
-        profile_image_id, next_of_kin_image_id = save_images()
+        # Collect form data
+        land_size = request.form.get('landSize')
+        location = request.form.get('location')
+        crop_type = request.form.get('cropType')
+        budget_per_acre = request.form.get('budgetPerAcre')
+        lease_duration = request.form.get('leaseDuration')
+        payment_method = request.form.get('paymentMethod')
 
-        # Update or insert profile in the database
-        save_profile_data(profile_data, next_of_kin_data, profile_image_id, next_of_kin_image_id)
+        if not all([land_size, location, crop_type, budget_per_acre, lease_duration, payment_method]):
+            return render_template('farmer.html', msg='Please fill out all fields!')
+        
+        # Insert land request into the 'farmer' collection
+        db['farmer'].insert_one({
+            'user_id': ObjectId(user_id),
+            'land_size': land_size,
+            'location': location,
+            'crop_type': crop_type,
+            'budget_per_acre': budget_per_acre,
+            'lease_duration': lease_duration,
+            'payment_method': payment_method
+        })
 
-        msg = 'Profile updated successfully!' if profiles_collection.find_one({'email': profile_data['email']}) else 'Profile created successfully!'
-    
-    return render_template('edit-profile.html', msg=msg)
+        # Update the user's role
+        user_collection = db['users']  # Ensure you are checking the correct collection
+        user = user_collection.find_one({'_id': ObjectId(user_id)})
+
+        if user is None:
+            return render_template('farmer.html', msg='User not found!')  # Handle user not found
+        
+        # Now it's safe to access user.get()
+        current_role = user.get('role', 'N/A')
+
+        # Update role logic
+        if current_role == 'Landlord':
+            new_role = 'Farmer, Landlord'
+        else:
+            new_role = 'Farmer'
+
+        user_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'role': new_role}})
+        
+        return render_template('farmer.html', msg='Land request submitted successfully!')
+
+    return render_template('farmer.html', msg='')
+
+@user_routes.route('/user-profile.html')
+def userprofile():
+    return render_template('user-profile.html')
+# Serve other static files
 
 @user_routes.route("/farmer.html", methods=['GET', 'POST'])
 def farmer():

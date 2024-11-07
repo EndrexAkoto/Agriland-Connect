@@ -1,12 +1,19 @@
-from flask import Blueprint, render_template, request, current_app, session, redirect, url_for
+
+from flask import Blueprint, render_template, request, current_app, session
+from flask import Blueprint, render_template, request, current_app, session, redirect, url_fo
 from models.land import land_collection  # Import your land model
 from bson import ObjectId  # To work with MongoDB ObjectId
 from utils.helpers import *
+from pymongo import MongoClient
+
 import os
 from pymongo import MongoClient 
 from db import db 
 
 land_routes = Blueprint('land', __name__)
+
+client = MongoClient('mongodb://localhost:27017/')
+db = client['Agriconnect']
 
 client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
@@ -29,13 +36,13 @@ def upload_file():
 def landlord():
     if request.method == 'POST':
         user_id = session.get('id')  # Get user ID from session
+        if not user_id:
+            return redirect(url_for('user.login'))  # Redirect if not logged in
+
         username = session.get('username')
 
         # if not user_id or not username:
-        #     return redirect(url_for('user.login'))  # Redirect if not logged in
-
-
-
+        #     return redirect(url_for('user.login'))  # Redirect if not logged iz
         # Collect form data
         land_size = request.form.get('landSize')
         location = request.form.get('location')
@@ -50,8 +57,10 @@ def landlord():
         if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency]):
             return render_template('landlord.html', msg='Please fill out all fields!')
 
-        
+
+        # Initialize MongoDB document without images to get its ObjectId
         land_listing_data = {
+            'user_id': ObjectId(user_id),
             'land_size': land_size,
             'location': location,
             'price_per_acre': price_per_acre,
@@ -88,7 +97,23 @@ def landlord():
             {'_id': ObjectId(listing_id)},
             {'$set': {'farm_images': image_filenames}}
         )
-        
+
+        # Update the user's role
+        user_collection = db['users']
+        user = user_collection.find_one({'_id': ObjectId(user_id)})
+
+        if user is None:
+            return render_template('landlord.html', msg='User not found!')
+
+        # Check current role and update it accordingly
+        current_role = user.get('role', 'N/A')
+        if current_role == 'Farmer':
+            new_role = 'Farmer, Landlord'
+        else:
+            new_role = 'Landlord'
+
+        user_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'role': new_role}})
+
         return render_template('landlord.html', msg='Land listing submitted successfully!')
     
     return render_template('landlord.html', msg='')
@@ -96,6 +121,7 @@ def landlord():
 
 
 
+@land_routes.route("/land-listings.html")
 @land_routes.route("/find-land.html")
 def land_listings():
     # Filter for approved land listings only
