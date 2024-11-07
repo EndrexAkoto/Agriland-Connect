@@ -5,17 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agriland Connect</title>
     <link rel="stylesheet" href="styles/style.css">
+   
 </head>
 <body>
     <header>
         <nav class="navbar">
             <div class="logo">
                 <a href="#">
-                    <img src="images/logo001.png" alt="Agriland Connect Logo" class="logo-image">
+                    <img src="images/logo001.png" alt="Agriland Connect Logo" class="logo-image" style="max-width: 100px;">
                 </a>
             </div>
 
             <div class="nav-menu" id="navMenu">
+                <div class="close-icon" onclick="toggleMenu()">&times;</div> <!-- Close icon -->
                 <div class="nav-left">
                     <a href="index.html">Home</a>
                     <a href="find-land.html">Find Land</a>
@@ -141,48 +143,14 @@
         <button class="scroll-to-top" id="scrollToTopBtn">&#8679;</button>
 
         <footer>
-            <p style="font-weight: bold;">&copy; 2024 Agriland Connect. All rights reserved.</p>
+            <p style="font-weight: bold;">&copy; 2024 Agriland Connect. All Rights Reserved.</p>
         </footer>
     </main>
 
     <script>
-        // Scroll to Top Button functionality
-        window.onscroll = function() {
-            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                scrollToTopBtn.style.display = "block";
-            } else {
-                scrollToTopBtn.style.display = "none";
-            }
-        };
-
-        document.getElementById('scrollToTopBtn').onclick = function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        };
-
         function toggleMenu() {
             const navMenu = document.getElementById('navMenu');
             navMenu.classList.toggle('active'); // Toggle active class to show/hide menu
-        }
-
-        // Fetch dashboard metrics
-        async function fetchMetrics() {
-            const response = await fetch('/api/metrics'); // Update the endpoint according to your Flask backend
-            const data = await response.json();
-            document.getElementById('totalListings').innerText = data.totalListings;
-            document.getElementById('totalUsers').innerText = data.totalUsers;
-            document.getElementById('totalTransactions').innerText = data.totalTransactions;
-        }
-
-        window.onload = fetchMetrics; // Fetch metrics when the page loads
-
-        function searchListings() {
-            const searchValue = document.getElementById('searchInput').value;
-            // Implement your search logic here (e.g., fetch matching listings from the backend)
-            console.log('Search for:', searchValue);
         }
     </script>
 </body>
