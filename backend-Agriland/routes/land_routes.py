@@ -26,6 +26,40 @@ def upload_file():
         return "File uploaded successfully"
     return "No file uploaded"
 
+client = MongoClient('localhost', 27017)
+db = client['Agriconnect']
+users_collection = db['users']
+land_listing_collection = db['land_listings']
+upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
+
+@land_routes.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    file = request.files.get('file')
+    if file and allowed_file(file.filename):
+        image_filename = secure_filename(file.filename)
+        # Save to UPLOAD_FOLDER directly
+        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image_filename)
+        file.save(file_path)
+        return "File uploaded successfully"
+    return "No file uploaded"
+
+client = MongoClient('localhost', 27017)
+db = client['Agriconnect']
+users_collection = db['users']
+land_listing_collection = db['land_listings']
+upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
+
+@land_routes.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    file = request.files.get('file')
+    if file and allowed_file(file.filename):
+        image_filename = secure_filename(file.filename)
+        # Save to UPLOAD_FOLDER directly
+        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image_filename)
+        file.save(file_path)
+        return "File uploaded successfully"
+    return "No file uploaded"
+
 @land_routes.route('/landlord.html', methods=['GET', 'POST'])
 def landlord():
     if request.method == 'POST':
@@ -37,6 +71,10 @@ def landlord():
 
 
 
+        username = session.get('username')
+
+        # if not user_id or not username:
+        #     return redirect(url_for('user.login'))  # Redirect if not logged iz
         # Collect form data
         land_size = request.form.get('landSize')
         location = request.form.get('location')
@@ -97,8 +135,29 @@ def landlord():
 
 
 
+
 @land_routes.route("/find-land.html")
 def land_listings():
+    # Filter for approved land listings only
+    approved_listings = land_listing_collection
+    listings = [
+        {
+            '_id': str(listing['_id']),
+            'land_size': listing.get('land_size', 'N/A'),
+            'location': listing.get('location', 'N/A'),
+            'price_per_acre': listing.get('price_per_acre', 'N/A'),
+            'amenities': listing.get('amenities', 'N/A'),
+            'road_access': listing.get('road_access', 'N/A'),
+            'fencing': listing.get('fencing', 'N/A'),
+            'title_deed': listing.get('title_deed', 'N/A'),
+            'lease_duration': listing.get('lease_duration', 'N/A'),
+            'payment_frequency': listing.get('payment_frequency', 'N/A'),
+            'farm_image': f"/admin/uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}" if listing.get('farm_image') else ""
+        }
+        for listing in approved_listings
+    ]
+    return render_template('find-land.html', listings=listings)
+
     # Filter for approved land listings only
     approved_listings = land_listing_collection
     listings = [
