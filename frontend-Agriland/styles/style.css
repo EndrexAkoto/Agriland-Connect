@@ -46,35 +46,29 @@ header nav a {
 
 /* Hamburger Menu */
 .hamburger {
-    display: none; /* Default hidden on desktop */
+    display: none; /* Hide on desktop */
     cursor: pointer;
-    /* Align hamburger icon to the right */
-    margin-right: auto; /* Pushes the hamburger to the right */
+    margin-right: auto; /* Push hamburger to the right */
 }
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    header {
-        flex-direction: column; /* Stack elements vertically */
-        align-items: flex-start; /* Align to the start */
-    }
-
     .hamburger {
-        display: flex; /* Show hamburger icon */
-        justify-content: flex-end; /* Align to the right */
-        margin-top: 10px; /* Adjust vertical position */
-        margin-right: 20px; /* Adjust horizontal position */
+        display: flex; /* Show on mobile */
+        justify-content: flex-end;
+        margin-top: 10px;
+        margin-right: 20px;
     }
 
     header .nav-menu {
-        flex-direction: column; /* Change to column for mobile */
+        flex-direction: column;
         display: none; /* Initially hidden */
-        position: absolute; /* Overlay on top of the content */
-        top: 60px; /* Position below the header */
+        position: absolute;
+        top: 60px;
         left: 0;
         right: 0;
-        background-color: rgba(76, 175, 80, 0.9); /* Theme color with opacity for dropdown */
-        z-index: 10; /* Bring above other content */
+        background-color: rgba(76, 175, 80, 0.9);
+        z-index: 10;
     }
 
     header .nav-menu.active {
@@ -336,4 +330,3 @@ footer {
 h1, h2, h3, h4, h5, h6 {
     color: #4CAF50; /* Set theme color for all headings */
 }
-

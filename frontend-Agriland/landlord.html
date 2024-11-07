@@ -93,7 +93,6 @@
     <div class="form-container">
         <h1>Landlord Information Form</h1>
 
-
         <form method="POST" enctype="multipart/form-data">
             <label for="landSize">Land Size (in acres):</label>
             <input type="number" id="landSize" name="landSize" required>
@@ -122,8 +121,8 @@
             <label for="titleDeed">Title Deed Serial Number:</label>
             <input type="text" id="titleDeed" name="titleDeed" required>
 
-            <label for="farmImage">Upload Farm Image:</label>
-            <input type="file" id="farmImages" name="farmImages" accept="images/*" >
+            <label for="farmImage">Upload Farm Image (Max 5 images):</label>
+            <input type="file" id="farmImage" name="farmImage" accept="image/*" >
             <div class="image-preview" id="imagePreview"></div> <!-- Image preview container -->
 
             <label for="leaseDuration">Lease Duration (minimum and maximum in months):</label>
@@ -143,7 +142,6 @@
             {% endif %}
         </form>
     </div>
-
 
     <script>
         let uploadedImages = []; // Array to store uploaded images
@@ -172,9 +170,8 @@
         });
     </script>
 
-    {%  if msg %}
+    {% if msg %}
     <p style="color: green">{{ msg }}</p>
-    {%  endif %}
-
+    {% endif %}
 </body>
 </html>
