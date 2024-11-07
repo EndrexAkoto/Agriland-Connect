@@ -13,6 +13,7 @@ import os
 admin_routes = Blueprint('admin', __name__)
 frontend_path = '/home/hp/Desktop/Agriland/Agriland-Connect/frontend-Agriland/admin_panel'
 UPLOAD_FOLDER = '/home/hp/Agrilandproj/Agriland-Connect/'
+upload_path = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
 client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
 users_collection = db['users']
@@ -72,7 +73,6 @@ def submit_form():
 
 @admin_routes.route("/admin/unapproved_uploads.html")
 def unapproved_uploads():
-    # Query unapproved listings and transform to list, constructing image paths directly in the query result.
     listings = [
         {
             '_id': str(listing['_id']),
@@ -87,12 +87,32 @@ def unapproved_uploads():
             'title_deed': listing.get('title_deed', 'N/A'),
             'lease_duration': listing.get('lease_duration', 'N/A'),
             'payment_frequency': listing.get('payment_frequency', 'N/A'),
-            'images': [f"uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}"]  # Construct image path
+            # Handle the case where farm_image could be a single image
+            'images': [
+                f"/admin/uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}"
+            ] if listing.get('farm_image') else []  # Only add if there's a farm_image field
         }
         for listing in land_listing_collection.find({'approved': 'False'})
     ]
-
     return render_template('admin_panel/unapproved_uploads.html', listings=listings)
+
+@admin_routes.route("/approve_listing", methods=["POST"])
+def approve_listing():
+    listing_id = request.form["_id"]
+    action = request.form["action"]
+    
+    # Update listing based on action
+    if action == "approve":
+        status_update = {"approved": "True"}
+    elif action == "reject":
+        status_update = {"approved": "Rejected"}
+    elif action == "pending":
+        status_update = {"approved": "Pending Verification"}
+
+    # Update the document in MongoDB
+    land_listing_collection.update_one({"_id": ObjectId(listing_id)}, {"$set": status_update})
+
+    return redirect(url_for("admin.unapproved_uploads"))
 
 
 @admin_routes.route("/admin/leases.html")
@@ -110,6 +130,13 @@ def payments():
 @admin_routes.route("/admin/settings.html")
 def settings():
     return render_template('admin_panel/settings.html')
+
+@admin_routes.route('/admin/uploads/<listing_id>/images/<filename>')
+def serve_uploaded_image(listing_id, filename):
+    images_directory = os.path.join(upload_path, listing_id, 'images')
+    return send_from_directory(images_directory, filename)
+
+
 
 @admin_routes.route("/admin/users.html")
 def users():

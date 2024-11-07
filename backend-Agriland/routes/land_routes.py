@@ -1,14 +1,36 @@
+
 from flask import Blueprint, render_template, request, current_app, session
+from flask import Blueprint, render_template, request, current_app, session, redirect, url_fo
 from models.land import land_collection  # Import your land model
 from bson import ObjectId  # To work with MongoDB ObjectId
 from utils.helpers import *
 from pymongo import MongoClient
 
 import os
+from pymongo import MongoClient 
+from db import db 
 
 land_routes = Blueprint('land', __name__)
+
 client = MongoClient('mongodb://localhost:27017/')
 db = client['Agriconnect']
+
+client = MongoClient('localhost', 27017)
+db = client['Agriconnect']
+users_collection = db['users']
+land_listing_collection = db['land_listings']
+upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
+
+@land_routes.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    file = request.files.get('file')
+    if file and allowed_file(file.filename):
+        image_filename = secure_filename(file.filename)
+        # Save to UPLOAD_FOLDER directly
+        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image_filename)
+        file.save(file_path)
+        return "File uploaded successfully"
+    return "No file uploaded"
 
 @land_routes.route('/landlord.html', methods=['GET', 'POST'])
 def landlord():
@@ -17,6 +39,10 @@ def landlord():
         if not user_id:
             return redirect(url_for('user.login'))  # Redirect if not logged in
 
+        username = session.get('username')
+
+        # if not user_id or not username:
+        #     return redirect(url_for('user.login'))  # Redirect if not logged iz
         # Collect form data
         land_size = request.form.get('landSize')
         location = request.form.get('location')
@@ -30,6 +56,7 @@ def landlord():
 
         if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency]):
             return render_template('landlord.html', msg='Please fill out all fields!')
+
 
         # Initialize MongoDB document without images to get its ObjectId
         land_listing_data = {
@@ -93,7 +120,27 @@ def landlord():
 
 
 
+
 @land_routes.route("/land-listings.html")
+@land_routes.route("/find-land.html")
 def land_listings():
-    listings = get_all_land_listings()
-    return render_template('land-listings.html', listings=listings)
+    # Filter for approved land listings only
+    approved_listings = land_listing_collection
+    listings = [
+        {
+            '_id': str(listing['_id']),
+            'land_size': listing.get('land_size', 'N/A'),
+            'location': listing.get('location', 'N/A'),
+            'price_per_acre': listing.get('price_per_acre', 'N/A'),
+            'amenities': listing.get('amenities', 'N/A'),
+            'road_access': listing.get('road_access', 'N/A'),
+            'fencing': listing.get('fencing', 'N/A'),
+            'title_deed': listing.get('title_deed', 'N/A'),
+            'lease_duration': listing.get('lease_duration', 'N/A'),
+            'payment_frequency': listing.get('payment_frequency', 'N/A'),
+            'farm_image': f"/admin/uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}" if listing.get('farm_image') else ""
+        }
+        for listing in approved_listings
+    ]
+    return render_template('find-land.html', listings=listings)
+

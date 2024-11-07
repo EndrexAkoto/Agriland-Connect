@@ -13,9 +13,10 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: rgba(255, 255, 255, 0.034);
+    background-color: #4CAF50; /* Change to your theme color */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: relative; /* Added for positioning child elements */
+    width: 100%; /* Ensure header spans full width */
 }
 
 /* Logo Styling */
@@ -37,7 +38,7 @@ header .logo img {
 }
 
 header nav a {
-    color: #4CAF50;
+    color: white; /* Change text color to white */
     text-decoration: none;
     font-weight: bold;
     margin: 0 20px;
@@ -48,7 +49,7 @@ header nav a {
     display: none; /* Default hidden on desktop */
     cursor: pointer;
     /* Align hamburger icon to the right */
-    margin-left: auto; /* Pushes the hamburger to the right */
+    margin-right: auto; /* Pushes the hamburger to the right */
 }
 
 /* Mobile Styles */
@@ -72,7 +73,7 @@ header nav a {
         top: 60px; /* Position below the header */
         left: 0;
         right: 0;
-        background-color: rgba(255, 255, 255, 0.9); /* Background for dropdown */
+        background-color: rgba(76, 175, 80, 0.9); /* Theme color with opacity for dropdown */
         z-index: 10; /* Bring above other content */
     }
 
@@ -91,6 +92,7 @@ header nav a {
         text-align: center; /* Center text */
         width: 100%; /* Full width for easier clicking */
         margin: 5px 0; /* Spacing between items */
+        color: white; /* Ensure text is white in mobile view */
     }
 }
 
@@ -152,8 +154,8 @@ header nav a {
 footer {
     text-align: center;
     padding: 20px 0;
-    background-color: #2c502e;
-    color: #4CAF50;
+    background-color: #4CAF50; /* Use theme color */
+    color: #f6f7fa;
     font-size: 1.3rem;
 }
 
@@ -332,16 +334,6 @@ footer {
 
 /* Theme color for all headings */
 h1, h2, h3, h4, h5, h6 {
-    color: #4CAF50; /* Replace this with your specific theme color if needed */
+    color: #4CAF50; /* Set theme color for all headings */
 }
 
-/* Specific Heading Adjustments (if needed) */
-h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-}
-
-h2 {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-}
