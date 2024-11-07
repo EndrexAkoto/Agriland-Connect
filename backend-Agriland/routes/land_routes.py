@@ -3,7 +3,8 @@ from models.land import land_collection  # Import your land model
 from bson import ObjectId  # To work with MongoDB ObjectId
 from utils.helpers import *
 import os
-from pymongo import MongoClient 
+from pymongo import MongoClient
+from werkzeug.utils import secure_filename
 from db import db 
 
 land_routes = Blueprint('land', __name__)
