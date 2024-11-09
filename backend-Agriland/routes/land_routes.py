@@ -64,11 +64,11 @@ def upload_file():
 
 @land_routes.route('/landlord.html', methods=['GET', 'POST'])
 def landlord():
-    username = request.args.get('username')
-    user_id = request.args.get('user_id')
+    # username = request.args.get('username')
+    # user_id = request.args.get('user_id')
 
-    if not username or not user_id:
-        return redirect(url_for('user.login'))  # Re # Redirect if not logged in
+    # if not username or not user_id:
+    #     return redirect(url_for('user.login'))  # Re # Redirect if not logged in
     if request.method == 'POST':
         user_id = session.get('id')  # Get user ID from session
         username = session.get('username')

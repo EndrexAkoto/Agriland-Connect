@@ -11,12 +11,13 @@ from bson import ObjectId
 client = MongoClient('mongodb://localhost:27017/')
 db = client['Agriland-Connect']
 users_collection = db['users']
+counties_collection = db['Counties'] 
 
 import re
 import os
 
 user_routes = Blueprint('user', __name__)
-frontend_path = '/home/hp/Desktop/Agriland/Agriland-Connect/frontend-Agriland'
+frontend_path = '/home/hp/Agrilandproj/Agriland-Connect/frontend-Agriland'
 
 @user_routes.route("/")
 def index():
@@ -210,9 +211,11 @@ def userprofile():
 #     return render_template('farmer.html', msg='')
 
 
-@user_routes.route('/find-land.html')
+@user_routes.route('/find-land.html', methods=['GET', 'POST'])
 def findland():
-    return render_template('find-land.html')
+    counties = counties_collection.find({}, {'_id': 0, 'County': 1})
+    county_names = [county['County'] for county in counties]
+    return render_template('find-land.html', county_names=county_names)
 # Serve other static files
 @user_routes.route('/images/<path:filename>')
 def serve_images(filename):
