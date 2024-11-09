@@ -21,6 +21,7 @@ def extract_and_validate_form_data():
         'first_name': request.form.get('firstName'),
         'middle_name': request.form.get('middleName'),
         'last_name': request.form.get('lastName'),
+        'dob': request.form.get('dob'),
         'gender': request.form.get('gender'),
         'email': email,
         'phone': request.form.get('phone'),

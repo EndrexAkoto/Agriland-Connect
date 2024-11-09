@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory, request
+from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory, request, jsonify
 from flask import current_app as app
 from models.user import get_user_by_email, create_user
 from models.stats import  get_user_statistics
@@ -11,7 +11,7 @@ import re
 import os
 
 admin_routes = Blueprint('admin', __name__)
-frontend_path = '/home/hp/Desktop/Agriland/Agriland-Connect/frontend-Agriland/admin_panel'
+frontend_path = '/home/hp/Agrilandproj/Agriland-Connect/frontend-Agriland/admin_panel'
 UPLOAD_FOLDER = '/home/hp/Agrilandproj/Agriland-Connect/'
 upload_path = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
 client = MongoClient('localhost', 27017)
@@ -28,6 +28,14 @@ def allowed_file(filename):
 def admin_html():
      stats = get_user_statistics()
      return render_template('admin_panel/index.html', stats=stats)
+
+@admin_routes.route("/api/user-stats", methods=["GET"])
+def user_stats():
+    stats = get_user_statistics()
+    if stats:
+        return jsonify(stats)
+    else:
+        return jsonify({"error": "Unable to fetch statistics"}), 500
 
 @admin_routes.route("/admin/add-land-lease.html", methods=['GET', 'POST'])
 def add_land_lease():
@@ -201,8 +209,6 @@ def settings():
 def serve_uploaded_image(listing_id, filename):
     images_directory = os.path.join(upload_path, listing_id, 'images')
     return send_from_directory(images_directory, filename)
-
-
 
 @admin_routes.route("/admin/users.html")
 def users():

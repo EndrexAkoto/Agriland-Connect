@@ -251,7 +251,12 @@
         <section class="search-section">
             <h1>Find Land</h1>
             <label for="location">Location:</label>
-            <input type="text" id="location" placeholder="Enter location">
+            <select id="location" name="location" required>
+                <option value="">Select a County</option>
+                {% for county in county_names %}
+                    <option value="{{ county }}">{{ county }}</option>
+                {% endfor %}
+            </select>
             <label for="land-size">Land Size:</label>
             <select id="land-size">
                 <option value="any">Any Size</option>
