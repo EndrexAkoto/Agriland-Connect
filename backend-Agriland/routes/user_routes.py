@@ -69,10 +69,17 @@ def login():
 
 @user_routes.route("/dashboard.html")
 def dashboard():
-    user_data = {
-        "name": session.get("name", "Guest")  # Default to "Guest" if name is not in session
-    }
-    return render_template('dashboard.html', user_data=user_data)
+    user_id = session.get('id')  # Assuming the user ID is stored in the session
+
+    if user_id:
+        # Retrieve the username from the database using the user ID
+        user = users_collection.find_one({"_id": ObjectId(user_id)}, {"username": 1})
+        if user:
+            username = user['username']
+            # Redirect to landlord with username and user ID as query parameters
+            return redirect(url_for('land_routes.landlord', username=username, user_id=user_id))
+    return render_template('dashboard.html', user_data={"name": "Guest"})
+
 
 @user_routes.route("/edit-profile.html", methods=['GET', 'POST'])
 def profile():

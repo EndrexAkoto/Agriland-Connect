@@ -64,16 +64,17 @@ def upload_file():
 
 @land_routes.route('/landlord.html', methods=['GET', 'POST'])
 def landlord():
+    username = request.args.get('username')
+    user_id = request.args.get('user_id')
+
+    if not username or not user_id:
+        return redirect(url_for('user.login'))  # Re # Redirect if not logged in
     if request.method == 'POST':
         user_id = session.get('id')  # Get user ID from session
         username = session.get('username')
 
         # if not user_id or not username:
         #     return redirect(url_for('user.login'))  # Redirect if not logged in
-
-
-
-        username = session.get('username')
 
         # if not user_id or not username:
         #     return redirect(url_for('user.login'))  # Redirect if not logged iz
@@ -87,12 +88,14 @@ def landlord():
         title_deed = request.form.get('titleDeed')
         lease_duration = request.form.get('leaseDuration')
         payment_frequency = request.form.get('paymentFrequency')
+        approved = False
 
         if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency]):
             return render_template('landlord.html', msg='Please fill out all fields!')
 
         
         land_listing_data = {
+            'name': username,
             'land_size': land_size,
             'location': location,
             'price_per_acre': price_per_acre,
@@ -102,6 +105,7 @@ def landlord():
             'title_deed': title_deed,
             'lease_duration': lease_duration,
             'payment_frequency': payment_frequency,
+            'approved': approved,
             'farm_images': []
         }
         
