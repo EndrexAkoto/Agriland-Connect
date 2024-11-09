@@ -28,6 +28,8 @@ def signup():
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
+        role = 'N/A'
+        registration_date = datetime.now()
 
         # Input validation
         if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
@@ -37,7 +39,7 @@ def signup():
         elif get_user_by_email(email):
             msg = 'Account already exists!'
         else:
-            create_user({'username': username, 'email': email, 'password': password})
+            create_user({'username': username, 'email': email, 'password': password, 'role': role, 'registration_date': registration_date})
             msg = 'You have successfully registered!'
             return redirect(url_for('user.login'))
     
@@ -147,57 +149,57 @@ def userprofile():
     return render_template('user-profile.html')
 # Serve other static files
 
-@user_routes.route("/farmer.html", methods=['GET', 'POST'])
-def farmer():
-    if request.method == 'POST':
-        user_id = session.get('id')  # Get user ID from session
-        username = session.get('name')  # Get username from session
+# @user_routes.route("/farmer.html", methods=['GET', 'POST'])
+# def farmer():
+#     if request.method == 'POST':
+#         user_id = session.get('id')  # Get user ID from session
+#         username = session.get('name')  # Get username from session
 
-        if not user_id or not username:
-            return redirect(url_for('user.login'))  # Redirect if not logged in
+#         if not user_id or not username:
+#             return redirect(url_for('user.login'))  # Redirect if not logged in
 
-        # Collect form data
-        land_size = request.form.get('landSize')
-        location = request.form.get('location')
-        crop_type = request.form.get('cropType')
-        budget_per_acre = request.form.get('budgetPerAcre')
-        lease_duration = request.form.get('leaseDuration')
-        payment_method = request.form.get('paymentMethod')
+#         # Collect form data
+#         land_size = request.form.get('landSize')
+#         location = request.form.get('location')
+#         crop_type = request.form.get('cropType')
+#         budget_per_acre = request.form.get('budgetPerAcre')
+#         lease_duration = request.form.get('leaseDuration')
+#         payment_method = request.form.get('paymentMethod')
 
-        if not all([land_size, location, crop_type, budget_per_acre, lease_duration, payment_method]):
-            return render_template('farmer.html', msg='Please fill out all fields!')
+#         if not all([land_size, location, crop_type, budget_per_acre, lease_duration, payment_method]):
+#             return render_template('farmer.html', msg='Please fill out all fields!')
 
-        # Insert land request into the 'farmer' collection with the user_id and username
-        db['farmer'].insert_one({
-            'user_id': ObjectId(user_id),
-            'username': username,
-            'land_size': land_size,
-            'location': location,
-            'crop_type': crop_type,
-            'budget_per_acre': budget_per_acre,
-            'lease_duration': lease_duration,
-            'payment_method': payment_method
-        })
+#         # Insert land request into the 'farmer' collection with the user_id and username
+#         db['farmer'].insert_one({
+#             'user_id': ObjectId(user_id),
+#             'username': username,
+#             'land_size': land_size,
+#             'location': location,
+#             'crop_type': crop_type,
+#             'budget_per_acre': budget_per_acre,
+#             'lease_duration': lease_duration,
+#             'payment_method': payment_method
+#         })
 
-        # Update the user's role
-        user_collection = db['users']
-        user = user_collection.find_one({'_id': ObjectId(user_id)})
+#         # Update the user's role
+#         user_collection = db['users']
+#         user = user_collection.find_one({'_id': ObjectId(user_id)})
 
-        if user is None:
-            return render_template('farmer.html', msg='User not found!')  # Handle user not found
+#         if user is None:
+#             return render_template('farmer.html', msg='User not found!')  # Handle user not found
 
-        # Update role logic
-        current_role = user.get('role', 'N/A')
-        if current_role == 'Landlord':
-            new_role = 'Farmer, Landlord'
-        else:
-            new_role = 'Farmer'
+#         # Update role logic
+#         current_role = user.get('role', 'N/A')
+#         if current_role == 'Landlord':
+#             new_role = 'Farmer, Landlord'
+#         else:
+#             new_role = 'Farmer'
 
-        user_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'role': new_role}})
+#         user_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'role': new_role}})
 
-        return render_template('farmer.html', msg='Land request submitted successfully!')
+#         return render_template('farmer.html', msg='Land request submitted successfully!')
 
-    return render_template('farmer.html', msg='')
+#     return render_template('farmer.html', msg='')
 
 
 @user_routes.route('/find-land.html')

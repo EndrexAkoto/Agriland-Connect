@@ -29,9 +29,42 @@ def admin_html():
      stats = get_user_statistics()
      return render_template('admin_panel/index.html', stats=stats)
 
-@admin_routes.route("/admin/add-land-lease.html")
+@admin_routes.route("/admin/add-land-lease.html", methods=['GET', 'POST'])
 def add_land_lease():
+    if request.method == 'POST':
+        # Get form data
+        location = request.form.get('location')
+        size = request.form.get('size')
+        price = request.form.get('price')
+        description = request.form.get('description')
 
+        # Handle images
+        images = request.files.getlist('images')
+        image_paths = []
+
+        if images:
+            for image in images:
+                if image and allowed_file(image.filename):
+                    filename = secure_filename(image.filename)
+                    image_path = os.path.join(UPLOAD_FOLDER, filename)
+                    image.save(image_path)
+                    image_paths.append(f'uploads/{filename}')  # Save relative path
+
+        # Save data to the database
+        lease_data = {
+            'location': location,
+            'size': size,
+            'price': price,
+            'description': description,
+            'images': image_paths,
+            'approved': False  # By default, new leases are unapproved
+        }
+        add_land_listing(lease_data)  # Call the function to save to the database
+
+        # Redirect to a confirmation page or another route
+        return render_template('admin_panel/add-land-lease.html')
+
+    # Render the form template if the request is GET
     return render_template('admin_panel/add-land-lease.html')
 
 @admin_routes.route("/admin/add-listing.html", methods=['GET', 'POST'])
@@ -127,8 +160,41 @@ def listings():
 def payments():
     return render_template('admin_panel/payments.html')
 
-@admin_routes.route("/admin/settings.html")
+@admin_routes.route("/admin/settings.html", methods=['POST'])
 def settings():
+    data = request.json
+
+    # Extract the user role and other details from the form data
+    user_role = data.get('user-role')
+    email = data.get('email')
+    password = data.get('password')
+    name = data.get('name')
+    phone = data.get('phone')
+    site_status = data.get('site-status')
+
+    # Depending on the role, insert the data into the appropriate collection
+    if user_role == 'farmer':
+        collection = db['farmers']
+    elif user_role == 'landlord':
+        collection = db['landlords']
+    elif user_role == 'admin':
+        collection = db['admins']
+    else:
+        return jsonify({'message': 'Invalid user role'}), 400
+
+    # Create a document to insert
+    user_data = {
+        'email': email,
+        'password': password,
+        'name': name,
+        'phone': phone,
+        'site_status': site_status
+    }
+
+    # Insert the document into the corresponding collection
+    collection.insert_one(user_data)
+
+    return jsonify({'message': 'User data successfully added to the ' + user_role + ' collection.'})
     return render_template('admin_panel/settings.html')
 
 @admin_routes.route('/admin/uploads/<listing_id>/images/<filename>')

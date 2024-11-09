@@ -12,7 +12,8 @@ land_routes = Blueprint('land', __name__)
 client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
 users_collection = db['users']
-land_listing_collection = db['land_listings']
+land_collection = db['land_listings']
+counties_collection = db['Counties'] 
 upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
 
 @land_routes.route('/upload', methods=['GET', 'POST'])
@@ -26,39 +27,39 @@ def upload_file():
         return "File uploaded successfully"
     return "No file uploaded"
 
-client = MongoClient('localhost', 27017)
-db = client['Agriconnect']
-users_collection = db['users']
-land_listing_collection = db['land_listings']
-upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
+# client = MongoClient('localhost', 27017)
+# db = client['Agriconnect']
+# users_collection = db['users']
+# land_listing_collection = db['land_listings']
+# upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
 
-@land_routes.route('/upload', methods=['GET', 'POST'])
-def upload_file():
-    file = request.files.get('file')
-    if file and allowed_file(file.filename):
-        image_filename = secure_filename(file.filename)
-        # Save to UPLOAD_FOLDER directly
-        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image_filename)
-        file.save(file_path)
-        return "File uploaded successfully"
-    return "No file uploaded"
+# @land_routes.route('/upload', methods=['GET', 'POST'])
+# def upload_file():
+#     file = request.files.get('file')
+#     if file and allowed_file(file.filename):
+#         image_filename = secure_filename(file.filename)
+#         # Save to UPLOAD_FOLDER directly
+#         file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image_filename)
+#         file.save(file_path)
+#         return "File uploaded successfully"
+#     return "No file uploaded"
 
-client = MongoClient('localhost', 27017)
-db = client['Agriconnect']
-users_collection = db['users']
-land_listing_collection = db['land_listings']
-upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
+# client = MongoClient('localhost', 27017)
+# db = client['Agriconnect']
+# users_collection = db['users']
+# land_listing_collection = db['land_listings']
+# upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
 
-@land_routes.route('/upload', methods=['GET', 'POST'])
-def upload_file():
-    file = request.files.get('file')
-    if file and allowed_file(file.filename):
-        image_filename = secure_filename(file.filename)
-        # Save to UPLOAD_FOLDER directly
-        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image_filename)
-        file.save(file_path)
-        return "File uploaded successfully"
-    return "No file uploaded"
+# @land_routes.route('/upload', methods=['GET', 'POST'])
+# def upload_file():
+#     file = request.files.get('file')
+#     if file and allowed_file(file.filename):
+#         image_filename = secure_filename(file.filename)
+#         # Save to UPLOAD_FOLDER directly
+#         file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image_filename)
+#         file.save(file_path)
+#         return "File uploaded successfully"
+#     return "No file uploaded"
 
 @land_routes.route('/landlord.html', methods=['GET', 'POST'])
 def landlord():
@@ -129,8 +130,10 @@ def landlord():
         )
         
         return render_template('landlord.html', msg='Land listing submitted successfully!')
-    
-    return render_template('landlord.html', msg='')
+
+    counties = counties_collection.find({}, {'_id': 0, 'County': 1})
+    county_names = [county['County'] for county in counties]
+    return render_template('landlord.html', county_names=county_names, msg='')
 
 
 
