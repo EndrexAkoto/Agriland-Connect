@@ -10,7 +10,6 @@ fs = gridfs.GridFS(db)
 
 
 
-# Step 2: Function to extract and validate form data
 def extract_and_validate_form_data():
     email = session.get('email')
     if not email:
@@ -24,46 +23,56 @@ def extract_and_validate_form_data():
         'email': email,
         'phone': request.form.get('phone'),
         'id_number': request.form.get('idNumber'),
-        'kra_pin': request.form.get('kraPin'),
-        'dob': request.form.get('dob'),
-        'pobox': request.form.get('pobox'),
-        'county': request.form.get('county'),
-        'town': request.form.get('town')
+        'kra_pin': request.form.get('kraPin')
     }
 
     next_of_kin_data = {
-        'name': request.form.get('nextOfKinName'),
-        'gender': request.form.get('nextOfKinGender'),
-        'phone': request.form.get('nextOfKinPhone'),
-        'id_number': request.form.get('nextOfKinIdNumber')
+        'name': request.form.get('kinName'),
+        'relationship': request.form.get('kinRelationship')
     }
 
-    # Validate required fields
-    # required_fields = [profile_data['first_name'], profile_data['last_name'], profile_data['phone'], profile_data['id_number'], profile_data['kra_pin'], profile_data['dob']]
-    # if not all(required_fields):
-    #     return None, None, 'Please fill out all required fields!'
-    
     return profile_data, next_of_kin_data, ''
 
-# Step 3: Function to handle image uploads
+# Save images to a specified path or database
 def save_images():
-    profile_image = request.files.get('idImage')
-    next_of_kin_image = request.files.get('nextOfKinIdImage')
-    
-    profile_image_id = fs.put(profile_image, filename=profile_image.filename) if profile_image else None
-    next_of_kin_image_id = fs.put(next_of_kin_image, filename=next_of_kin_image.filename) if next_of_kin_image else None
+    upload_folder = 'static/uploads'  # Define your image storage path
+    os.makedirs(upload_folder, exist_ok=True)
 
-    return profile_image_id, next_of_kin_image_id
+    profile_image = request.files.get('profile-picture')
+    profile_image_path = None
+    if profile_image:
+        filename = secure_filename(profile_image.filename)
+        profile_image_path = os.path.join(upload_folder, filename)
+        profile_image.save(profile_image_path)
 
-# Step 4: Function to save profile data in the database
-def save_profile_data(profile_data, next_of_kin_data, profile_image_id, next_of_kin_image_id):
-    profile_data['profile_image_id'] = profile_image_id
+    return profile_image_path
+
+# Save profile data in MongoDB
+def save_profile_data(profile_data, next_of_kin_data, profile_image_path):
+    profile_data['profile_image_path'] = profile_image_path
     profile_data['next_of_kin'] = next_of_kin_data
-    profile_data['next_of_kin']['next_of_kin_image_id'] = next_of_kin_image_id
-    
-    # Check if the profile exists, update or insert accordingly
+
     existing_profile = profiles_collection.find_one({'email': profile_data['email']})
     if existing_profile:
         profiles_collection.update_one({'email': profile_data['email']}, {'$set': profile_data})
     else:
         profiles_collection.insert_one(profile_data)
+
+@user_routes.route("/edit-profile.html", methods=['GET', 'POST'])
+def profile():
+    msg = ''
+    if request.method == 'POST':
+        # Extract form data
+        profile_data, next_of_kin_data, msg = extract_and_validate_form_data()
+        if msg:
+            return render_template('edit-profile.html', msg=msg)
+
+        # Save profile image
+        profile_image_path = save_images()
+
+        # Save profile data in the database
+        save_profile_data(profile_data, next_of_kin_data, profile_image_path)
+
+        msg = 'Profile updated successfully!'
+    
+    return render_template('edit-profile.html', msg=msg)

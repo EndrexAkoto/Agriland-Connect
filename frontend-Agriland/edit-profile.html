@@ -192,12 +192,12 @@
 
         <!-- Profile Picture Section -->
         <div class="profile-picture-container">
-            <img src="src/images/dashboard.jpg" alt="Upload Profile Picture">
+            <img id="profile-picture-preview" src="src/images/dashboard.jpg" alt="Upload Profile Picture">
             <input type="file" id="profile-picture-upload" name="profile-picture" accept="image/*">
         </div>
 
         <!-- Edit Profile Form -->
-        <form id="edit-profile-form" method="post" enctype="multipart/form-data" action="/your-endpoint-here">
+        <form id="edit-profile-form" method="post" enctype="multipart/form-data" action="/edit-profile.html">
             <label for="firstName">First Name:</label>
             <input type="text" id="firstName" name="firstName" placeholder="Enter your first name">
 
