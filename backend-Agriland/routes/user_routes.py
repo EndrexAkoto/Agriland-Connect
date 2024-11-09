@@ -27,7 +27,7 @@ def index():
 def signup():
     msg = ''
     if request.method == 'POST':
-        username = request.form['username']
+        firstName = request.form['username']
         email = request.form['email']
         password = request.form['password']
         role = 'N/A'

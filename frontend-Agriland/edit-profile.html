@@ -185,7 +185,9 @@
     <div class="navbar">
         <img src="images/logo001.png" alt="Logo" class="logo" />
     </div>
-
+    {% if msg %}
+        <p style="color: red;">{{ msg }}</p>
+    {% endif %}
     <!-- Edit Profile Container -->
     <div class="edit-profile-container">
         <h1>Edit Your Profile</h1>
@@ -197,7 +199,7 @@
         </div>
 
         <!-- Edit Profile Form -->
-        <form  method="post" enctype="multipart/form-data" action="/edit-profile.html">
+        <form id="edit-profile-form" method="post" enctype="multipart/form-data" action="">
             <label for="firstName">First Name:</label>
             <input type="text" id="firstName" name="firstName" placeholder="Enter your first name">
 
@@ -212,19 +214,20 @@
 
             <label for="gender">Gender:</label>
             <select id="gender" name="gender">
+                <option value="none" selected>None</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
             </select>
 
             <!-- Read-Only Fields -->
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email">
+            <input type="email" id="email" name="email" placeholder="Enter your email" readonly>
 
             <label for="phone">Phone Number:</label>
-            <input type="text" id="phone" name="phone" placeholder="Enter your phone number">
+            <input type="text" id="phone" name="phone" placeholder="Enter your phone number" readonly>
 
             <label for="idNumber">ID Number:</label>
-            <input type="text" id="idNumber" name="idNumber" placeholder="Enter your ID number">
+            <input type="text" id="idNumber" name="idNumber" placeholder="Enter your ID number" readonly>
 
             <!-- ID Image Upload Section -->
             <label for="idImage">Upload ID Image:</label>
@@ -253,17 +256,24 @@
 
             <!-- Success Notification -->
             <div id="notification" class="notification">Profile updated successfully!</div>
+
+            <button type="submit">Save Changes</button>
         </form>
     </div>
 
-    {% if msg  %}
-    <p style="color: red;">{{ msg }}</p>
+    {% if msg %}
+        <p style="color: red;">{{ msg }}</p>
     {% endif %}
 
     <script>
+        // Makes fields readonly if they have a value, otherwise allows input
+        document.querySelectorAll("#email, #phone, #idNumber, #kraPin").forEach(input => {
+            if (input.value) input.readOnly = true;
+        });
+
         document.getElementById("edit-profile-form").onsubmit = function(event) {
             event.preventDefault(); // Prevent the default form submission
-            
+
             // Handle the form submission via Fetch API
             const formData = new FormData(this); // 'this' refers to the form
 
@@ -275,7 +285,7 @@
                 if (response.ok) {
                     document.getElementById("notification").style.display = "block"; // Show success message
                     setTimeout(() => {
-                        window.location.href = '/home'; // Redirect to homepage after 3 seconds
+                        window.location.href = './dashboard.html'; // Redirect to homepage after 3 seconds
                     }, 3000);
                 } else {
                     // Handle error case
