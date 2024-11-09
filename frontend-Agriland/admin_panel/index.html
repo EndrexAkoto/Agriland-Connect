@@ -115,11 +115,18 @@
             margin: 0 10px;
             min-width: 200px;
             box-sizing: border-box;
+            text-align: center; /* Centers the text */
         }
 
         .box h2 {
+            font-size: 1.5rem; /* Adjust the size of the headings */
             color: #4CAF50;
             margin-bottom: 10px;
+        }
+
+        .box p {
+            font-size: 1.2rem; /* Adjust the size of the data values */
+            font-weight: bold;
         }
 
         footer {
@@ -153,6 +160,19 @@
 
         .user-statistics li {
             margin: 5px 0;
+        }
+
+        /* Adjusting chart size */
+        .chart-container {
+            width: 100%; /* Makes the chart container responsive */
+            max-width: 500px; /* Set a maximum width for the chart */
+            margin: 0 auto; /* Centers the chart container */
+            padding: 10px;
+        }
+
+        canvas {
+            width: 100% !important; /* Ensures the chart takes up the full width of the container */
+            height: 300px !important; /* Sets a fixed height for the chart */
         }
 
         /* Responsive Styles */
@@ -234,78 +254,114 @@
             </div>
         </section>
 
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        fetch('/api/user-stats')
-            .then(response => response.json())
-            .then(stats => {
-                // User Type Distribution (Pie Chart)
-                new Chart(document.getElementById('userTypeChart'), {
-                    type: 'pie',
-                    data: {
-                        labels: ['Farmers', 'Landowners'],
-                        datasets: [{
-                            data: [stats['Farmers'], stats['Landowners']],
-                            backgroundColor: ['#4caf50', '#ff9800'],
-                        }]
-                    },
-                    options: { responsive: true, plugins: { legend: { position: 'bottom' }}}
-                });
-
-                // Gender Distribution (Doughnut Chart)
-                new Chart(document.getElementById('genderDistributionChart'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Male', 'Female'],
-                        datasets: [{
-                            data: [stats['Gender Distribution']['Male'], stats['Gender Distribution']['Female']],
-                            backgroundColor: ['#42a5f5', '#ec407a'],
-                        }]
-                    },
-                    options: { responsive: true, plugins: { legend: { position: 'bottom' }}}
-                });
-
-                // Age Bracket Distribution (Bar Chart)
-                new Chart(document.getElementById('ageBracketChart'), {
-                    type: 'bar',
-                    data: {
-                        labels: ['18-25', '26-35', '36-50'],
-                        datasets: [{
-                            label: 'Age Distribution (%)',
-                            data: [
-                                stats['Age Bracket']['18-25'],
-                                stats['Age Bracket']['26-35'],
-                                stats['Age Bracket']['36-50']
-                            ],
-                            backgroundColor: ['#3f51b5', '#9c27b0', '#ff5722']
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: { y: { beginAtZero: true, max: 100 }}
-                    }
-                });
-            });
-    });
-</script>
- 
+        <!-- User Statistics with Charts -->
+        <section class="user-statistics">
+            <h2>User Statistics</h2>
+            <div class="chart-container">
+                <canvas id="userTypeChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="genderDistributionChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="ageBracketChart"></canvas>
+            </div>
+        </section>
     </main>
 
     <footer>
         <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const burger = document.getElementById('burger');
-        const navLinks = document.getElementById('navLinks');
-        const closeBtn = document.getElementById('closeBtn');
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/api/user-stats')
+                .then(response => response.json())
+                .then(stats => {
+                    // User Type Distribution (Pie Chart)
+                    new Chart(document.getElementById('userTypeChart'), {
+                        type: 'pie',
+                        data: {
+                            labels: ['Farmers', 'Landowners'],
+                            datasets: [{
+                                data: [stats['Farmers'], stats['Landowners']],
+                                backgroundColor: ['#4CAF50', '#FF5722']
+                            }]
+                        },
+                        options: {
+                            responsive: true
+                        }
+                    });
 
-        burger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
+                    // Gender Distribution (Bar Chart) - Only Male and Female
+                    new Chart(document.getElementById('genderDistributionChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Male', 'Female'],
+                            datasets: [{
+                                label: 'Gender Distribution',
+                                data: [stats['Male'], stats['Female']],
+                                backgroundColor: ['#2196F3', '#FFEB3B']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    ticks: {
+                                        beginAtZero: true,
+                                        stepSize: 10
+                                    }
+                                }
+                            }
+                        }
+                    });
 
-        closeBtn.addEventListener('click', () => {
-            navLinks.classList.remove('active');
+                    // Age Bracket Distribution (Bar Chart)
+                    new Chart(document.getElementById('ageBracketChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['18-25', '26-35', '36-45', '46-60', '60+'],
+                            datasets: [{
+                                label: 'Age Bracket Distribution',
+                                data: [
+                                    stats['Age 18-25'],
+                                    stats['Age 26-35'],
+                                    stats['Age 36-45'],
+                                    stats['Age 46-60'],
+                                    stats['Age 60+']
+                                ],
+                                backgroundColor: '#FF9800'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    ticks: {
+                                        beginAtZero: true,
+                                        stepSize: 10
+                                    }
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching stats:', error));
+
+            // Burger Menu Toggle
+            const burger = document.getElementById('burger');
+            const navLinks = document.getElementById('navLinks');
+            const closeBtn = document.getElementById('closeBtn');
+
+            burger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            closeBtn.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
         });
     </script>
 </body>
