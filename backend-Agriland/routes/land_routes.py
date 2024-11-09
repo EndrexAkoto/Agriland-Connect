@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, current_app, session, redirect, url_for
+
 from models.land import land_collection  # Import your land model
 from bson import ObjectId  # To work with MongoDB ObjectId
 from utils.helpers import *

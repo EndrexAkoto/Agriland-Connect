@@ -78,18 +78,18 @@ def dashboard():
 def profile():
     msg = ''
     if request.method == 'POST':
-        # Extract form data
+        # Extract form data and validate it
         profile_data, next_of_kin_data, msg = extract_and_validate_form_data()
         if msg:
             return render_template('edit-profile.html', msg=msg)
 
-        # Save profile image
-        profile_image_path = save_images()
+        # Process only the ID image
+        id_image_id = save_id_image()
 
-        # Save profile data in the database
-        save_profile_data(profile_data, next_of_kin_data, profile_image_path)
+        # Update or insert profile in the database
+        save_profile_data(profile_data, id_image_id)
 
-        msg = 'Profile updated successfully!'
+        msg = 'Profile updated successfully!' if profiles_collection.find_one({'email': profile_data['email']}) else 'Profile created successfully!'
     
     return render_template('edit-profile.html', msg=msg)
 
