@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory
 from models.user import get_user_by_email, create_user, authenticate_user
+from models.profile import *
 from werkzeug.security import check_password_hash
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -77,18 +78,18 @@ def dashboard():
 def profile():
     msg = ''
     if request.method == 'POST':
-        # Extract form data and validate it
+        # Extract form data
         profile_data, next_of_kin_data, msg = extract_and_validate_form_data()
         if msg:
             return render_template('edit-profile.html', msg=msg)
 
-        # Process images
-        profile_image_id, next_of_kin_image_id = save_images()
+        # Save profile image
+        profile_image_path = save_images()
 
-        # Update or insert profile in the database
-        save_profile_data(profile_data, next_of_kin_data, profile_image_id, next_of_kin_image_id)
+        # Save profile data in the database
+        save_profile_data(profile_data, next_of_kin_data, profile_image_path)
 
-        msg = 'Profile updated successfully!' if profiles_collection.find_one({'email': profile_data['email']}) else 'Profile created successfully!'
+        msg = 'Profile updated successfully!'
     
     return render_template('edit-profile.html', msg=msg)
 

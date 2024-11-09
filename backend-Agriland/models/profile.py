@@ -1,7 +1,9 @@
 from flask import request, render_template, session
 from pymongo import MongoClient
+from werkzeug.utils import secure_filename
 import gridfs
-
+import os
+from datetime import datetime
 # Database connection
 client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
@@ -57,22 +59,3 @@ def save_profile_data(profile_data, next_of_kin_data, profile_image_path):
         profiles_collection.update_one({'email': profile_data['email']}, {'$set': profile_data})
     else:
         profiles_collection.insert_one(profile_data)
-
-@user_routes.route("/edit-profile.html", methods=['GET', 'POST'])
-def profile():
-    msg = ''
-    if request.method == 'POST':
-        # Extract form data
-        profile_data, next_of_kin_data, msg = extract_and_validate_form_data()
-        if msg:
-            return render_template('edit-profile.html', msg=msg)
-
-        # Save profile image
-        profile_image_path = save_images()
-
-        # Save profile data in the database
-        save_profile_data(profile_data, next_of_kin_data, profile_image_path)
-
-        msg = 'Profile updated successfully!'
-    
-    return render_template('edit-profile.html', msg=msg)
