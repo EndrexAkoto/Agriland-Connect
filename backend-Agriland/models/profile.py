@@ -1,6 +1,8 @@
 from flask import request, render_template, session
 from pymongo import MongoClient
+from werkzeug.utils import secure_filename
 import gridfs
+import os
 from datetime import datetime
 # Database connection
 client = MongoClient('localhost', 27017)
@@ -10,7 +12,6 @@ fs = gridfs.GridFS(db)
 
 
 
-# Step 2: Function to extract and validate form data
 def extract_and_validate_form_data():
     email = session.get('email')
     if not email:
@@ -21,65 +22,41 @@ def extract_and_validate_form_data():
         'middle_name': request.form.get('middleName'),
         'last_name': request.form.get('lastName'),
         'gender': request.form.get('gender'),
-        'email': email,  # Retrieved from session for security
+        'email': email,
         'phone': request.form.get('phone'),
         'id_number': request.form.get('idNumber'),
-        'kra_pin': request.form.get('kraPin'),
-        'dob': request.form.get('dob'),  # Assume dob is passed as a string to be converted later if needed
-        'registration_date': datetime.now(),  # Add registration date if it’s a new record
+        'kra_pin': request.form.get('kraPin')
     }
 
     next_of_kin_data = {
         'name': request.form.get('kinName'),
-        'relationship': request.form.get('kinRelationship'),
+        'relationship': request.form.get('kinRelationship')
     }
 
-    # Validate required fields
-    # required_fields = [profile_data['first_name'], profile_data['last_name'], profile_data['phone'], profile_data['id_number'], profile_data['kra_pin']]
-    # if not all(required_fields):
-    #     return None, None, 'Please fill out all required fields!'
-    
     return profile_data, next_of_kin_data, ''
 
-
-# Step 3: Function to handle image uploads
-# def save_images():
-#     profile_image = request.files.get('idImage')
+# Save images to a specified path or database
+def save_id_image():
+    # Fetch the ID image from the request
+    id_image = request.files.get('idImage')
     
-#     profile_image_id = fs.put(profile_image, filename=profile_image.filename) if profile_image else None
+    # Initialize the image ID to None
+    id_image_id = None
 
-#     return profile_image_id
-
-# Step 4: Function to save profile data in the database
-def save_images():
-    profile_image = request.files.get('idImage')
-    next_of_kin_image = request.files.get('nextOfKinIdImage')
-    
-    profile_image_id = None
-    next_of_kin_image_id = None
-
-    # Save the profile image if it exists
-    if profile_image:
-        profile_image_id = fs.put(profile_image, filename=profile_image.filename)
-        print("Profile image saved with ID:", profile_image_id)  # Debugging line
+    # Save the ID image if it was uploaded
+    if id_image:
+        id_image_id = fs.put(id_image, filename=id_image.filename)
+        print("ID image saved with ID:", id_image_id)  # Debugging line
     else:
-        print("No profile image uploaded")  # Debugging line
+        print("No ID image uploaded")  # Debugging line
 
-    # Save the next of kin image if it exists
-    if next_of_kin_image:
-        next_of_kin_image_id = fs.put(next_of_kin_image, filename=next_of_kin_image.filename)
-        print("Next of kin image saved with ID:", next_of_kin_image_id)  # Debugging line
-    else:
-        print("No next of kin image uploaded")  # Debugging line
+    return id_image_id
 
-    # Ensure a tuple is always returned
-    return profile_image_id, next_of_kin_image_id
 
-def save_profile_data(profile_data, next_of_kin_data, profile_image_id, next_of_kin_image_id):
-    profile_data['profile_image_id'] = profile_image_id
-    profile_data['next_of_kin'] = next_of_kin_data
-    profile_data['next_of_kin_image_id'] = next_of_kin_image_id  # Add next of kin image ID to profile data
-    
+# Save profile data in MongoDB
+def save_profile_data(profile_data, id_image_id):
+    profile_data['id_image_id'] = id_image_id  # Add the ID image ID to profile data
+
     # Check if the profile exists and update or insert accordingly
     existing_profile = profiles_collection.find_one({'email': profile_data['email']})
     if existing_profile:
@@ -90,4 +67,3 @@ def save_profile_data(profile_data, next_of_kin_data, profile_image_id, next_of_
         result = profiles_collection.insert_one(profile_data)
         print("New profile inserted with ID:", result.inserted_id)  # Debugging line
         return result.inserted_id is not None
-

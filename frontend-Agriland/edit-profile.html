@@ -188,18 +188,21 @@
     {% if msg %}
         <p style="color: red;">{{ msg }}</p>
     {% endif %}
+
     <!-- Edit Profile Container -->
     <div class="edit-profile-container">
         <h1>Edit Your Profile</h1>
 
         <!-- Profile Picture Section -->
         <div class="profile-picture-container">
-            <img src="src/images/dashboard.jpg" alt="Upload Profile Picture">
+            <img id="profile-picture-preview" src="src/images/dashboard.jpg" alt="Upload Profile Picture">
             <input type="file" id="profile-picture-upload" name="profile-picture" accept="image/*">
         </div>
 
         <!-- Edit Profile Form -->
         <form id="edit-profile-form" method="post" enctype="multipart/form-data" action="">
+        <form  method="post" enctype="multipart/form-data" action="/edit-profile.html">
+
             <label for="firstName">First Name:</label>
             <input type="text" id="firstName" name="firstName" placeholder="Enter your first name">
 
@@ -243,6 +246,16 @@
 
             <label for="kinRelationship">Relationship:</label>
             <input type="text" id="kinRelationship" name="kinRelationship" placeholder="Enter relationship to next of kin">
+
+            <!-- Script for Conditional Read-Only -->
+            <script>
+                // Makes fields readonly if they have a value, otherwise allows input
+                document.querySelectorAll("#email, #phone, #idNumber, #kraPin").forEach(input => {
+                    if (input.value) input.readOnly = true;
+                });
+            </script>
+
+            <button type="submit">Save Changes</button>
 
             <!-- Success Notification -->
             <div id="notification" class="notification">Profile updated successfully!</div>
