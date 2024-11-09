@@ -156,26 +156,6 @@
                 top: 50%; /* Align to the middle of navbar height */
                 transform: translateY(-50%); /* Center vertically */
             }
-
-            /* Show dropdown on click in mobile */
-            .nav-right a {
-                display: inline-block; /* Ensure it stays inline on mobile */
-            }
-
-            .dropdown {
-                display: none;
-                position: absolute;
-                right: 0;
-                top: 100%; /* Place below the button */
-                background: white;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                z-index: 1;
-            }
-
-            /* Mobile dropdown toggle */
-            .nav-right.active .dropdown {
-                display: block;
-            }
         }
     </style>
 </head>
@@ -204,14 +184,13 @@
                 <a href="edit-profile.html">Edit Profile</a>
             </div>
 
-            <!-- Role Selection Section (Only shown if no role is selected) -->
+            <!-- Role Selection Section -->
             <div class="user-role-selection">
                 <h2>Select Your Role</h2>
                 <button onclick="location.href='farmer.html'">Farmer</button>
                 <button onclick="location.href='landlord.html'">Landlord</button>
             </div>
 
-            <!-- If the user has selected a role, show the dashboard content -->
             <div class="notifications-section">
                 <h2>Notifications</h2>
                 <ul id="notification-list">
@@ -278,20 +257,5 @@
         <p>&copy; 2024 Agriland Connect. All Rights Reserved.</p>
     </footer>
 
-    <script>
-        // Check if the user has already selected a role, if not, prompt them to select one
-        window.onload = function() {
-            // Simulate checking for a role (you can replace this with actual session or cookie check)
-            var userRole = localStorage.getItem('userRole');  // Example: store user role in localStorage
-            
-            if (!userRole) {
-                document.querySelector('.user-role-selection').style.display = 'block'; // Show role selection
-                document.querySelector('.dashboard').style.display = 'none'; // Hide dashboard content
-            } else {
-                document.querySelector('.user-role-selection').style.display = 'none'; // Hide role selection
-                document.querySelector('.dashboard').style.display = 'block'; // Show dashboard content
-            }
-        };
-    </script>
 </body>
 </html>
