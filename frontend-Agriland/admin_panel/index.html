@@ -234,19 +234,62 @@
             </div>
         </section>
 
-        <section class="user-statistics">
-            <h2>User Statistics</h2>
-            <ul>
-                <li>Total Users: <span id="userCount">{{ stats['Total Users'] }}</span></li>
-                <li>New Users: <span id="newUserCount">{{ stats['New Users'] }}</span></li>
-                <li>Farmers: <span id="farmersCount">{{ stats['Farmers'] }}</span></li>
-                <li>Landowners: <span id="landownersCount">{{ stats['Landowners'] }}</span></li>
-                <li>Gender Distribution: <span id="genderDistribution">Male: {{ stats['Gender Distribution']['Male'] | round(2) }}%, Female: {{ stats['Gender Distribution']['Female'] | round(2) }}%</span></li>
-                <li>Age Bracket: <span id="ageBracket">18-25: {{ stats['Age Bracket']['18-25'] | round(2) }}%, 26-35: {{ stats['Age Bracket']['26-35'] | round(2) }}%, 36-50: {{ stats['Age Bracket']['36-50'] | round(2) }}%</span></li>
-                <li>Active Leases: <span id="activeLeasesCount">{{ stats['Active Leases'] }}</span></li>
-                <li>Pending Payments: <span id="pendingPaymentsCount">{{ stats['Pending Payments'] }}</span></li>
-            </ul>
-        </section>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/api/user-stats')
+            .then(response => response.json())
+            .then(stats => {
+                // User Type Distribution (Pie Chart)
+                new Chart(document.getElementById('userTypeChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: ['Farmers', 'Landowners'],
+                        datasets: [{
+                            data: [stats['Farmers'], stats['Landowners']],
+                            backgroundColor: ['#4caf50', '#ff9800'],
+                        }]
+                    },
+                    options: { responsive: true, plugins: { legend: { position: 'bottom' }}}
+                });
+
+                // Gender Distribution (Doughnut Chart)
+                new Chart(document.getElementById('genderDistributionChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Male', 'Female'],
+                        datasets: [{
+                            data: [stats['Gender Distribution']['Male'], stats['Gender Distribution']['Female']],
+                            backgroundColor: ['#42a5f5', '#ec407a'],
+                        }]
+                    },
+                    options: { responsive: true, plugins: { legend: { position: 'bottom' }}}
+                });
+
+                // Age Bracket Distribution (Bar Chart)
+                new Chart(document.getElementById('ageBracketChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['18-25', '26-35', '36-50'],
+                        datasets: [{
+                            label: 'Age Distribution (%)',
+                            data: [
+                                stats['Age Bracket']['18-25'],
+                                stats['Age Bracket']['26-35'],
+                                stats['Age Bracket']['36-50']
+                            ],
+                            backgroundColor: ['#3f51b5', '#9c27b0', '#ff5722']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: { y: { beginAtZero: true, max: 100 }}
+                    }
+                });
+            });
+    });
+</script>
+ 
     </main>
 
     <footer>
