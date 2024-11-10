@@ -135,10 +135,15 @@
     </header>
 
     <div class="form-container">
-        <form method="POST" action="/admin/add-land-lease" enctype="multipart/form-data" id="lease-form">
+        <form method="POST" action="" enctype="multipart/form-data" id="lease-form">
             <div class="form-group">
                 <label for="location">Location:</label>
-                <input type="text" id="location" name="location" required>
+                <select id="location" name="location" required>
+                    <option value="">Select a County</option>
+                    {% for county in county_names %}
+                        <option value="{{ county }}">{{ county }}</option>
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="form-group">

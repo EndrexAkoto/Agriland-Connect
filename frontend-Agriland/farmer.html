@@ -81,7 +81,12 @@
             <input type="number" id="landSize" name="landSize" required>
 
             <label for="location">Preferred Location:</label>
-            <input type="text" id="location" name="location" required>
+            <select id="location" name="location" required>
+                <option value="">select a County</option>
+                {% for county in county_names %}
+                <option value="{{ county }}">{{ county }}</option>
+                {% endfor %}
+            </select>
 
             <label for="cropType">Type of Crops:</label>
             <input type="text" id="cropType" name="cropType" required>

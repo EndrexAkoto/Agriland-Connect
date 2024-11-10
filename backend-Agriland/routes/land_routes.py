@@ -63,22 +63,14 @@ def upload_file():
 #     return "No file uploaded"
 
 @land_routes.route('/landlord.html', methods=['GET', 'POST'])
-def landlord():
-    # username = request.args.get('username')
-    # user_id = request.args.get('user_id')
-
-    # if not username or not user_id:
-    #     return redirect(url_for('user.login'))  # Re # Redirect if not logged in
+def landlord(): 
     if request.method == 'POST':
         user_id = session.get('id')  # Get user ID from session
-        username = session.get('username')
+        username = session.get('name')
 
-        # if not user_id or not username:
-        #     return redirect(url_for('user.login'))  # Redirect if not logged in
+        if not user_id or not username:
+            return redirect(url_for('user.login'))  # Redirect if not logged in
 
-        # if not user_id or not username:
-        #     return redirect(url_for('user.login'))  # Redirect if not logged iz
-        # Collect form data
         land_size = request.form.get('landSize')
         location = request.form.get('location')
         price_per_acre = request.form.get('pricePerAcre')
