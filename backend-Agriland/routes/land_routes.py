@@ -65,12 +65,13 @@ def upload_file():
 @land_routes.route('/landlord.html', methods=['GET', 'POST'])
 def landlord(): 
     if request.method == 'POST':
-        user_id = session.get('id')  # Get user ID from session
+        user_id = session.get('id')
         username = session.get('name')
 
         if not user_id or not username:
-            return redirect(url_for('user.login'))  # Redirect if not logged in
+            return redirect(url_for('user.login'))
 
+        # Collect form data
         land_size = request.form.get('landSize')
         location = request.form.get('location')
         price_per_acre = request.form.get('pricePerAcre')
@@ -82,10 +83,12 @@ def landlord():
         payment_frequency = request.form.get('paymentFrequency')
         approved = False
 
-        if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency]):
-            return render_template('landlord.html', msg='Please fill out all fields!')
+        # Validate form fields and files
+        files = request.files.getlist('farmImages')
+        if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency]) or not files:
+            return render_template('landlord.html', msg='Please fill out all fields and upload at least one image!')
 
-        
+        # Prepare data for MongoDB
         land_listing_data = {
             'name': username,
             'land_size': land_size,
@@ -100,19 +103,17 @@ def landlord():
             'approved': approved,
             'farm_images': []
         }
-        
-        # Insert and retrieve the ObjectId
+
+        # Insert into MongoDB and get ObjectId
         result = land_collection.insert_one(land_listing_data)
-        listing_id = str(result.inserted_id)  # MongoDB ObjectId as a string
+        listing_id = str(result.inserted_id)
         
-        # Set up directory to store images based on ObjectId
+        # Directory setup for images
         listing_folder = os.path.join(current_app.config['UPLOAD_FOLDER'], listing_id, 'images')
         os.makedirs(listing_folder, exist_ok=True)
-        
-        # Process uploaded image files and save them in the ObjectId directory
-        files = request.files.getlist('farmImages')
-        image_filenames = []
 
+        # Save each uploaded image
+        image_filenames = []
         for file in files:
             if file and allowed_file(file.filename):
                 image_filename = secure_filename(file.filename)
@@ -120,7 +121,7 @@ def landlord():
                 file.save(file_path)
                 image_filenames.append(image_filename)
 
-        # Update MongoDB with the filenames for this listing
+        # Update MongoDB with image filenames
         land_collection.update_one(
             {'_id': ObjectId(listing_id)},
             {'$set': {'farm_images': image_filenames}}
@@ -131,6 +132,8 @@ def landlord():
     counties = counties_collection.find({}, {'_id': 0, 'County': 1})
     county_names = [county['County'] for county in counties]
     return render_template('landlord.html', county_names=county_names, msg='')
+
+
 
 
 
