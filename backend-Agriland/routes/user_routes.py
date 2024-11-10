@@ -89,6 +89,7 @@ def dashboard():
 @user_routes.route("/edit-profile.html", methods=['GET', 'POST'])
 def profile():
     msg = ''
+    email = session.get('email')
     if request.method == 'POST':
         # Extract form data and validate it
         profile_data, next_of_kin_data, msg = extract_and_validate_form_data()
@@ -103,7 +104,7 @@ def profile():
 
         msg = 'Profile updated successfully!' if profiles_collection.find_one({'email': profile_data['email']}) else 'Profile created successfully!'
     
-    return render_template('edit-profile.html', msg=msg)
+    return render_template('edit-profile.html', email, msg=msg)
 
 @user_routes.route("/farmer.html", methods=['GET', 'POST'])
 def farmer():
