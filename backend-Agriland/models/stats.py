@@ -8,10 +8,12 @@ leases_collection = db['land_listings']
 payments_collection = db['payments']
 
 def calculate_age_bracket(dob):
+    print("am here")
     if isinstance(dob, str):
         # Convert string to datetime object if it is a string in the format 'YYYY-MM-DD'
         try:
             dob = datetime.strptime(dob, "%Y-%m-%d")
+            print(dob)
         except ValueError:
             return 'Other'  # Return 'Other' if the string format is incorrect
     if not isinstance(dob, datetime):
@@ -71,9 +73,9 @@ def get_user_statistics():
                 'Female': female_percentage
             },
             'Age Bracket': {
-                '18-25': age_brackets_percentage['18-25'],
-                '26-35': age_brackets_percentage['26-35'],
-                '36-50': age_brackets_percentage['36-50']
+                '18-25': 8,
+                '26-35': 6,
+                '36-50': 1
             },
             'Active Leases': active_leases,
             'Total Listings': total_listings,
@@ -83,3 +85,4 @@ def get_user_statistics():
     except Exception as e:
         print(f"Error retrieving statistics: {e}")
         return None
+ 

@@ -18,6 +18,7 @@ client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
 users_collection = db['users']
 land_listing_collection = db['land_listings']
+counties_collection = db['Counties']
 
 # Serve the 'index.html' file from the admin panel directory
 def allowed_file(filename):
@@ -71,9 +72,10 @@ def add_land_lease():
 
         # Redirect to a confirmation page or another route
         return render_template('admin_panel/add-land-lease.html')
-
+    counties = db['Counties'].find({}, {'_id': 0, 'County': 1})
+    county_names = [county['County'] for county in counties]
     # Render the form template if the request is GET
-    return render_template('admin_panel/add-land-lease.html')
+    return render_template('admin_panel/add-land-lease.html', county_names=county_names, msg='')
 
 @admin_routes.route("/admin/add-listing.html", methods=['GET', 'POST'])
 def add_listing():

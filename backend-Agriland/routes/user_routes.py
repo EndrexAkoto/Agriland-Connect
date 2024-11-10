@@ -8,8 +8,8 @@ from datetime import datetime
 from bson import ObjectId
 
 # Assuming MongoDB setup
-client = MongoClient('mongodb://localhost:27017/')
-db = client['Agriland-Connect']
+client = MongoClient('localhost', 27017)
+db = client['Agriconnect']
 users_collection = db['users']
 counties_collection = db['Counties'] 
 
@@ -72,13 +72,17 @@ def login():
 def dashboard():
     user_id = session.get('id')  # Assuming the user ID is stored in the session
 
+    # Check if user ID is present in the session
     if user_id:
         # Retrieve the username from the database using the user ID
         user = users_collection.find_one({"_id": ObjectId(user_id)}, {"username": 1})
         if user:
+            # Get the username from the database result
             username = user['username']
-            # Redirect to landlord with username and user ID as query parameters
-            return redirect(url_for('land_routes.landlord', username=username, user_id=user_id))
+            # Render dashboard.html with the actual username
+            return render_template('dashboard.html', user_data={"name": username})
+
+    # If user ID is not in the session or no user is found, render with "Guest"
     return render_template('dashboard.html', user_data={"name": "Guest"})
 
 
@@ -123,7 +127,7 @@ def farmer():
 
         # Insert land request into the 'farmer' collection with the user_id and username
         db['farmer'].insert_one({
-            'user_id': ObjectId(user_id),
+            # 'user_id': ObjectId(user_id),
             'username': username,
             'land_size': land_size,
             'location': location,
@@ -138,7 +142,7 @@ def farmer():
         user = user_collection.find_one({'_id': ObjectId(user_id)})
 
         if user is None:
-            return render_template('farmer.html', msg='User not found!')  # Handle user not found
+            return render_template('farmer.html', msg='User not found!')
 
         # Update role logic
         current_role = user.get('role', 'N/A')
@@ -151,7 +155,10 @@ def farmer():
 
         return render_template('farmer.html', msg='Land request submitted successfully!')
 
-    return render_template('farmer.html', msg='')
+    # Fetch county names for the dropdown
+    counties = counties_collection.find({}, {'_id': 0, 'County': 1})
+    county_names = [county['County'] for county in counties]
+    return render_template('farmer.html', county_names=county_names, msg='')
 
 @user_routes.route('/user-profile.html')
 def userprofile():
