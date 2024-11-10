@@ -188,6 +188,7 @@
     {% if msg %}
         <p style="color: red;">{{ msg }}</p>
     {% endif %}
+    
     <!-- Edit Profile Container -->
     <div class="edit-profile-container">
         <h1>Edit Your Profile</h1>
@@ -200,16 +201,20 @@
 
         <!-- Edit Profile Form -->
         <form id="edit-profile-form" method="post" enctype="multipart/form-data" action="">
-        <form  method="post" enctype="multipart/form-data" action="/edit-profile.html">
 
+            <!-- Read-Only Fields (pulled from registration data) -->
             <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName" placeholder="Enter your first name">
-
-            <label for="middleName">Middle Name:</label>
-            <input type="text" id="middleName" name="middleName" placeholder="Enter your middle name">
+            <input type="text" id="firstName" name="firstName" value="{{ user.firstName }}" readonly>
 
             <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" placeholder="Enter your last name">
+            <input type="text" id="lastName" name="lastName" value="{{ user.lastName }}" readonly>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
+
+            <!-- Editable Fields -->
+            <label for="middleName">Middle Name:</label>
+            <input type="text" id="middleName" name="middleName" placeholder="Enter your middle name">
 
             <label for="dob">Date of Birth:</label>
             <input type="date" id="dob" name="dob">
@@ -221,22 +226,18 @@
                 <option value="female">Female</option>
             </select>
 
-            <!-- Read-Only Fields -->
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" readonly>
-
             <label for="phone">Phone Number:</label>
-            <input type="text" id="phone" name="phone" placeholder="Enter your phone number" readonly>
+            <input type="text" id="phone" name="phone" placeholder="Enter your phone number">
 
             <label for="idNumber">ID Number:</label>
-            <input type="text" id="idNumber" name="idNumber" placeholder="Enter your ID number" readonly>
+            <input type="text" id="idNumber" name="idNumber" placeholder="Enter your ID number">
+
+            <label for="kraPin">KRA PIN:</label>
+            <input type="text" id="kraPin" name="kraPin" placeholder="Enter your KRA PIN">
 
             <!-- ID Image Upload Section -->
             <label for="idImage">Upload ID Image:</label>
             <input type="file" id="idImage" name="idImage" accept="image/*">
-
-            <label for="kraPin">KRA PIN:</label>
-            <input type="text" id="kraPin" name="kraPin" placeholder="Enter your KRA PIN">
 
             <!-- Next of Kin Section -->
             <h2>Next of Kin</h2>
@@ -245,14 +246,6 @@
 
             <label for="kinRelationship">Relationship:</label>
             <input type="text" id="kinRelationship" name="kinRelationship" placeholder="Enter relationship to next of kin">
-
-            <!-- Script for Conditional Read-Only -->
-            <script>
-                // Makes fields readonly if they have a value, otherwise allows input
-                document.querySelectorAll("#email, #phone, #idNumber, #kraPin").forEach(input => {
-                    if (input.value) input.readOnly = true;
-                });
-            </script>
 
             <!-- Success Notification -->
             <div id="notification" class="notification">Profile updated successfully!</div>
@@ -292,8 +285,11 @@
                     console.error('Failed to update profile');
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+            });
         };
     </script>
+
 </body>
 </html>
