@@ -204,10 +204,10 @@
 
             <!-- Read-Only Fields (pulled from registration data) -->
             <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName" value="{{ user.firstName }}" readonly>
+            <input type="text" id="firstName" name="firstName" value="{{ user.first_name  }}" readonly>
 
             <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" value="{{ user.lastName }}" readonly>
+            <input type="text" id="lastName" name="lastName" value="{{ user.last_name }}" readonly>
 
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" value="{{ user.email }}" readonly>

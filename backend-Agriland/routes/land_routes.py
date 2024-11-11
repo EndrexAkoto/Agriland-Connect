@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, current_app, session, red
 
 from models.land import land_collection  # Import your land model
 from bson import ObjectId  # To work with MongoDB ObjectId
-from utils.helpers import *
+# from utils.helpers import *
 import os
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename
@@ -16,6 +16,9 @@ users_collection = db['users']
 land_collection = db['land_listings']
 counties_collection = db['Counties'] 
 upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
 
 @land_routes.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -85,6 +88,7 @@ def landlord():
 
         # Validate form fields and files
         files = request.files.getlist('farmImages')
+        print(files)
         if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency]) or not files:
             return render_template('landlord.html', msg='Please fill out all fields and upload at least one image!')
 
