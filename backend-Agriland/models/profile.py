@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 import gridfs
 import os
 from datetime import datetime
+from bson.objectid import ObjectId
 # Database connection
 client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
@@ -68,3 +69,20 @@ def save_profile_data(profile_data, id_image_id):
         result = profiles_collection.insert_one(profile_data)
         print("New profile inserted with ID:", result.inserted_id)  # Debugging line
         return result.inserted_id is not None
+
+def get_user_by_id(user_id):
+    try:
+        # Convert user_id to an ObjectId if it's a string
+        user_object_id = ObjectId(user_id)
+        # Find the user document in the collection
+        user = profiles_collection.find_one({"_id": user_object_id})
+        
+        # Check if user was found
+        if user:
+            return user
+        else:
+            print("User not found")
+            return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
