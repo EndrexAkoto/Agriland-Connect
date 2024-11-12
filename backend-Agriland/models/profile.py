@@ -18,11 +18,15 @@ def extract_and_validate_form_data():
     if not email:
         return None, None, 'Invalid email address!'
 
+    dob_str = request.form.get('dob')
+    age = calculate_age(dob_str) if dob_str else None
+
     profile_data = {
         'first_name': request.form.get('firstName'),
         'middle_name': request.form.get('middleName'),
         'last_name': request.form.get('lastName'),
-        'dob': request.form.get('dob'),
+        'dob': dob_str,
+        'age': age,
         'gender': request.form.get('gender'),
         'email': email,
         'phone': request.form.get('phone'),
@@ -37,52 +41,40 @@ def extract_and_validate_form_data():
 
     return profile_data, next_of_kin_data, ''
 
+def calculate_age(dob_str):
+    try:
+        dob = datetime.strptime(dob_str, "%Y-%m-%d")
+        today = datetime.today()
+        age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+        return age
+    except ValueError:
+        return None 
 # Save images to a specified path or database
 def save_id_image():
-    # Fetch the ID image from the request
     id_image = request.files.get('idImage')
-    
-    # Initialize the image ID to None
     id_image_id = None
-
-    # Save the ID image if it was uploaded
     if id_image:
         id_image_id = fs.put(id_image, filename=id_image.filename)
-        print("ID image saved with ID:", id_image_id)  # Debugging line
-    else:
-        print("No ID image uploaded")  # Debugging line
-
     return id_image_id
 
 
 # Save profile data in MongoDB
 def save_profile_data(profile_data, id_image_id):
-    profile_data['id_image_id'] = id_image_id  # Add the ID image ID to profile data
+    profile_data['id_image_id'] = id_image_id
 
-    # Check if the profile exists and update or insert accordingly
     existing_profile = profiles_collection.find_one({'email': profile_data['email']})
     if existing_profile:
         result = profiles_collection.update_one({'email': profile_data['email']}, {'$set': profile_data})
-        print("Profile updated with result:", result.modified_count)  # Debugging line
         return result.modified_count > 0
     else:
         result = profiles_collection.insert_one(profile_data)
-        print("New profile inserted with ID:", result.inserted_id)  # Debugging line
         return result.inserted_id is not None
 
 def get_user_by_id(user_id):
     try:
-        # Convert user_id to an ObjectId if it's a string
         user_object_id = ObjectId(user_id)
-        # Find the user document in the collection
         user = profiles_collection.find_one({"_id": user_object_id})
-        
-        # Check if user was found
-        if user:
-            return user
-        else:
-            print("User not found")
-            return None
+        return user if user else None
     except Exception as e:
         print(f"An error occurred: {e}")
         return None

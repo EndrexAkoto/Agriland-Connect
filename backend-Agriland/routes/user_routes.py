@@ -12,6 +12,7 @@ client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
 users_collection = db['users']
 counties_collection = db['Counties'] 
+land_collection = db['land_listings']
 
 import re
 import os
@@ -27,23 +28,25 @@ def index():
 def signup():
     msg = ''
     if request.method == 'POST':
-        firstName = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        email = request.form.get('email')
+        password = request.form.get('password')
         role = 'N/A'
         registration_date = datetime.now()
 
         # Input validation
         if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
             msg = 'Invalid email address!'
-        elif not re.match(r'[A-Za-z0-9]+', username):
-            msg = 'Username must contain only letters and numbers!'
+        elif not re.match(r'[A-Za-z0-9]+', first_name) or not re.match(r'[A-Za-z0-9]+', last_name):
+            msg = 'Names must contain only letters and numbers!'
         elif get_user_by_email(email):
             msg = 'Account already exists!'
         else:
-            create_user({'username': username, 'email': email, 'password': password, 'role': role, 'registration_date': registration_date})
+            # Here you could hash the password before storing
+            create_user({'first_name': first_name, 'last_name': last_name, 'email': email, 'password': password, 'role': role, 'registration_date': registration_date})
             msg = 'You have successfully registered!'
-            return redirect(url_for('user.login'))
+            return redirect(url_for('user.login'))  # Ensure this route exists
     
     return render_template('signup.html', msg=msg)
 
@@ -59,7 +62,7 @@ def login():
             session['loggedin'] = True
             session['id'] = str(user['_id'])
             session['email'] = user['email']
-            session['name'] = user['username'] 
+            session['name'] = user['first_name'] 
             msg = 'Logged in successfully!'
             return redirect(url_for('user.dashboard'))
         else:
@@ -75,10 +78,10 @@ def dashboard():
     # Check if user ID is present in the session
     if user_id:
         # Retrieve the username from the database using the user ID
-        user = users_collection.find_one({"_id": ObjectId(user_id)}, {"username": 1})
+        user = users_collection.find_one({"_id": ObjectId(user_id)}, {"first_name": 1})
         if user:
             # Get the username from the database result
-            username = user['username']
+            username = user['first_name']
             # Render dashboard.html with the actual username
             return render_template('dashboard.html', user_data={"name": username})
 
@@ -92,14 +95,13 @@ def profile():
     user_id = session.get('id')  # Assuming you store the user_id in the session
     if user_id:
         user = get_user_by_id(user_id)
-        
         if not user:
             return "User not found", 404
     else:
         return "User not logged in", 401
 
     if request.method == 'POST':
-        # Extract form data and validate it
+        # Extract form data and validate it, including calculating the age
         profile_data, next_of_kin_data, msg = extract_and_validate_form_data()
         if msg:
             return render_template('edit-profile.html', msg=msg)
@@ -111,6 +113,7 @@ def profile():
         save_profile_data(profile_data, id_image_id)
 
         msg = 'Profile updated successfully!' if profiles_collection.find_one({'email': profile_data['email']}) else 'Profile created successfully!'
+        return redirect(url_for('user.profile'))
     
     return render_template('edit-profile.html', user=user, msg=msg)
 
@@ -228,10 +231,33 @@ def userprofile():
 
 
 @user_routes.route('/find-land.html', methods=['GET', 'POST'])
-def findland():
+def find_land():
+    # Fetch counties
     counties = counties_collection.find({}, {'_id': 0, 'County': 1})
     county_names = [county['County'] for county in counties]
-    return render_template('find-land.html', county_names=county_names)
+    
+    # Fetch approved land listings
+    approved_listings = land_collection.find({'approved': "False"})  # Ensure only approved listings are fetched
+    listings = [
+        {
+            '_id': str(listing['_id']),
+            'land_size': listing.get('land_size', 'N/A'),
+            'location': listing.get('location', 'N/A'),
+            'price_per_acre': listing.get('price_per_acre', 'N/A'),
+            'amenities': listing.get('amenities', 'N/A'),
+            'road_access': listing.get('road_access', 'N/A'),
+            'fencing': listing.get('fencing', 'N/A'),
+            'title_deed': listing.get('title_deed', 'N/A'),
+            'lease_duration': listing.get('lease_duration', 'N/A'),
+            'payment_frequency': listing.get('payment_frequency', 'N/A'),
+            'farm_image': f"/admin/uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}" if listing.get('farm_image') else ""
+        }
+        for listing in approved_listings
+    ]
+    
+    # Render the template with both listings and county names
+    return render_template('find-land.html', listings=listings, county_names=county_names)
+
 # Serve other static files
 @user_routes.route('/images/<path:filename>')
 def serve_images(filename):
