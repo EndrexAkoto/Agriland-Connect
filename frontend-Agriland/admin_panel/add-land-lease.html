@@ -135,7 +135,7 @@
     </header>
 
     <div class="form-container">
-        <form method="POST" action="" enctype="multipart/form-data" id="lease-form">
+        <form method="post" action="" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="location">Location:</label>
                 <select id="location" name="location" required>
@@ -168,6 +168,9 @@
             </div>
 
             <button type="submit" class="submit-button">Add Lease</button>
+            {% if msg %}
+            <p style="color: red;">{{ msg }}</p>
+            {% endif %}
         </form>
     </div>
 

@@ -3,7 +3,8 @@ from flask import current_app as app
 from models.user import get_user_by_email, create_user
 from models.stats import  get_user_statistics
 from models.land import add_land_listing, get_all_land_listings, add_listing_with_images
-from models.settings import process_user_data
+from models.settings import process_user_data, manage_user_status
+from bson import ObjectId
 from pymongo import MongoClient 
 from db import db 
 from werkzeug.utils import secure_filename
@@ -40,6 +41,7 @@ def user_stats():
 
 @admin_routes.route("/admin/add-land-lease.html", methods=['GET', 'POST'])
 def add_land_lease():
+    msg = ''
     if request.method == 'POST':
         # Get form data
         location = request.form.get('location')
@@ -68,13 +70,25 @@ def add_land_lease():
             'images': image_paths,
             'approved': False  # By default, new leases are unapproved
         }
-        add_land_listing(lease_data)  # Call the function to save to the database
-
-        # Redirect to a confirmation page or another route
-        return render_template('admin_panel/add-land-lease.html')
+        
+        # Attempt to add the lease to the database
+        try:
+            result = add_land_listing(lease_data)  # Call the function to save to the database
+            if result:  # If insertion returns a result, consider it successful
+                msg = 'Lease successfully added!'
+            else:
+                msg = 'Failed to add lease. Please try again.'
+        except Exception as e:
+            msg = f'An error occurred: {e}'
+        
+        # Render the form template with a success or error message
+        counties = db['Counties'].find({}, {'_id': 0, 'County': 1})
+        county_names = [county['County'] for county in counties]
+        return render_template('admin_panel/add-land-lease.html', county_names=county_names, msg=msg)
+    
+    # Render the form template if the request is GET
     counties = db['Counties'].find({}, {'_id': 0, 'County': 1})
     county_names = [county['County'] for county in counties]
-    # Render the form template if the request is GET
     return render_template('admin_panel/add-land-lease.html', county_names=county_names, msg='')
 
 @admin_routes.route("/admin/add-listing.html", methods=['GET', 'POST'])
@@ -109,8 +123,16 @@ def add_listing():
 def submit_form():
     msg = ''
     if request.method == 'POST':
-        # Pass the form data and the database connection to the function
-        msg = process_user_data(request.form, db)
+        # Check which form is submitted
+        if 'reset-email' in request.form:
+            email = request.form.get('reset-email')
+            msg = manage_user_status(email, db, action='reset')
+        elif 'terminate-email' in request.form:
+            email = request.form.get('terminate-email')
+            msg = manage_user_status(email, db, action='terminate')
+        else:
+            # Process user data for adding a new user
+            msg = process_user_data(request.form, db)
 
     return render_template('admin_panel/settings.html', msg=msg)
 
@@ -172,42 +194,6 @@ def listings():
 def payments():
     return render_template('admin_panel/payments.html')
 
-@admin_routes.route("/admin/settings.html", methods=['POST'])
-def settings():
-    data = request.json
-
-    # Extract the user role and other details from the form data
-    user_role = data.get('user-role')
-    email = data.get('email')
-    password = data.get('password')
-    name = data.get('name')
-    phone = data.get('phone')
-    site_status = data.get('site-status')
-
-    # Depending on the role, insert the data into the appropriate collection
-    if user_role == 'farmer':
-        collection = db['farmers']
-    elif user_role == 'landlord':
-        collection = db['landlords']
-    elif user_role == 'admin':
-        collection = db['admins']
-    else:
-        return jsonify({'message': 'Invalid user role'}), 400
-
-    # Create a document to insert
-    user_data = {
-        'email': email,
-        'password': password,
-        'name': name,
-        'phone': phone,
-        'site_status': site_status
-    }
-
-    # Insert the document into the corresponding collection
-    collection.insert_one(user_data)
-
-    return jsonify({'message': 'User data successfully added to the ' + user_role + ' collection.'})
-    return render_template('admin_panel/settings.html')
 
 @admin_routes.route('/admin/uploads/<listing_id>/images/<filename>')
 def serve_uploaded_image(listing_id, filename):

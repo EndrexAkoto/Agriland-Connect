@@ -7,7 +7,8 @@ land_collection = db['land_listings']
 
 # Define functions related to land operations
 def add_land_listing(land_data):
-    land_collection.insert_one(land_data)
+    result = land_collection.insert_one(land_data)
+    return result.inserted_id if result.acknowledged else None
 
 def get_all_land_listings():
     return land_collection.find()

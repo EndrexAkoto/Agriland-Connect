@@ -28,25 +28,28 @@ def index():
 def signup():
     msg = ''
     if request.method == 'POST':
-        first_name = request.form.get('first_name')
-        last_name = request.form.get('last_name')
-        email = request.form.get('email')
-        password = request.form.get('password')
-        role = 'N/A'
-        registration_date = datetime.now()
-
-        # Input validation
-        if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
-            msg = 'Invalid email address!'
-        elif not re.match(r'[A-Za-z0-9]+', first_name) or not re.match(r'[A-Za-z0-9]+', last_name):
-            msg = 'Names must contain only letters and numbers!'
-        elif get_user_by_email(email):
-            msg = 'Account already exists!'
+        # Gather form data
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        password = request.form['password']
+        
+        # Check if user already exists
+        existing_user = db.users.find_one({'email': email})
+        if existing_user:
+            msg = 'Account with this email already exists!'
         else:
-            # Here you could hash the password before storing
-            create_user({'first_name': first_name, 'last_name': last_name, 'email': email, 'password': password, 'role': role, 'registration_date': registration_date})
-            msg = 'You have successfully registered!'
-            return redirect(url_for('user.login'))  # Ensure this route exists
+            # Insert the new user with 'active' status
+            new_user = {
+                'first_name': first_name,
+                'last_name': last_name,
+                'email': email,
+                'password': password,  # Consider hashing the password for security
+                'status': 'active'  # Set status to 'active' for new users
+            }
+            db.users.insert_one(new_user)
+            msg = 'Signup successful! You can now log in.'
+            return redirect(url_for('user.login'))
     
     return render_template('signup.html', msg=msg)
 
@@ -59,12 +62,17 @@ def login():
         user = authenticate_user(email, password)
 
         if user:
-            session['loggedin'] = True
-            session['id'] = str(user['_id'])
-            session['email'] = user['email']
-            session['name'] = user['first_name'] 
-            msg = 'Logged in successfully!'
-            return redirect(url_for('user.dashboard'))
+            # Check if the user's status is active
+            if user.get('status') == 'deactivated':
+                msg = 'Your account has been deactivated. Please contact admin for assistance.'
+            elif user.get('status') == 'active':
+                # Proceed with login if status is active
+                session['loggedin'] = True
+                session['id'] = str(user['_id'])
+                session['email'] = user['email']
+                session['name'] = user['first_name']
+                msg = 'Logged in successfully!'
+                return redirect(url_for('user.dashboard'))
         else:
             msg = 'Incorrect username/password!'
     
