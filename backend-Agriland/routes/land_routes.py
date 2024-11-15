@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, current_app, session, red
 
 from models.land import land_collection  # Import your land model
 from bson import ObjectId  # To work with MongoDB ObjectId
-from utils.helpers import *
+# from utils.helpers import *
 import os
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename
@@ -16,6 +16,9 @@ users_collection = db['users']
 land_collection = db['land_listings']
 counties_collection = db['Counties'] 
 upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
 
 @land_routes.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -63,21 +66,14 @@ def upload_file():
 #     return "No file uploaded"
 
 @land_routes.route('/landlord.html', methods=['GET', 'POST'])
-def landlord():
-    # username = request.args.get('username')
-    # user_id = request.args.get('user_id')
-
-    # if not username or not user_id:
-    #     return redirect(url_for('user.login'))  # Re # Redirect if not logged in
+def landlord(): 
     if request.method == 'POST':
-        user_id = session.get('id')  # Get user ID from session
-        username = session.get('username')
+        user_id = session.get('id')
+        username = session.get('name')
 
-        # if not user_id or not username:
-        #     return redirect(url_for('user.login'))  # Redirect if not logged in
+        if not user_id or not username:
+            return redirect(url_for('user.login'))
 
-        # if not user_id or not username:
-        #     return redirect(url_for('user.login'))  # Redirect if not logged iz
         # Collect form data
         land_size = request.form.get('landSize')
         location = request.form.get('location')
@@ -90,10 +86,13 @@ def landlord():
         payment_frequency = request.form.get('paymentFrequency')
         approved = False
 
-        if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency]):
-            return render_template('landlord.html', msg='Please fill out all fields!')
+        # Validate form fields and files
+        files = request.files.getlist('farmImages')
+        print(files)
+        if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency]) or not files:
+            return render_template('landlord.html', msg='Please fill out all fields and upload at least one image!')
 
-        
+        # Prepare data for MongoDB
         land_listing_data = {
             'name': username,
             'land_size': land_size,
@@ -108,19 +107,17 @@ def landlord():
             'approved': approved,
             'farm_images': []
         }
-        
-        # Insert and retrieve the ObjectId
+
+        # Insert into MongoDB and get ObjectId
         result = land_collection.insert_one(land_listing_data)
-        listing_id = str(result.inserted_id)  # MongoDB ObjectId as a string
+        listing_id = str(result.inserted_id)
         
-        # Set up directory to store images based on ObjectId
+        # Directory setup for images
         listing_folder = os.path.join(current_app.config['UPLOAD_FOLDER'], listing_id, 'images')
         os.makedirs(listing_folder, exist_ok=True)
-        
-        # Process uploaded image files and save them in the ObjectId directory
-        files = request.files.getlist('farmImages')
-        image_filenames = []
 
+        # Save each uploaded image
+        image_filenames = []
         for file in files:
             if file and allowed_file(file.filename):
                 image_filename = secure_filename(file.filename)
@@ -128,7 +125,7 @@ def landlord():
                 file.save(file_path)
                 image_filenames.append(image_filename)
 
-        # Update MongoDB with the filenames for this listing
+        # Update MongoDB with image filenames
         land_collection.update_one(
             {'_id': ObjectId(listing_id)},
             {'$set': {'farm_images': image_filenames}}
@@ -144,45 +141,47 @@ def landlord():
 
 
 
-@land_routes.route("/find-land.html")
-def land_listings():
-    # Filter for approved land listings only
-    approved_listings = land_listing_collection
-    listings = [
-        {
-            '_id': str(listing['_id']),
-            'land_size': listing.get('land_size', 'N/A'),
-            'location': listing.get('location', 'N/A'),
-            'price_per_acre': listing.get('price_per_acre', 'N/A'),
-            'amenities': listing.get('amenities', 'N/A'),
-            'road_access': listing.get('road_access', 'N/A'),
-            'fencing': listing.get('fencing', 'N/A'),
-            'title_deed': listing.get('title_deed', 'N/A'),
-            'lease_duration': listing.get('lease_duration', 'N/A'),
-            'payment_frequency': listing.get('payment_frequency', 'N/A'),
-            'farm_image': f"/admin/uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}" if listing.get('farm_image') else ""
-        }
-        for listing in approved_listings
-    ]
-    return render_template('find-land.html', listings=listings)
 
-    # Filter for approved land listings only
-    approved_listings = land_listing_collection
-    listings = [
-        {
-            '_id': str(listing['_id']),
-            'land_size': listing.get('land_size', 'N/A'),
-            'location': listing.get('location', 'N/A'),
-            'price_per_acre': listing.get('price_per_acre', 'N/A'),
-            'amenities': listing.get('amenities', 'N/A'),
-            'road_access': listing.get('road_access', 'N/A'),
-            'fencing': listing.get('fencing', 'N/A'),
-            'title_deed': listing.get('title_deed', 'N/A'),
-            'lease_duration': listing.get('lease_duration', 'N/A'),
-            'payment_frequency': listing.get('payment_frequency', 'N/A'),
-            'farm_image': f"/admin/uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}" if listing.get('farm_image') else ""
-        }
-        for listing in approved_listings
-    ]
-    return render_template('find-land.html', listings=listings)
+
+# @land_routes.route("/find-land.html")
+# def land_listings():
+#     # Filter for approved land listings only
+#     approved_listings = land_collection
+#     listings = [
+#         {
+#             '_id': str(listing['_id']),
+#             'land_size': listing.get('land_size', 'N/A'),
+#             'location': listing.get('location', 'N/A'),
+#             'price_per_acre': listing.get('price_per_acre', 'N/A'),
+#             'amenities': listing.get('amenities', 'N/A'),
+#             'road_access': listing.get('road_access', 'N/A'),
+#             'fencing': listing.get('fencing', 'N/A'),
+#             'title_deed': listing.get('title_deed', 'N/A'),
+#             'lease_duration': listing.get('lease_duration', 'N/A'),
+#             'payment_frequency': listing.get('payment_frequency', 'N/A'),
+#             'farm_image': f"/admin/uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}" if listing.get('farm_image') else ""
+#         }
+#         for listing in approved_listings
+#     ]
+#     return render_template('find-land.html', listings=listings)
+
+#     # Filter for approved land listings only
+#     approved_listings = land_listing_collection
+#     listings = [
+#         {
+#             '_id': str(listing['_id']),
+#             'land_size': listing.get('land_size', 'N/A'),
+#             'location': listing.get('location', 'N/A'),
+#             'price_per_acre': listing.get('price_per_acre', 'N/A'),
+#             'amenities': listing.get('amenities', 'N/A'),
+#             'road_access': listing.get('road_access', 'N/A'),
+#             'fencing': listing.get('fencing', 'N/A'),
+#             'title_deed': listing.get('title_deed', 'N/A'),
+#             'lease_duration': listing.get('lease_duration', 'N/A'),
+#             'payment_frequency': listing.get('payment_frequency', 'N/A'),
+#             'farm_image': f"/admin/uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}" if listing.get('farm_image') else ""
+#         }
+#         for listing in approved_listings
+#     ]
+#     return render_template('find-land.html', listings=listings)
 

@@ -214,9 +214,10 @@
                 <!-- Dynamically fetched unapproved listings will be injected here -->
                 {% for listing in listings %}
                 <div class="listing">
-                    <form method="POST" action="/approve_listing">  <!-- Update action URL as needed -->
+                    <form method="POST" action="/admin/unapproved_uploads.html">
                         <h3>User: {{ listing.user_name }}</h3>
                         <input type="hidden" name="_id" value="{{ listing._id }}">
+                        
                         <div class="listing-details">
                             <label>Size:</label>
                             <input type="text" name="land_size" value="{{ listing.land_size }}" required>
@@ -235,14 +236,21 @@
                             <p>Lease Duration: {{ listing.lease_duration }}</p>
                             <p>Payment Frequency: {{ listing.payment_frequency }}</p>
                         </div>
+                        
                         <div class="images">
                             {% for image in listing.images %}
                                 <img src="{{ image }}" alt="Land Image" style="width: 100px; height: auto;">
                             {% endfor %}
                         </div>
-                        <button type="submit">Approve</button>
-                        <button type="button" onclick="rejectListing('{{ listing.user_name }}')">Reject</button>
-                        <button type="button" onclick="setPendingVerification('{{ listing.user_name }}')">Pending Verification</button>
+                        
+                        <!-- Approval Buttons -->
+                        <button type="submit" name="action" value="approve">Approve</button>
+                        
+                        <button type="button" onclick="rejectListing()">Reject</button>
+                        
+                        <button type="submit" name="action" value="pending">Pending Verification</button>
+                    
+                        <input type="hidden" id="message" name="message" value="">
                     </form>
                 </div>
                 {% endfor %}
@@ -264,10 +272,20 @@
             }
         }
 
-        function rejectListing(user) {
-            const reason = prompt(`Please provide a reason for rejecting ${user}'s listing:`);
+        function rejectListing() {
+            const reason = prompt("Enter the reason for rejection:");
             if (reason) {
-                alert(`${user}'s land listing has been rejected due to: ${reason}`);
+                document.getElementById("message").value = reason;
+                
+                // Set action to 'reject' and submit the form
+                const form = event.target.form;
+                const actionInput = document.createElement("input");
+                actionInput.type = "hidden";
+                actionInput.name = "action";
+                actionInput.value = "reject";
+                form.appendChild(actionInput);
+        
+                form.submit();
             }
         }
 

@@ -18,6 +18,7 @@ client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
 users_collection = db['users']
 land_listing_collection = db['land_listings']
+counties_collection = db['Counties']
 
 # Serve the 'index.html' file from the admin panel directory
 def allowed_file(filename):
@@ -71,9 +72,10 @@ def add_land_lease():
 
         # Redirect to a confirmation page or another route
         return render_template('admin_panel/add-land-lease.html')
-
+    counties = db['Counties'].find({}, {'_id': 0, 'County': 1})
+    county_names = [county['County'] for county in counties]
     # Render the form template if the request is GET
-    return render_template('admin_panel/add-land-lease.html')
+    return render_template('admin_panel/add-land-lease.html', county_names=county_names, msg='')
 
 @admin_routes.route("/admin/add-listing.html", methods=['GET', 'POST'])
 def add_listing():
@@ -112,8 +114,29 @@ def submit_form():
 
     return render_template('admin_panel/settings.html', msg=msg)
 
-@admin_routes.route("/admin/unapproved_uploads.html")
+@admin_routes.route("/admin/unapproved_uploads.html", methods=["GET", "POST"])
 def unapproved_uploads():
+    # Handle form submission (approval, rejection, pending)
+    if request.method == "POST":
+        listing_id = request.form["_id"]
+        action = request.form["action"]
+        message = request.form.get("message", "")  # Optional rejection message
+
+        # Set the status update based on the action
+        if action == "approve":
+            status_update = {"approved": "True", "message": ""}
+        elif action == "reject":
+            status_update = {"approved": "Rejected", "message": message}
+        elif action == "pending":
+            status_update = {"approved": "Pending Verification", "message": ""}
+        
+        # Update the listing in the database
+        land_listing_collection.update_one({"_id": ObjectId(listing_id)}, {"$set": status_update})
+        
+        # Redirect to refresh the listings view
+        return redirect(url_for("admin.unapproved_uploads"))
+    
+    # If GET request, fetch and display unapproved listings
     listings = [
         {
             '_id': str(listing['_id']),
@@ -128,33 +151,14 @@ def unapproved_uploads():
             'title_deed': listing.get('title_deed', 'N/A'),
             'lease_duration': listing.get('lease_duration', 'N/A'),
             'payment_frequency': listing.get('payment_frequency', 'N/A'),
-            # Handle the case where farm_image could be a single image
             'images': [
                 f"/admin/uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}"
-            ] if listing.get('farm_image') else []  # Only add if there's a farm_image field
+            ] if listing.get('farm_image') else []
         }
         for listing in land_listing_collection.find({'approved': 'False'})
     ]
-    return render_template('admin_panel/unapproved_uploads.html', listings=listings)
-
-@admin_routes.route("/approve_listing", methods=["POST"])
-def approve_listing():
-    listing_id = request.form["_id"]
-    action = request.form["action"]
     
-    # Update listing based on action
-    if action == "approve":
-        status_update = {"approved": "True"}
-    elif action == "reject":
-        status_update = {"approved": "Rejected"}
-    elif action == "pending":
-        status_update = {"approved": "Pending Verification"}
-
-    # Update the document in MongoDB
-    land_listing_collection.update_one({"_id": ObjectId(listing_id)}, {"$set": status_update})
-
-    return redirect(url_for("admin.unapproved_uploads"))
-
+    return render_template('admin_panel/unapproved_uploads.html', listings=listings)
 
 @admin_routes.route("/admin/leases.html")
 def leases():
