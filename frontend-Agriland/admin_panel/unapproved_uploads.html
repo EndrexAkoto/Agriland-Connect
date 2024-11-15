@@ -170,9 +170,6 @@
                             <label>Price:</label>
                             <input type="text" name="price_per_acre" value="{{ listing.price_per_acre }}" required>
                             
-                            <label for="uploadImages">Upload Images:</label>
-                            <input type="file" id="uploadImages" name="images" accept="image/*" multiple>
-
                             <div class="actions">
                                 <button type="submit" name="action" value="approve">Approve</button>
                                 <button type="button" onclick="rejectListing(this.form)">Reject</button>

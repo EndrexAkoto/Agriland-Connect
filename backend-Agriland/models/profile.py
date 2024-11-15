@@ -5,7 +5,6 @@ import gridfs
 import os
 from datetime import datetime
 from bson.objectid import ObjectId
-from bson.objectid import ObjectId
 # Database connection
 client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
@@ -22,15 +21,10 @@ def extract_and_validate_form_data():
     dob_str = request.form.get('dob')
     age = calculate_age(dob_str) if dob_str else None
 
-    dob_str = request.form.get('dob')
-    age = calculate_age(dob_str) if dob_str else None
-
     profile_data = {
         'first_name': request.form.get('firstName'),
         'middle_name': request.form.get('middleName'),
         'last_name': request.form.get('lastName'),
-        'dob': dob_str,
-        'age': age,
         'dob': dob_str,
         'age': age,
         'gender': request.form.get('gender'),
@@ -55,14 +49,6 @@ def calculate_age(dob_str):
         return age
     except ValueError:
         return None 
-def calculate_age(dob_str):
-    try:
-        dob = datetime.strptime(dob_str, "%Y-%m-%d")
-        today = datetime.today()
-        age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-        return age
-    except ValueError:
-        return None 
 # Save images to a specified path or database
 def save_id_image():
     id_image = request.files.get('idImage')
@@ -74,7 +60,6 @@ def save_id_image():
 
 # Save profile data in MongoDB
 def save_profile_data(profile_data, id_image_id):
-    profile_data['id_image_id'] = id_image_id
     profile_data['id_image_id'] = id_image_id
 
     existing_profile = profiles_collection.find_one({'email': profile_data['email']})

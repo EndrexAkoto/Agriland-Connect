@@ -25,3 +25,13 @@ def add_listing_with_images(location, size, price, description, image_paths):
         'images': image_paths
     }
     add_land_listing(land_data)
+
+def get_field(listing, *keys, default='N/A'):
+    """
+    Retrieve the first matching key from the listing dictionary.
+    If no key is found, return the default value.
+    """
+    for key in keys:
+        if key in listing:
+            return listing[key]
+    return default

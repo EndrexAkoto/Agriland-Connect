@@ -283,7 +283,12 @@
         <section class="listing-cards">
             {% for listing in listings %}
             <div class="listing-card">
-                <img src="{{ listing.farm_image }}" alt="Land Image" style="width: 100px; height: auto;">
+                <!-- Loop through each image in farm_images -->
+                <div class="image-gallery">
+                    {% for image in listing.farm_images %}
+                        <img src="{{ image }}" alt="Land Image" style="width: 100px; height: auto;">
+                    {% endfor %}
+                </div>
                 <h3>{{ listing.location }}</h3>
                 <p>Size: {{ listing.land_size }} acres</p>
                 <p>Price per Acre: Ksh. {{ listing.price_per_acre }}</p>

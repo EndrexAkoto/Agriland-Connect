@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory, Response
 from models.user import get_user_by_email, create_user, authenticate_user
 from models.profile import *
+from models.land import *
 from werkzeug.security import check_password_hash
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -10,11 +11,8 @@ from bson import ObjectId
 # Assuming MongoDB setup
 client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
-client = MongoClient('localhost', 27017)
-db = client['Agriconnect']
 users_collection = db['users']
 counties_collection = db['Counties'] 
-land_collection = db['land_listings']
 land_collection = db['land_listings']
 
 import re
@@ -87,25 +85,25 @@ def dashboard():
     user_id = session.get('id')  # Assuming the user ID is stored in the session
 
     # Check if user ID is present in the session
-    # Check if user ID is present in the session
     if user_id:
-        # Retrieve the username from the database using the user ID
-        user = users_collection.find_one({"_id": ObjectId(user_id)}, {"first_name": 1})
-        user = users_collection.find_one({"_id": ObjectId(user_id)}, {"first_name": 1})
+        # Retrieve the user's data from the database using the user ID
+        user = users_collection.find_one(
+            {"_id": ObjectId(user_id)},
+            {"first_name": 1, "last_name": 1, "email": 1}  # Only fetch required fields
+        )
         if user:
-            # Get the username from the database result
-            username = user['first_name']
-            # Render dashboard.html with the actual username
-            return render_template('dashboard.html', user_data={"name": username})
+            # Extract user details
+            user_data = {
+                "name": f"{user.get('first_name', 'Guest')} {user.get('last_name', '')}",
+                "email": user.get('email', 'Not Available')
+            }
+            # Render dashboard.html with the actual user data
+            return render_template('dashboard.html', user_data=user_data)
 
-    # If user ID is not in the session or no user is found, render with "Guest"
-            # Get the username from the database result
-            username = user['first_name']
-            # Render dashboard.html with the actual username
-            return render_template('dashboard.html', user_data={"name": username})
+    # If user ID is not in the session or no user is found, render with default values
+    user_data = {"name": "Guest", "email": "Not Available"}
+    return render_template('dashboard.html', user_data=user_data)
 
-    # If user ID is not in the session or no user is found, render with "Guest"
-    return render_template('dashboard.html', user_data={"name": "Guest"})
 
 
 @user_routes.route("/edit-profile.html", methods=['GET', 'POST'])
@@ -119,16 +117,8 @@ def profile():
     else:
         return "User not logged in", 401
 
-    user_id = session.get('id')  # Assuming you store the user_id in the session
-    if user_id:
-        user = get_user_by_id(user_id)
-        if not user:
-            return "User not found", 404
-    else:
-        return "User not logged in", 401
-
     if request.method == 'POST':
-        # Extract form data and validate it, including calculating the age
+        # Extract form data and validate it
         profile_data, next_of_kin_data, msg = extract_and_validate_form_data()
         if msg:
             return render_template('edit-profile.html', msg=msg)
@@ -146,9 +136,7 @@ def profile():
 
         msg = 'Profile updated successfully!' if profiles_collection.find_one({'email': profile_data['email']}) else 'Profile created successfully!'
         return redirect(url_for('user.profile'))
-        return redirect(url_for('user.profile'))
     
-    return render_template('edit-profile.html', user=user, msg=msg)
     return render_template('edit-profile.html', user=user, msg=msg)
 
 @user_routes.route("/farmer.html", methods=['GET', 'POST'])
@@ -174,7 +162,6 @@ def farmer():
         # Insert land request into the 'farmer' collection with the user_id and username
         db['farmer'].insert_one({
             # 'user_id': ObjectId(user_id),
-            # 'user_id': ObjectId(user_id),
             'username': username,
             'land_size': land_size,
             'location': location,
@@ -190,7 +177,6 @@ def farmer():
 
         if user is None:
             return render_template('farmer.html', msg='User not found!')
-            return render_template('farmer.html', msg='User not found!')
 
         # Update role logic
         current_role = user.get('role', 'N/A')
@@ -203,10 +189,6 @@ def farmer():
 
         return render_template('farmer.html', msg='Land request submitted successfully!')
 
-    # Fetch county names for the dropdown
-    counties = counties_collection.find({}, {'_id': 0, 'County': 1})
-    county_names = [county['County'] for county in counties]
-    return render_template('farmer.html', county_names=county_names, msg='')
     # Fetch county names for the dropdown
     counties = counties_collection.find({}, {'_id': 0, 'County': 1})
     county_names = [county['County'] for county in counties]
@@ -233,32 +215,35 @@ def homepage():
 @user_routes.route('/find-land.html', methods=['GET', 'POST'])
 def find_land():
     # Fetch counties
-def find_land():
-    # Fetch counties
     counties = counties_collection.find({}, {'_id': 0, 'County': 1})
     county_names = [county['County'] for county in counties]
-    
+
     # Fetch approved land listings
     approved_listings = land_collection.find({'approved': "True"})  # Ensure only approved listings are fetched
+    
     listings = [
         {
             '_id': str(listing['_id']),
-            'land_size': listing.get('land_size', 'N/A'),
-            'location': listing.get('location', 'N/A'),
-            'price_per_acre': listing.get('price_per_acre', 'N/A'),
-            'amenities': listing.get('amenities', 'N/A'),
-            'road_access': listing.get('road_access', 'N/A'),
-            'fencing': listing.get('fencing', 'N/A'),
-            'title_deed': listing.get('title_deed', 'N/A'),
-            'lease_duration': listing.get('lease_duration', 'N/A'),
-            'payment_frequency': listing.get('payment_frequency', 'N/A'),
-            'farm_image': f"/admin/uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}" if listing.get('farm_image') else ""
+            'land_size': get_field(listing, 'land_size', 'size', default='N/A'),
+            'location': get_field(listing, 'location', default='N/A'),
+            'price_per_acre': get_field(listing, 'price_per_acre', 'price', default='N/A'),
+            'amenities': get_field(listing, 'amenities', default='N/A'),
+            'road_access': get_field(listing, 'road_access', default='N/A'),
+            'fencing': get_field(listing, 'fencing', default='N/A'),
+            'title_deed': get_field(listing, 'title_deed', default='N/A'),
+            'lease_duration': get_field(listing, 'lease_duration', default='N/A'),
+            'payment_frequency': get_field(listing, 'payment_frequency', default='N/A'),
+            'farm_images': [
+                f"/admin/uploads/{str(listing['_id'])}/images/{image}"
+                for image in get_field(listing, 'images', 'farm_images', default=[])
+            ]
         }
         for listing in approved_listings
     ]
-    
+
     # Render the template with both listings and county names
     return render_template('find-land.html', listings=listings, county_names=county_names)
+
 
 @user_routes.route('/image/<image_id>')
 def image(image_id):
