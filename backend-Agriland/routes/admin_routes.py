@@ -63,8 +63,8 @@ def add_land_lease():
         # Prepare data for database insertion
         lease_data = {
             'location': location,
-            'size': size,
-            'price': price,
+            'land_size': size,
+            'price_per_acre': price,
             'description': description,
             'images': [],
             'approved': "False"  # By default, new leases are unapproved
