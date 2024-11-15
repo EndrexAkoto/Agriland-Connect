@@ -16,16 +16,15 @@
 
         /* Theme Color */
         :root {
-            --primary-color: #4CAF50; /* Updated theme color */
+            --primary-color: #4CAF50;
             --secondary-color: #f1f1f1;
-            --text-color: #333;
             --button-color: #fff;
-            --button-background: #4CAF50; /* Updated button background color */
+            --button-background: #4CAF50;
         }
 
         /* Header Styles */
         header {
-            background-color: var(--primary-color); /* Updated */
+            background-color: var(--primary-color);
             padding: 1em;
             display: flex;
             justify-content: space-between;
@@ -35,7 +34,6 @@
         .logo-container {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
         }
 
         .logo {
@@ -57,13 +55,13 @@
 
         .unapproved-listings h2 {
             margin-bottom: 20px;
-            color: var(--primary-color); /* Updated */
+            color: var(--primary-color);
         }
 
         #listingsContainer {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 30px;
         }
 
         .listing {
@@ -71,133 +69,68 @@
             border-radius: 5px;
             padding: 20px;
             background-color: #fafafa;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 20px;
+        }
+
+        .listing .images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .images img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .listing-details {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
 
-        .listing h3 {
-            margin: 0 0 10px;
-            font-size: 1.2em;
-            color: var(--primary-color); /* Updated */
+        .listing-details label {
+            font-weight: bold;
         }
 
-        .listing-details {
-            margin: 10px 0;
+        .actions {
+            text-align: right;
         }
 
-        .listing .images {
-            display: flex;
-            gap: 10px;
-        }
-
-        .listing .images img {
-            max-width: 150px;
-            height: auto;
-            border-radius: 5px;
-        }
-
-        /* Table Styles */
-        table {
-            width: 100%;
-            margin: 1em 0;
-            border-collapse: collapse;
-            background-color: var(--secondary-color);
-        }
-
-        table th, table td {
-            padding: 1em;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        th {
-            background-color: var(--primary-color); /* Updated */
-            color: var(--button-color);
-        }
-
-        /* Button Styles */
         button {
-            background-color: var(--button-background); /* Updated */
+            background-color: var(--button-background);
             color: var(--button-color);
             border: none;
-            padding: 0.3em 0.7em; /* Smaller padding for reduced size */
+            padding: 0.5em 1em;
             cursor: pointer;
             border-radius: 5px;
+            margin: 5px 0;
             transition: background-color 0.3s ease;
-            font-size: 0.85em; /* Decreased font size */
-            width: auto; /* Adjust width to content */
-            max-width: 150px; /* Optional: Set a max width */
-            display: inline-block; /* Ensure it only takes the space it needs */
         }
 
         button:hover {
-            background-color: #3e8e41; /* Adjust hover color */
+            background-color: #3e8e41;
         }
 
         button:focus {
             outline: 2px solid #ffbf47;
         }
 
-        /* Footer Styles */
-        footer {
-            text-align: center;
-            padding: 1em;
-            background-color: var(--primary-color); /* Updated */
-            color: white;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
-
         /* Responsive Adjustments */
-        @media screen and (max-width: 480px) {
-            header {
-                flex-direction: column;
-                align-items: center;
+        @media screen and (max-width: 768px) {
+            .listing {
+                grid-template-columns: 1fr;
             }
 
-            .logo-container {
-                justify-content: center;
-                width: 100%;
-            }
-
-            .logo {
-                width: 40px;
-                height: 40px;
-            }
-
-            table th, table td {
-                font-size: 0.7em;
-                padding: 0.5em;
-            }
-
-            button {
-                padding: 0.4em;
-            }
-
-            footer {
-                font-size: 0.8em;
+            .actions {
+                text-align: left;
             }
         }
-
-        /* Back Button */
-        .back-button {
-            display: inline-block;
-            margin: 20px 0;
-            padding: 10px 15px;
-            background-color: var(--primary-color); /* Updated */
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            text-align: center;
-        }
-
-        .back-button:hover {
-            background-color: #3e8e41; /* Adjust hover color */
-        }
-
     </style>
 </head>
 <body>
@@ -209,16 +142,22 @@
     <main>
         <div class="unapproved-listings">
             <h2>Unapproved Land Listings</h2>
-            <a href="index.html" class="back-button">Back to Admin Panel</a>
             <div id="listingsContainer">
-                <!-- Dynamically fetched unapproved listings will be injected here -->
                 {% for listing in listings %}
                 <div class="listing">
-                    <form method="POST" action="/admin/unapproved_uploads.html">
+                    <!-- Images Section -->
+                    <div class="images">
+                        {% for image in listing.images %}
+                        <img src="{{ image }}" alt="Land Image" onclick="openImage('{{ image }}')">
+                        {% endfor %}
+                    </div>
+
+                    <!-- Details and Actions -->
+                    <div class="listing-details">
                         <h3>User: {{ listing.user_name }}</h3>
-                        <input type="hidden" name="_id" value="{{ listing._id }}">
-                        
-                        <div class="listing-details">
+                        <form method="POST" action="/admin/unapproved_uploads.html" enctype="multipart/form-data">
+                            <input type="hidden" name="_id" value="{{ listing._id }}">
+
                             <label>Size:</label>
                             <input type="text" name="land_size" value="{{ listing.land_size }}" required>
                             
@@ -231,68 +170,42 @@
                             <label>Price:</label>
                             <input type="text" name="price_per_acre" value="{{ listing.price_per_acre }}" required>
                             
-                            <p>Road Access: {{ listing.road_access }}</p>
-                            <p>Fencing: {{ listing.fencing }}</p>
-                            <p>Lease Duration: {{ listing.lease_duration }}</p>
-                            <p>Payment Frequency: {{ listing.payment_frequency }}</p>
-                        </div>
-                        
-                        <div class="images">
-                            {% for image in listing.images %}
-                                <img src="{{ image }}" alt="Land Image" style="width: 100px; height: auto;">
-                            {% endfor %}
-                        </div>
-                        
-                        <!-- Approval Buttons -->
-                        <button type="submit" name="action" value="approve">Approve</button>
-                        
-                        <button type="button" onclick="rejectListing()">Reject</button>
-                        
-                        <button type="submit" name="action" value="pending">Pending Verification</button>
-                    
-                        <input type="hidden" id="message" name="message" value="">
-                    </form>
+                            <label for="uploadImages">Upload Images:</label>
+                            <input type="file" id="uploadImages" name="images" accept="image/*" multiple>
+
+                            <div class="actions">
+                                <button type="submit" name="action" value="approve">Approve</button>
+                                <button type="button" onclick="rejectListing(this.form)">Reject</button>
+                                <button type="submit" name="action" value="pending">Pending Verification</button>
+                                <input type="hidden" id="message" name="message" value="">
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 {% endfor %}
-                <!-- End of example listing -->
             </div>
         </div>
     </main>
     <footer>
-        &copy; 2024 Agriland. All Rights Reserved.
+        <p>&copy; 2024 Agriland. All Rights Reserved.</p>
     </footer>
 
     <script>
-        // JavaScript functions for handling actions like approval or rejection
-        function approveListing(user, size, location, amenities, price) {
-            const confirmation = confirm(`Are you sure you want to approve the land listing for ${user}?`);
-            if (confirmation) {
-                alert(`${user}'s land listing has been approved!`);
-                window.location.href = "land-listings.html";
-            }
+        function openImage(src) {
+            const newWindow = window.open();
+            newWindow.document.write('<img src="' + src + '" style="width:100%;height:auto;">');
         }
 
-        function rejectListing() {
+        function rejectListing(form) {
             const reason = prompt("Enter the reason for rejection:");
             if (reason) {
-                document.getElementById("message").value = reason;
-                
-                // Set action to 'reject' and submit the form
-                const form = event.target.form;
+                form.message.value = reason;
                 const actionInput = document.createElement("input");
                 actionInput.type = "hidden";
                 actionInput.name = "action";
                 actionInput.value = "reject";
                 form.appendChild(actionInput);
-        
                 form.submit();
-            }
-        }
-
-        function setPendingVerification(user) {
-            const confirmation = confirm(`Set ${user}'s land listing to pending verification?`);
-            if (confirmation) {
-                alert(`${user}'s land listing is pending verification.`);
             }
         }
     </script>
