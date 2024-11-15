@@ -13,23 +13,22 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #4CAF50; /* Change to your theme color */
+    background-color: #4CAF50; /* Theme color */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: relative; /* Added for positioning child elements */
-    width: 100%; /* Ensure header spans full width */
+    width: 100%;
 }
 
 /* Logo Styling */
 header .logo img {
-    height: 80px; /* Logo size */
+    height: 80px;
 }
 
 /* Navigation Menu */
 .nav-menu {
-    display: flex; /* Default to flex for desktop */
-    justify-content: space-between;
+    display: flex;
+    justify-content: center; /* Center align links */
     align-items: center;
-    width: 100%; /* Make full width */
+    width: 100%;
 }
 
 .nav-left, .nav-right {
@@ -38,31 +37,30 @@ header .logo img {
 }
 
 header nav a {
-    color: white; /* Change text color to white */
+    color: white;
     text-decoration: none;
     font-weight: bold;
     margin: 0 20px;
 }
 
-/* Hamburger Menu */
+/* Hide Hamburger in Desktop */
 .hamburger {
-    display: none; /* Hide on desktop */
-    cursor: pointer;
-    margin-right: auto; /* Push hamburger to the right */
+    display: none;
 }
 
 /* Mobile Styles */
 @media (max-width: 768px) {
+    /* Show hamburger on mobile */
     .hamburger {
-        display: flex; /* Show on mobile */
-        justify-content: flex-end;
-        margin-top: 10px;
+        display: block;
+        cursor: pointer;
         margin-right: 20px;
     }
 
+    /* Hide the regular menu and show mobile layout */
     header .nav-menu {
+        display: none;
         flex-direction: column;
-        display: none; /* Initially hidden */
         position: absolute;
         top: 60px;
         left: 0;
@@ -72,21 +70,21 @@ header nav a {
     }
 
     header .nav-menu.active {
-        display: flex; /* Show when active */
+        display: flex; /* Show menu when active */
     }
 
     .nav-left, .nav-right {
-        flex-direction: column; /* Stack links vertically */
-        align-items: center; /* Center items */
-        width: 100%; /* Full width */
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
     }
 
     header nav a {
-        padding: 10px 15px; /* Adjust padding for mobile */
-        text-align: center; /* Center text */
-        width: 100%; /* Full width for easier clicking */
-        margin: 5px 0; /* Spacing between items */
-        color: white; /* Ensure text is white in mobile view */
+        padding: 10px 15px;
+        text-align: center;
+        width: 100%;
+        margin: 5px 0;
+        color: white;
     }
 }
 

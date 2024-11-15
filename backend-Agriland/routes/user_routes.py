@@ -10,8 +10,11 @@ from bson import ObjectId
 # Assuming MongoDB setup
 client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
+client = MongoClient('localhost', 27017)
+db = client['Agriconnect']
 users_collection = db['users']
 counties_collection = db['Counties'] 
+land_collection = db['land_listings']
 land_collection = db['land_listings']
 
 import re
@@ -84,10 +87,18 @@ def dashboard():
     user_id = session.get('id')  # Assuming the user ID is stored in the session
 
     # Check if user ID is present in the session
+    # Check if user ID is present in the session
     if user_id:
         # Retrieve the username from the database using the user ID
         user = users_collection.find_one({"_id": ObjectId(user_id)}, {"first_name": 1})
+        user = users_collection.find_one({"_id": ObjectId(user_id)}, {"first_name": 1})
         if user:
+            # Get the username from the database result
+            username = user['first_name']
+            # Render dashboard.html with the actual username
+            return render_template('dashboard.html', user_data={"name": username})
+
+    # If user ID is not in the session or no user is found, render with "Guest"
             # Get the username from the database result
             username = user['first_name']
             # Render dashboard.html with the actual username
@@ -108,8 +119,16 @@ def profile():
     else:
         return "User not logged in", 401
 
+    user_id = session.get('id')  # Assuming you store the user_id in the session
+    if user_id:
+        user = get_user_by_id(user_id)
+        if not user:
+            return "User not found", 404
+    else:
+        return "User not logged in", 401
+
     if request.method == 'POST':
-        # Extract form data and validate it
+        # Extract form data and validate it, including calculating the age
         profile_data, next_of_kin_data, msg = extract_and_validate_form_data()
         if msg:
             return render_template('edit-profile.html', msg=msg)
@@ -127,7 +146,9 @@ def profile():
 
         msg = 'Profile updated successfully!' if profiles_collection.find_one({'email': profile_data['email']}) else 'Profile created successfully!'
         return redirect(url_for('user.profile'))
+        return redirect(url_for('user.profile'))
     
+    return render_template('edit-profile.html', user=user, msg=msg)
     return render_template('edit-profile.html', user=user, msg=msg)
 
 @user_routes.route("/farmer.html", methods=['GET', 'POST'])
@@ -153,6 +174,7 @@ def farmer():
         # Insert land request into the 'farmer' collection with the user_id and username
         db['farmer'].insert_one({
             # 'user_id': ObjectId(user_id),
+            # 'user_id': ObjectId(user_id),
             'username': username,
             'land_size': land_size,
             'location': location,
@@ -168,6 +190,7 @@ def farmer():
 
         if user is None:
             return render_template('farmer.html', msg='User not found!')
+            return render_template('farmer.html', msg='User not found!')
 
         # Update role logic
         current_role = user.get('role', 'N/A')
@@ -180,6 +203,10 @@ def farmer():
 
         return render_template('farmer.html', msg='Land request submitted successfully!')
 
+    # Fetch county names for the dropdown
+    counties = counties_collection.find({}, {'_id': 0, 'County': 1})
+    county_names = [county['County'] for county in counties]
+    return render_template('farmer.html', county_names=county_names, msg='')
     # Fetch county names for the dropdown
     counties = counties_collection.find({}, {'_id': 0, 'County': 1})
     county_names = [county['County'] for county in counties]
@@ -204,6 +231,8 @@ def homepage():
     return render_template('index.html')
 
 @user_routes.route('/find-land.html', methods=['GET', 'POST'])
+def find_land():
+    # Fetch counties
 def find_land():
     # Fetch counties
     counties = counties_collection.find({}, {'_id': 0, 'County': 1})

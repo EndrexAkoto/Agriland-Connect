@@ -19,6 +19,7 @@ db = client['Agriconnect']
 users_collection = db['users']
 land_listing_collection = db['land_listings']
 counties_collection = db['Counties']
+counties_collection = db['Counties']
 
 # Serve the 'index.html' file from the admin panel directory
 def allowed_file(filename):
@@ -168,7 +169,29 @@ def submit_form():
     return render_template('admin_panel/settings.html', msg=msg)
 
 @admin_routes.route("/admin/unapproved_uploads.html", methods=["GET", "POST"])
+@admin_routes.route("/admin/unapproved_uploads.html", methods=["GET", "POST"])
 def unapproved_uploads():
+    # Handle form submission (approval, rejection, pending)
+    if request.method == "POST":
+        listing_id = request.form["_id"]
+        action = request.form["action"]
+        message = request.form.get("message", "")  # Optional rejection message
+
+        # Set the status update based on the action
+        if action == "approve":
+            status_update = {"approved": "True", "message": ""}
+        elif action == "reject":
+            status_update = {"approved": "Rejected", "message": message}
+        elif action == "pending":
+            status_update = {"approved": "Pending Verification", "message": ""}
+        
+        # Update the listing in the database
+        land_listing_collection.update_one({"_id": ObjectId(listing_id)}, {"$set": status_update})
+        
+        # Redirect to refresh the listings view
+        return redirect(url_for("admin.unapproved_uploads"))
+    
+    # If GET request, fetch and display unapproved listings
     # Handle form submission (approval, rejection, pending)
     if request.method == "POST":
         listing_id = request.form["_id"]
@@ -211,6 +234,7 @@ def unapproved_uploads():
         }
         for listing in land_listing_collection.find({'approved': 'False'})
     ]
+    
     
     return render_template('admin_panel/unapproved_uploads.html', listings=listings)
 

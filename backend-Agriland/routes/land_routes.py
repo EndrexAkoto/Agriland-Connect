@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, request, current_app, session, red
 from models.land import land_collection  # Import your land model
 from bson import ObjectId  # To work with MongoDB ObjectId
 # from utils.helpers import *
+# from utils.helpers import *
 import os
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename
@@ -35,10 +36,15 @@ def upload_file():
 
 @land_routes.route('/landlord.html', methods=['GET', 'POST'])
 def landlord(): 
+def landlord(): 
     if request.method == 'POST':
         user_id = session.get('id')
         username = session.get('name')
+        user_id = session.get('id')
+        username = session.get('name')
 
+        if not user_id or not username:
+            return redirect(url_for('user.login'))
         if not user_id or not username:
             return redirect(url_for('user.login'))
 

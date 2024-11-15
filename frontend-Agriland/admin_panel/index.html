@@ -20,7 +20,7 @@
         }
 
         header {
-            background-color: rgba(76, 175, 80, 0.8);
+            background-color: #4CAF50;;
             color: white;
             padding: 15px;
             display: flex;
@@ -132,7 +132,7 @@
         footer {
             text-align: center;
             padding: 10px 0;
-            background-color: rgba(76, 175, 80, 0.8);
+            background-color: #4CAF50;
             color: white;
             position: relative;
             bottom: 0;
@@ -181,7 +181,7 @@
                 display: none; /* Hide regular nav links */
                 flex-direction: column;
                 position: absolute;
-                background-color: rgba(76, 175, 80, 0.8);
+                background-color: #4CAF50;
                 top: 60px; /* Position below the header */
                 right: 0;
                 width: 100%;
@@ -286,7 +286,8 @@
                             labels: ['Farmers', 'Landowners'],
                             datasets: [{
                                 data: [stats['Farmers'], stats['Landowners']],
-                                backgroundColor: ['#4CAF50', '#FF5722']
+                                backgroundColor: ['#3C5FAAFF', '#FF5722']
+                               
                             }]
                         },
                         options: {
@@ -302,7 +303,10 @@
                             datasets: [{
                                 label: 'Gender Distribution',
                                 data: [stats['Male'], stats['Female']],
-                                backgroundColor: ['#2196F3', '#FFEB3B']
+                                backgroundColor: ['#380DD1FF', '#4E8F12FF']
+
+                            
+
                             }]
                         },
                         options: {
