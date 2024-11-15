@@ -12,9 +12,12 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Theme Color */
+        /* Theme Colors */
         :root {
             --primary-color: #4CAF50;
             --secondary-color: #f1f1f1;
@@ -43,8 +46,23 @@
             object-fit: cover;
         }
 
+        .back-button {
+            color: var(--button-color);
+            background-color: transparent;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 0.5em 1em;
+            text-decoration: underline;
+        }
+
+        .back-button:hover {
+            color: #ffbf47;
+        }
+
         /* Listings Section */
         .unapproved-listings {
+            flex: 1;
             max-width: 900px;
             margin: 20px auto;
             padding: 20px;
@@ -76,13 +94,13 @@
 
         .listing .images {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(5, 1fr);
             gap: 10px;
         }
 
         .images img {
             width: 100%;
-            height: auto;
+            height: 120px;
             border-radius: 5px;
             object-fit: cover;
             cursor: pointer;
@@ -121,6 +139,19 @@
             outline: 2px solid #ffbf47;
         }
 
+        /* Footer Styles */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--button-color);
+            text-align: center;
+            padding: 10px 0;
+            margin-top: auto;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
         /* Responsive Adjustments */
         @media screen and (max-width: 768px) {
             .listing {
@@ -138,6 +169,7 @@
         <div class="logo-container">
             <img src="../images/logo001.png" alt="Agriland Logo" class="logo">
         </div>
+        <button class="back-button" onclick="location.href='./index.html';">Back to Dashboard</button>
     </header>
     <main>
         <div class="unapproved-listings">
@@ -150,6 +182,9 @@
                         {% for image in listing.images %}
                         <img src="{{ image }}" alt="Land Image" onclick="openImage('{{ image }}')">
                         {% endfor %}
+                        {% for i in range(5 - listing.images|length) %}
+                        <img src="" alt="Placeholder Image">
+                        {% endfor %}
                     </div>
 
                     <!-- Details and Actions -->
@@ -158,21 +193,27 @@
                         <form method="POST" action="/admin/unapproved_uploads.html" enctype="multipart/form-data">
                             <input type="hidden" name="_id" value="{{ listing._id }}">
 
-                            <label>Size:</label>
+                            <label>Land Size (in acres):</label>
                             <input type="text" name="land_size" value="{{ listing.land_size }}" required>
                             
                             <label>Location:</label>
                             <input type="text" name="location" value="{{ listing.location }}" required>
                             
-                            <label>Amenities:</label>
-                            <input type="text" name="amenities" value="{{ listing.amenities }}" required>
-                            
-                            <label>Price:</label>
+                            <label>Price Per Acre (in local currency):</label>
                             <input type="text" name="price_per_acre" value="{{ listing.price_per_acre }}" required>
                             
-                            <label for="uploadImages">Upload Images:</label>
-                            <input type="file" id="uploadImages" name="images" accept="image/*" multiple>
+                            <label>Amenities Available:</label>
+                            <input type="text" name="amenities" value="{{ listing.amenities }}" required>
+                            
+                            <label>Road Access:</label>
+                            <input type="text" name="road_access" value="{{ listing.road_access }}" required>
 
+                            <label>Fencing:</label>
+                            <input type="text" name="fencing" value="{{ listing.fencing }}" required>
+
+                            <label>Lease Duration:</label>
+                            <input type="text" name="lease_duration" value="{{ listing.lease_duration }}" required>
+                            
                             <div class="actions">
                                 <button type="submit" name="action" value="approve">Approve</button>
                                 <button type="button" onclick="rejectListing(this.form)">Reject</button>
