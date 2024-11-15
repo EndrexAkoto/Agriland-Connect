@@ -159,7 +159,7 @@
     <section class="user-profile">
         <!-- Profile Picture -->
         <div class="profile-picture">
-            <img src="{{ url_for('user.image', image_id=user_profile['profile_image_id']) }}" alt="User Profile Picture" id="profile-pic">
+            <img src="{{ url_for('user.image', image_id=user_profile['profile_picture_id']) }}" alt="User Profile Picture" id="profile-pic">
             <input type="file" class="upload-btn" accept="image/*" onchange="uploadProfilePicture()">
         </div>
     </section>

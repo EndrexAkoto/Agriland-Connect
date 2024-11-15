@@ -7,6 +7,7 @@ import os
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename
 from db import db 
+import gridfs
 
 land_routes = Blueprint('land', __name__)
 
@@ -16,6 +17,7 @@ users_collection = db['users']
 land_collection = db['land_listings']
 counties_collection = db['Counties'] 
 upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
+fs = gridfs.GridFS(db)
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
@@ -30,40 +32,6 @@ def upload_file():
         file.save(file_path)
         return "File uploaded successfully"
     return "No file uploaded"
-
-# client = MongoClient('localhost', 27017)
-# db = client['Agriconnect']
-# users_collection = db['users']
-# land_listing_collection = db['land_listings']
-# upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
-
-# @land_routes.route('/upload', methods=['GET', 'POST'])
-# def upload_file():
-#     file = request.files.get('file')
-#     if file and allowed_file(file.filename):
-#         image_filename = secure_filename(file.filename)
-#         # Save to UPLOAD_FOLDER directly
-#         file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image_filename)
-#         file.save(file_path)
-#         return "File uploaded successfully"
-#     return "No file uploaded"
-
-# client = MongoClient('localhost', 27017)
-# db = client['Agriconnect']
-# users_collection = db['users']
-# land_listing_collection = db['land_listings']
-# upload_folder = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
-
-# @land_routes.route('/upload', methods=['GET', 'POST'])
-# def upload_file():
-#     file = request.files.get('file')
-#     if file and allowed_file(file.filename):
-#         image_filename = secure_filename(file.filename)
-#         # Save to UPLOAD_FOLDER directly
-#         file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image_filename)
-#         file.save(file_path)
-#         return "File uploaded successfully"
-#     return "No file uploaded"
 
 @land_routes.route('/landlord.html', methods=['GET', 'POST'])
 def landlord(): 
@@ -88,7 +56,8 @@ def landlord():
 
         # Validate form fields and files
         files = request.files.getlist('farmImages')
-        print(files)
+        print(f"Received files: {files}")  # Debug: Check received files
+
         if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency]) or not files:
             return render_template('landlord.html', msg='Please fill out all fields and upload at least one image!')
 
@@ -105,83 +74,41 @@ def landlord():
             'lease_duration': lease_duration,
             'payment_frequency': payment_frequency,
             'approved': approved,
-            'farm_images': []
+            'farm_images': []  # Placeholder for image IDs
         }
 
-        # Insert into MongoDB and get ObjectId
+        # Insert initial document without images to get ObjectId
         result = land_collection.insert_one(land_listing_data)
-        listing_id = str(result.inserted_id)
-        
-        # Directory setup for images
-        listing_folder = os.path.join(current_app.config['UPLOAD_FOLDER'], listing_id, 'images')
-        os.makedirs(listing_folder, exist_ok=True)
+        listing_id = result.inserted_id
+        print(f"Inserted land listing with ID: {listing_id}")  # Debug: Check if the initial document is inserted correctly
 
-        # Save each uploaded image
-        image_filenames = []
+        # Save each uploaded image to GridFS
+        image_ids = []
         for file in files:
-            if file and allowed_file(file.filename):
-                image_filename = secure_filename(file.filename)
-                file_path = os.path.join(listing_folder, image_filename)
-                file.save(file_path)
-                image_filenames.append(image_filename)
+            if file:
+                print(f"File: {file.filename}")  # Debug: Check if file is being processed
+                if allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file_id = fs.put(file, filename=filename, listing_id=listing_id)  # Associate with the listing
+                    image_ids.append(file_id)
+                    print(f"Stored file with ID: {file_id}")  # Debug: Check if file is stored in GridFS correctly
+                else:
+                    print("File type not allowed.")  # Debug: Check if file is valid
+            else:
+                print("Empty file received.")  # Debug: Check if any empty files are received
 
-        # Update MongoDB with image filenames
+        print(f"Image IDs to be updated: {image_ids}")  # Debug: Check the image IDs to be saved in MongoDB
+
+        # Update MongoDB document with GridFS image IDs
         land_collection.update_one(
-            {'_id': ObjectId(listing_id)},
-            {'$set': {'farm_images': image_filenames}}
+            {'_id': listing_id},
+            {'$set': {'farm_images': image_ids}}
         )
-        
+        print("Updated MongoDB document with image IDs.")  # Debug: Check if the update operation is executed
+
         return render_template('landlord.html', msg='Land listing submitted successfully!')
 
+    # Render form with county names
     counties = counties_collection.find({}, {'_id': 0, 'County': 1})
     county_names = [county['County'] for county in counties]
     return render_template('landlord.html', county_names=county_names, msg='')
-
-
-
-
-
-
-
-# @land_routes.route("/find-land.html")
-# def land_listings():
-#     # Filter for approved land listings only
-#     approved_listings = land_collection
-#     listings = [
-#         {
-#             '_id': str(listing['_id']),
-#             'land_size': listing.get('land_size', 'N/A'),
-#             'location': listing.get('location', 'N/A'),
-#             'price_per_acre': listing.get('price_per_acre', 'N/A'),
-#             'amenities': listing.get('amenities', 'N/A'),
-#             'road_access': listing.get('road_access', 'N/A'),
-#             'fencing': listing.get('fencing', 'N/A'),
-#             'title_deed': listing.get('title_deed', 'N/A'),
-#             'lease_duration': listing.get('lease_duration', 'N/A'),
-#             'payment_frequency': listing.get('payment_frequency', 'N/A'),
-#             'farm_image': f"/admin/uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}" if listing.get('farm_image') else ""
-#         }
-#         for listing in approved_listings
-#     ]
-#     return render_template('find-land.html', listings=listings)
-
-#     # Filter for approved land listings only
-#     approved_listings = land_listing_collection
-#     listings = [
-#         {
-#             '_id': str(listing['_id']),
-#             'land_size': listing.get('land_size', 'N/A'),
-#             'location': listing.get('location', 'N/A'),
-#             'price_per_acre': listing.get('price_per_acre', 'N/A'),
-#             'amenities': listing.get('amenities', 'N/A'),
-#             'road_access': listing.get('road_access', 'N/A'),
-#             'fencing': listing.get('fencing', 'N/A'),
-#             'title_deed': listing.get('title_deed', 'N/A'),
-#             'lease_duration': listing.get('lease_duration', 'N/A'),
-#             'payment_frequency': listing.get('payment_frequency', 'N/A'),
-#             'farm_image': f"/admin/uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}" if listing.get('farm_image') else ""
-#         }
-#         for listing in approved_listings
-#     ]
-#     return render_template('find-land.html', listings=listings)
-

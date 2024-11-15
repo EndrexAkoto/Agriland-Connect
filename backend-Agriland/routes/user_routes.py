@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory
+from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory, Response
 from models.user import get_user_by_email, create_user, authenticate_user
 from models.profile import *
 from werkzeug.security import check_password_hash
@@ -109,13 +109,18 @@ def profile():
         return "User not logged in", 401
 
     if request.method == 'POST':
-        # Extract form data and validate it, including calculating the age
+        # Extract form data and validate it
         profile_data, next_of_kin_data, msg = extract_and_validate_form_data()
         if msg:
             return render_template('edit-profile.html', msg=msg)
 
-        # Process only the ID image
-        id_image_id = save_id_image()
+        # Process profile picture and ID image
+        profile_picture_id = save_profile_picture()  # Save profile picture
+        id_image_id = save_id_image()  # Save ID image
+
+        # Update profile data with image IDs
+        profile_data['profile_picture_id'] = profile_picture_id
+        profile_data['id_image_id'] = id_image_id
 
         # Update or insert profile in the database
         save_profile_data(profile_data, id_image_id)
@@ -182,61 +187,21 @@ def farmer():
 
 @user_routes.route('/user-profile.html')
 def userprofile():
-    return render_template('user-profile.html')
+    # Fetch user profile data from the database using the email from the session
+    user_profile = db.users.find_one({"email": session.get('email')})
+    
+    if user_profile:
+        return render_template('user-profile.html', user_profile=user_profile)
+    else:
+        return render_template('user-profile.html', msg="User profile not found.")
 # Serve other static files
+@user_routes.route('/logout.html')
+def logout():
+    return render_template('logout.html')
 
-# @user_routes.route("/farmer.html", methods=['GET', 'POST'])
-# def farmer():
-#     if request.method == 'POST':
-#         user_id = session.get('id')  # Get user ID from session
-#         username = session.get('name')  # Get username from session
-
-#         if not user_id or not username:
-#             return redirect(url_for('user.login'))  # Redirect if not logged in
-
-#         # Collect form data
-#         land_size = request.form.get('landSize')
-#         location = request.form.get('location')
-#         crop_type = request.form.get('cropType')
-#         budget_per_acre = request.form.get('budgetPerAcre')
-#         lease_duration = request.form.get('leaseDuration')
-#         payment_method = request.form.get('paymentMethod')
-
-#         if not all([land_size, location, crop_type, budget_per_acre, lease_duration, payment_method]):
-#             return render_template('farmer.html', msg='Please fill out all fields!')
-
-#         # Insert land request into the 'farmer' collection with the user_id and username
-#         db['farmer'].insert_one({
-#             'user_id': ObjectId(user_id),
-#             'username': username,
-#             'land_size': land_size,
-#             'location': location,
-#             'crop_type': crop_type,
-#             'budget_per_acre': budget_per_acre,
-#             'lease_duration': lease_duration,
-#             'payment_method': payment_method
-#         })
-
-#         # Update the user's role
-#         user_collection = db['users']
-#         user = user_collection.find_one({'_id': ObjectId(user_id)})
-
-#         if user is None:
-#             return render_template('farmer.html', msg='User not found!')  # Handle user not found
-
-#         # Update role logic
-#         current_role = user.get('role', 'N/A')
-#         if current_role == 'Landlord':
-#             new_role = 'Farmer, Landlord'
-#         else:
-#             new_role = 'Farmer'
-
-#         user_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'role': new_role}})
-
-#         return render_template('farmer.html', msg='Land request submitted successfully!')
-
-#     return render_template('farmer.html', msg='')
-
+@user_routes.route('/index.html')
+def homepage():
+    return render_template('index.html')
 
 @user_routes.route('/find-land.html', methods=['GET', 'POST'])
 def find_land():
@@ -245,7 +210,7 @@ def find_land():
     county_names = [county['County'] for county in counties]
     
     # Fetch approved land listings
-    approved_listings = land_collection.find({'approved': "False"})  # Ensure only approved listings are fetched
+    approved_listings = land_collection.find({'approved': "True"})  # Ensure only approved listings are fetched
     listings = [
         {
             '_id': str(listing['_id']),
@@ -266,6 +231,14 @@ def find_land():
     # Render the template with both listings and county names
     return render_template('find-land.html', listings=listings, county_names=county_names)
 
+@user_routes.route('/image/<image_id>')
+def image(image_id):
+    try:
+        # Fetch the image from GridFS using its ObjectId
+        image_file = fs.get(ObjectId(image_id))
+        return Response(image_file.read(), mimetype=image_file.content_type)
+    except Exception as e:
+        return f"An error occurred: {e}", 404
 # Serve other static files
 @user_routes.route('/images/<path:filename>')
 def serve_images(filename):

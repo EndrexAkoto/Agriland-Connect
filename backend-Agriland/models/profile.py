@@ -78,3 +78,10 @@ def get_user_by_id(user_id):
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
+
+def save_profile_picture():
+    profile_picture = request.files.get('profile-picture')
+    profile_picture_id = None
+    if profile_picture:
+        profile_picture_id = fs.put(profile_picture, filename=profile_picture.filename)  # Save to GridFS
+    return profile_picture_id
