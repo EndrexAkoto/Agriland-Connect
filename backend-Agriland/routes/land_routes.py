@@ -52,7 +52,7 @@ def landlord():
         title_deed = request.form.get('titleDeed')
         lease_duration = request.form.get('leaseDuration')
         payment_frequency = request.form.get('paymentFrequency')
-        approved = False
+        approved = "False"
 
         # Validate form fields and files
         files = request.files.getlist('farmImages')
@@ -60,6 +60,19 @@ def landlord():
 
         if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency]) or not files:
             return render_template('landlord.html', msg='Please fill out all fields and upload at least one image!')
+
+        # Define upload folder
+        UPLOAD_FOLDER = 'static/uploads'  # Ensure this folder exists
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Create folder if it doesn't exist
+
+        # Handle image uploads
+        image_paths = []
+        for file in files:
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                image_path = os.path.join(UPLOAD_FOLDER, filename)
+                file.save(image_path)  # Save file to upload folder
+                image_paths.append(f'uploads/{filename}')  # Save relative path for storage
 
         # Prepare data for MongoDB
         land_listing_data = {
@@ -74,39 +87,20 @@ def landlord():
             'lease_duration': lease_duration,
             'payment_frequency': payment_frequency,
             'approved': approved,
-            'farm_images': []  # Placeholder for image IDs
+            'farm_images': image_paths  # Store relative paths of images
         }
 
-        # Insert initial document without images to get ObjectId
-        result = land_collection.insert_one(land_listing_data)
-        listing_id = result.inserted_id
-        print(f"Inserted land listing with ID: {listing_id}")  # Debug: Check if the initial document is inserted correctly
+        # Insert land listing into MongoDB
+        try:
+            result = land_collection.insert_one(land_listing_data)
+            listing_id = result.inserted_id
+            print(f"Inserted land listing with ID: {listing_id}")  # Debug: Check insertion success
+            msg = 'Land listing submitted successfully!'
+        except Exception as e:
+            msg = f'An error occurred: {e}'
+            print(f"Error: {e}")  # Debug: Log the error
 
-        # Save each uploaded image to GridFS
-        image_ids = []
-        for file in files:
-            if file:
-                print(f"File: {file.filename}")  # Debug: Check if file is being processed
-                if allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    file_id = fs.put(file, filename=filename, listing_id=listing_id)  # Associate with the listing
-                    image_ids.append(file_id)
-                    print(f"Stored file with ID: {file_id}")  # Debug: Check if file is stored in GridFS correctly
-                else:
-                    print("File type not allowed.")  # Debug: Check if file is valid
-            else:
-                print("Empty file received.")  # Debug: Check if any empty files are received
-
-        print(f"Image IDs to be updated: {image_ids}")  # Debug: Check the image IDs to be saved in MongoDB
-
-        # Update MongoDB document with GridFS image IDs
-        land_collection.update_one(
-            {'_id': listing_id},
-            {'$set': {'farm_images': image_ids}}
-        )
-        print("Updated MongoDB document with image IDs.")  # Debug: Check if the update operation is executed
-
-        return render_template('landlord.html', msg='Land listing submitted successfully!')
+        return render_template('landlord.html', msg=msg)
 
     # Render form with county names
     counties = counties_collection.find({}, {'_id': 0, 'County': 1})

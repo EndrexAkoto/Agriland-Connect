@@ -1,19 +1,18 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory, request, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory, jsonify, current_app
 from flask import current_app as app
 from models.user import get_user_by_email, create_user
-from models.stats import  get_user_statistics
+from models.stats import get_user_statistics
 from models.land import add_land_listing, get_all_land_listings, add_listing_with_images
 from models.settings import process_user_data, manage_user_status
 from bson import ObjectId
-from pymongo import MongoClient 
-from db import db 
+from pymongo import MongoClient
+from db import db
 from werkzeug.utils import secure_filename
-import re
 import os
 
 admin_routes = Blueprint('admin', __name__)
 frontend_path = '/home/hp/Agrilandproj/Agriland-Connect/frontend-Agriland/admin_panel'
-UPLOAD_FOLDER = '/home/hp/Agrilandproj/Agriland-Connect/'
+UPLOAD_FOLDER = '/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/static/uploads'
 upload_path = "/home/hp/Agrilandproj/Agriland-Connect/backend-Agriland/uploads"
 client = MongoClient('localhost', 27017)
 db = client['Agriconnect']
@@ -28,8 +27,8 @@ def allowed_file(filename):
 
 @admin_routes.route("/admin/index.html")
 def admin_html():
-     stats = get_user_statistics()
-     return render_template('admin_panel/index.html', stats=stats)
+    stats = get_user_statistics()
+    return render_template('admin_panel/index.html', stats=stats)
 
 @admin_routes.route("/api/user-stats", methods=["GET"])
 def user_stats():
@@ -39,6 +38,11 @@ def user_stats():
     else:
         return jsonify({"error": "Unable to fetch statistics"}), 500
 
+def add_land_listing(lease_data):
+    result = db['land_listings'].insert_one(lease_data)
+    return result.inserted_id  # Return the inserted_id, not the entire result
+
+# In the add_land_lease route, update the listing_id handling:
 @admin_routes.route("/admin/add-land-lease.html", methods=['GET', 'POST'])
 def add_land_lease():
     msg = ''
@@ -49,43 +53,62 @@ def add_land_lease():
         price = request.form.get('price')
         description = request.form.get('description')
 
-        # Handle images
-        images = request.files.getlist('images')
-        image_paths = []
+        # Ensure all required fields are filled
+        if not all([location, size, price, description]):
+            msg = 'Please fill out all fields!'
+            counties = db['Counties'].find({}, {'_id': 0, 'County': 1})
+            county_names = [county['County'] for county in counties]
+            return render_template('admin_panel/add-land-lease.html', county_names=county_names, msg=msg)
 
-        if images:
-            for image in images:
-                if image and allowed_file(image.filename):
-                    filename = secure_filename(image.filename)
-                    image_path = os.path.join(UPLOAD_FOLDER, filename)
-                    image.save(image_path)
-                    image_paths.append(f'uploads/{filename}')  # Save relative path
-
-        # Save data to the database
+        # Prepare data for database insertion
         lease_data = {
             'location': location,
             'size': size,
             'price': price,
             'description': description,
-            'images': image_paths,
-            'approved': False  # By default, new leases are unapproved
+            'images': [],
+            'approved': "False"  # By default, new leases are unapproved
         }
-        
-        # Attempt to add the lease to the database
+
+        # Insert the data into the database and retrieve the ObjectId
         try:
-            result = add_land_listing(lease_data)  # Call the function to save to the database
-            if result:  # If insertion returns a result, consider it successful
-                msg = 'Lease successfully added!'
-            else:
-                msg = 'Failed to add lease. Please try again.'
+            listing_id = add_land_listing(lease_data)  # This now returns only the inserted _id (ObjectId)
         except Exception as e:
-            msg = f'An error occurred: {e}'
-        
+            msg = f'An error occurred while saving the lease: {e}'
+            counties = db['Counties'].find({}, {'_id': 0, 'County': 1})
+            county_names = [county['County'] for county in counties]
+            return render_template('admin_panel/add-land-lease.html', county_names=county_names, msg=msg)
+
+        # Set up directory to store images based on ObjectId
+        listing_folder = os.path.join(current_app.config['UPLOAD_FOLDER'], str(listing_id), 'images')
+        os.makedirs(listing_folder, exist_ok=True)
+
+        # Process uploaded image files and save them in the ObjectId directory
+        images = request.files.getlist('images')
+        image_filenames = []
+
+        for image in images:
+            if image and allowed_file(image.filename):
+                image_filename = secure_filename(image.filename)
+                file_path = os.path.join(listing_folder, image_filename)
+                image.save(file_path)
+                image_filenames.append(image_filename)
+
+        # Update MongoDB with the filenames for this listing
+        try:
+            db['land_listings'].update_one(
+                {'_id': ObjectId(listing_id)},
+                {'$set': {'images': image_filenames}}
+            )
+            msg = 'Lease successfully added!'
+        except Exception as e:
+            msg = f'An error occurred while saving images: {e}'
+
         # Render the form template with a success or error message
         counties = db['Counties'].find({}, {'_id': 0, 'County': 1})
         county_names = [county['County'] for county in counties]
         return render_template('admin_panel/add-land-lease.html', county_names=county_names, msg=msg)
-    
+
     # Render the form template if the request is GET
     counties = db['Counties'].find({}, {'_id': 0, 'County': 1})
     county_names = [county['County'] for county in counties]
@@ -107,11 +130,19 @@ def add_listing():
         for image in images:
             if image and allowed_file(image.filename):
                 filename = secure_filename(image.filename)
-                image_path = os.path.join(UPLOAD_FOLDER, filename)
+                # Save images in listing-specific folder
+                listing_id = str(ObjectId())  # Generate a new listing ID
+                listing_directory = os.path.join(upload_path, listing_id, 'images')
+                
+                # Ensure the directory exists
+                os.makedirs(listing_directory, exist_ok=True)
+                
+                image_path = os.path.join(listing_directory, filename)
                 image.save(image_path)
-                image_paths.append(image_path)
+                image_paths.append(f'uploads/{listing_id}/images/{filename}')
         
         if image_paths:
+            # You need to pass listing_id as argument for add_listing_with_images() to associate images with correct listing
             add_listing_with_images(location, size, price, description, image_paths)
             msg = 'Land listing created successfully!'
         else:
@@ -174,13 +205,15 @@ def unapproved_uploads():
             'lease_duration': listing.get('lease_duration', 'N/A'),
             'payment_frequency': listing.get('payment_frequency', 'N/A'),
             'images': [
-                f"/admin/uploads/{str(listing['_id'])}/images/{listing.get('farm_image', '')}"
-            ] if listing.get('farm_image') else []
+                f"/admin/uploads/{str(listing['_id'])}/images/{image_filename}"
+                for image_filename in listing.get('images', [])
+            ] if listing.get('images') else []
         }
         for listing in land_listing_collection.find({'approved': 'False'})
     ]
     
     return render_template('admin_panel/unapproved_uploads.html', listings=listings)
+
 
 @admin_routes.route("/admin/leases.html")
 def leases():
@@ -194,7 +227,6 @@ def listings():
 def payments():
     return render_template('admin_panel/payments.html')
 
-
 @admin_routes.route('/admin/uploads/<listing_id>/images/<filename>')
 def serve_uploaded_image(listing_id, filename):
     images_directory = os.path.join(upload_path, listing_id, 'images')
@@ -203,7 +235,8 @@ def serve_uploaded_image(listing_id, filename):
 @admin_routes.route("/admin/users.html")
 def users():
     users = list(users_collection.find())
-    return render_template('admin_panel/users.html', users= users)
+    return render_template('admin_panel/users.html', users=users)
+
 # Serve CSS files from the 'admin_panel/css' directory
 @admin_routes.route('/admin/css/<path:filename>')
 def serve_admin_css(filename):
