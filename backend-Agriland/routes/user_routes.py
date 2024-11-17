@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory, Response
+from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory, Response, jsonify
 from models.user import get_user_by_email, create_user, authenticate_user
 from models.profile import *
 from models.land import *
@@ -244,6 +244,37 @@ def find_land():
     # Render the template with both listings and county names
     return render_template('find-land.html', listings=listings, county_names=county_names)
 
+@user_routes.route('/api/land-listings', methods=['GET'])
+def get_land_listings():
+    try:
+        # Fetch approved land listings
+        approved_listings = land_collection.find({'approved': "True"})  # Fetch only approved listings
+
+        listings = [
+            {
+                '_id': str(listing['_id']),
+                'land_size': get_field(listing, 'land_size', 'size', default='N/A'),
+                'location': get_field(listing, 'location', default='N/A'),
+                'price_per_acre': get_field(listing, 'price_per_acre', 'price', default='N/A'),
+                'amenities': get_field(listing, 'amenities', default='N/A'),
+                'road_access': get_field(listing, 'road_access', default='N/A'),
+                'fencing': get_field(listing, 'fencing', default='N/A'),
+                'title_deed': get_field(listing, 'title_deed', default='N/A'),
+                'lease_duration': get_field(listing, 'lease_duration', default='N/A'),
+                'payment_frequency': get_field(listing, 'payment_frequency', default='N/A'),
+                'farm_images': [
+                    f"/admin/uploads/{str(listing['_id'])}/images/{image}"
+                    for image in get_field(listing, 'images', 'farm_images', default=[])
+                ]
+            }
+            for listing in approved_listings
+        ]
+
+        # Return JSON response
+        return jsonify({'success': True, 'data': listings}), 200
+    except Exception as e:
+        print(f"Error fetching land listings: {e}")
+        return jsonify({'success': False, 'error': 'Failed to fetch listings'}), 500
 
 @user_routes.route('/image/<image_id>')
 def image(image_id):
