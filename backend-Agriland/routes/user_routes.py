@@ -218,9 +218,42 @@ def find_land():
     counties = counties_collection.find({}, {'_id': 0, 'County': 1})
     county_names = [county['County'] for county in counties]
 
-    # Fetch approved land listings
-    approved_listings = land_collection.find({'approved': "True"})  # Ensure only approved listings are fetched
-    
+    # Initialize the query with approved listings
+    query = {'approved': "True"}
+
+    # Retrieve filter parameters from the request
+    location = request.args.get('location')
+    land_size = request.args.get('land_size')
+    price_range = request.args.get('price_range')
+
+    # Apply location filter
+    if location and location != "Select a County":
+        query['location'] = location
+
+    # Apply land size filter
+    if land_size and land_size != "any":
+        size_range = land_size.split('-')
+        if len(size_range) == 2:
+            query['land_size'] = {
+                '$gte': int(size_range[0]),
+                '$lte': int(size_range[1])
+            }
+        elif land_size == "101+":
+            query['land_size'] = {'$gt': 100}
+
+    # Apply price range filter
+    if price_range:
+        price_values = [int(price.strip()) for price in price_range.split('-') if price.strip().isdigit()]
+        if len(price_values) == 2:
+            query['price_per_acre'] = {
+                '$gte': price_values[0],
+                '$lte': price_values[1]
+            }
+
+    # Fetch filtered listings from the database
+    approved_listings = land_collection.find(query)
+
+    # Process listings into a format for rendering
     listings = [
         {
             '_id': str(listing['_id']),
@@ -241,8 +274,52 @@ def find_land():
         for listing in approved_listings
     ]
 
-    # Render the template with both listings and county names
+    # Render the template with listings and county names
     return render_template('find-land.html', listings=listings, county_names=county_names)
+
+@user_routes.route('/full-listing.html', methods=['GET'])
+def full_listing():
+    # Get the listing ID from the query parameters
+    listing_id = request.args.get('id')
+
+    # Check if the ID was provided
+    if not listing_id:
+        return "Listing ID is required", 400
+
+    try:
+        # Convert the listing_id to an ObjectId
+        listing_id = ObjectId(listing_id)
+
+        # Fetch the listing from the database using the ID
+        listing = land_collection.find_one({'_id': listing_id})
+
+        # Check if the listing exists
+        if not listing:
+            return "Listing not found", 404
+
+        # Process the listing into a format suitable for rendering
+        listing_details = {
+            '_id': str(listing['_id']),
+            'land_size': listing.get('land_size', 'N/A'),
+            'location': listing.get('location', 'N/A'),
+            'price_per_acre': listing.get('price_per_acre', 'N/A'),
+            'amenities': listing.get('amenities', 'N/A'),
+            'road_access': listing.get('road_access', 'N/A'),
+            'fencing': listing.get('fencing', 'N/A'),
+            'lease_duration': listing.get('lease_duration', 'N/A'),
+            'payment_frequency': listing.get('payment_frequency', 'N/A'),
+            'description': listing.get('description', 'No description available'),
+            'farm_images': [
+                f"/admin/uploads/{str(listing['_id'])}/images/{image}"
+                for image in listing.get('images', [])
+            ]
+        }
+
+        # Render the full-listing.html template with the listing details
+        return render_template('full-listing.html', listing=listing_details)
+
+    except Exception as e:
+        return f"An error occurred: {str(e)}", 500
 
 @user_routes.route('/api/land-listings', methods=['GET'])
 def get_land_listings():

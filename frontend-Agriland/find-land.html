@@ -199,11 +199,11 @@
         landList.forEach(land => {
             const landItem = 
                 <div class="land-item">
-                    <img src="${land.image_url}" alt="Land Image">
+                    <img src="${land.image_url}" alt="Land Image"/>
                     <p><strong>Location:</strong> ${land.location}</p>
                     <p><strong>Size:</strong> ${land.size} acres</p>
                     <p><strong>Price:</strong> Ksh ${land.price}</p>
-                    <a class="view-full-listing" href="full-details.html?id=${land.id}">View Full Details</a>
+                    <a href="full-listing.html?id=${listing._id}" class="button">View Lease Details</a>
                 </div>
             ;
             listingsSection.innerHTML += landItem;
