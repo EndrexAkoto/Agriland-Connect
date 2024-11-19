@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rejected Land Leases - Agriland Connect</title>
+
+    <style>
+      /* General Body Styles */
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-image: url("../images/frontImg.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: #4caf50; /* Theme color */
+        color: white;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo-container {
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: flex-start;
+      }
+
+      .logo {
+        max-width: 100px;
+      }
+
+      nav {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .nav-links {
+        list-style: none;
+        display: flex;
+        padding: 0;
+        margin: 0;
+      }
+
+      .nav-links li {
+        margin: 0 15px;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .nav-links a:hover {
+        text-decoration: underline;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      .back-btn {
+        background-color: #f44336;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+
+      .back-btn:hover {
+        background-color: #d32f2f;
+      }
+
+      .rejected-land-leases {
+        padding: 20px;
+        margin-top: 30px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .rejected-land-leases h2 {
+        color: #d32f2f; /* Red color for rejected leases */
+        margin-bottom: 20px;
+      }
+
+      .rejected-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .rejected-lease {
+        background-color: rgba(255, 235, 238, 0.9); /* Light red background */
+        border: 1px solid #f44336;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        min-width: 200px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+
+      .rejected-lease h3 {
+        color: #f44336;
+      }
+
+      .rejected-lease p {
+        color: #333;
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 20px 0;
+        background-color: #4caf50; /* Theme color */
+        color: white; /* Text color */
+        position: relative;
+        bottom: 0;
+        width: 100%;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+        .rejected-land-leases {
+          padding: 15px;
+        }
+
+        .rejected-lease {
+          min-width: 150px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo-container">
+        <img class="logo" src="../images/logo001.png" alt="Agriland Logo" />
+      </div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="users.html">Users</a></li>
+          <li><a href="unapproved_uploads.html">Unapproved Uploads</a></li>
+          <li><a href="add-land-lease.html">Add Land Lease</a></li>
+          <li><a href="payments.html">Payments</a></li>
+          <li><a href="settings.html">Settings</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Back Button -->
+      <a href="index.html" class="back-btn">Back to Dashboard</a>
+
+      <!-- Rejected Land Leases Section -->
+      <section class="rejected-land-leases">
+        <h2>Rejected Land Leases</h2>
+        <div class="rejected-list" id="rejectedLeases">
+          <!-- Dynamic content will be injected here by Flask -->
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Agriland Connect. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+      // Fetch and display the rejected land leases from the backend
+      document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/rejected-leases')
+          .then(response => response.json())
+          .then(data => {
+            const rejectedLeasesContainer = document.getElementById('rejectedLeases');
+            if (data.rejectedLeases.length > 0) {
+              data.rejectedLeases.forEach(lease => {
+                const leaseDiv = document.createElement('div');
+                leaseDiv.classList.add('rejected-lease');
+                leaseDiv.innerHTML = `
+                  <h3>${lease.name}</h3>
+                  <p>Status: Rejected</p>
+                  <p>Reason: ${lease.reason}</p>
+                `;
+                rejectedLeasesContainer.appendChild(leaseDiv);
+              });
+            } else {
+              rejectedLeasesContainer.innerHTML = '<p>No rejected land leases found.</p>';
+            }
+          })
+          .catch(error => console.error('Error fetching rejected leases:', error));
+      });
+    </script>
+  </body>
+</html>

@@ -1,372 +1,360 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - Agriland Connect</title>
-    
+
     <style>
-        /* General Body Styles */
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background-image: url('../images/frontImg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
+      /* General Body Styles */
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-image: url("../images/frontImg.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
 
-        header {
-            background-color: #4CAF50;;
-            color: white;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Space between logo and navbar */
-            flex-wrap: wrap;
-        }
+      header {
+        background-color: #4caf50;
+        color: white;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
 
-        .logo-container {
-            flex: 0 0 auto;
-            display: flex;
-            justify-content: flex-start;
-        }
+      .logo-container {
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: flex-start;
+      }
 
-        .logo {
-            max-width: 100px;
-        }
+      .logo {
+        max-width: 100px;
+      }
 
-        .navbar {
-            flex: 1;
-            position: relative;
-        }
+      .navbar {
+        flex: 1;
+        position: relative;
+      }
 
+      .nav-links {
+        list-style: none;
+        display: flex;
+        justify-content: flex-end;
+        padding: 0;
+        margin: 0;
+      }
+
+      .nav-links li {
+        margin: 0 15px;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        display: block;
+        padding: 10px;
+      }
+
+      .nav-links a:hover {
+        text-decoration: underline;
+      }
+
+      .burger {
+        display: none;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      .dashboard {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .box {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        margin: 0 10px;
+        min-width: 200px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+
+      .box h2 {
+        font-size: 1.5rem;
+        color: #4caf50;
+        margin-bottom: 10px;
+      }
+
+      .box p {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+
+      footer {
+        text-align: center;
+        padding: 10px 0;
+        background-color: #4caf50;
+        color: white;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .user-statistics {
+        margin-top: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .user-statistics h2 {
+        color: #4caf50;
+        margin-bottom: 15px;
+      }
+
+      .user-statistics ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .user-statistics li {
+        margin: 5px 0;
+      }
+
+      .chart-container {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 10px;
+      }
+
+      canvas {
+        width: 100% !important;
+        height: 300px !important;
+      }
+
+      .rejected-land-leases {
+        padding: 20px;
+        margin-top: 30px;
+      }
+
+      .rejected-land-leases h2 {
+        color: #d32f2f;
+        margin-bottom: 20px;
+      }
+
+      .rejected-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .rejected-lease {
+        background-color: rgba(255, 235, 238, 0.9);
+        border: 1px solid #f44336;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        min-width: 200px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+
+      .rejected-lease h3 {
+        color: #f44336;
+      }
+
+      .rejected-lease p {
+        color: #333;
+      }
+
+      @media (max-width: 768px) {
         .nav-links {
-            list-style: none;
-            display: flex;
-            justify-content: flex-end;
-            padding: 0;
-            margin: 0;
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          background-color: #4caf50;
+          top: 60px;
+          right: 0;
+          width: 100%;
+          z-index: 1000;
         }
 
-        .nav-links li {
-            margin: 0 15px;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            display: block; /* Ensure the link takes up space */
-            padding: 10px; /* Add padding for better touch targets */
-        }
-
-        .nav-links a:hover {
-            text-decoration: underline;
+        .nav-links.active {
+          display: flex;
         }
 
         .burger {
-            display: none; /* Hidden for now, can be styled for mobile later */
-            flex-direction: column;
-            cursor: pointer;
-            margin-left: auto; /* Push burger icon to the right */
+          display: flex;
         }
-
-        .burger div {
-            width: 25px;
-            height: 3px;
-            background-color: white;
-            margin: 3px 0;
-        }
-
-        .close-btn {
-            display: none; /* Hidden by default */
-            background-color: transparent;
-            color: white;
-            border: none;
-            cursor: pointer;
-            position: absolute;
-            top: 15px; /* Position at the top */
-            left: 15px; /* Align to the left */
-            font-size: 20px;
-            z-index: 1001; /* Ensure it's on top */
-        }
-
-        main {
-            padding: 20px;
-        }
-
-        .dashboard {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .box {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            flex: 1;
-            margin: 0 10px;
-            min-width: 200px;
-            box-sizing: border-box;
-            text-align: center; /* Centers the text */
-        }
-
-        .box h2 {
-            font-size: 1.5rem; /* Adjust the size of the headings */
-            color: #4CAF50;
-            margin-bottom: 10px;
-        }
-
-        .box p {
-            font-size: 1.2rem; /* Adjust the size of the data values */
-            font-weight: bold;
-        }
-
-        footer {
-            text-align: center;
-            padding: 10px 0;
-            background-color: #4CAF50;
-            color: white;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
-
-        /* User Statistics Section */
-        .user-statistics {
-            margin-top: 20px;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .user-statistics h2 {
-            color: #4CAF50;
-            margin-bottom: 15px;
-        }
-
-        .user-statistics ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .user-statistics li {
-            margin: 5px 0;
-        }
-
-        /* Adjusting chart size */
-        .chart-container {
-            width: 100%; /* Makes the chart container responsive */
-            max-width: 500px; /* Set a maximum width for the chart */
-            margin: 0 auto; /* Centers the chart container */
-            padding: 10px;
-        }
-
-        canvas {
-            width: 100% !important; /* Ensures the chart takes up the full width of the container */
-            height: 300px !important; /* Sets a fixed height for the chart */
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none; /* Hide regular nav links */
-                flex-direction: column;
-                position: absolute;
-                background-color: #4CAF50;
-                top: 60px; /* Position below the header */
-                right: 0;
-                width: 100%;
-                z-index: 1000;
-            }
-
-            .nav-links.active {
-                display: flex; /* Show links when active */
-            }
-
-            .burger {
-                display: flex; /* Show burger icon */
-            }
-
-            .close-btn {
-                display: block; /* Show close button when menu is open */
-            }
-
-            .dashboard {
-                flex-direction: column; /* Stack dashboard boxes vertically */
-            }
-
-            .box {
-                margin: 10px 0; /* Add vertical margin */
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <div class="logo-container">
-            <img class="logo" src="../images/logo001.png" alt="Agriland Logo">
-        </div>
-        <nav class="navbar">
-            <ul class="nav-links" id="navLinks">
-                <li><button class="close-btn" id="closeBtn">&times;</button></li>
-                <li><a href="index.html">Dashboard</a></li>
-                <li><a href="users.html">Users</a></li>
-                <li><a href="unapproved_uploads.html">Unapproved Uploads</a></li>
-                <li><a href="add-land-lease.html">Add Land Lease</a></li>
-                <li><a href="payments.html">Payments</a></li>
-                <li><a href="settings.html">Settings</a></li>
-            </ul>
-        </nav>
-        <div class="burger" id="burger">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
+      <div class="logo-container">
+        <img class="logo" src="../images/logo001.png" alt="Agriland Logo" />
+      </div>
+      <nav class="navbar">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="users.html">Users</a></li>
+          <li><a href="unapproved_uploads.html">Unapproved Uploads</a></li>
+          <li><a href="add-land-lease.html">Add Land Lease</a></li>
+          <li><a href="rejected-land-leases.html">Rejected Land Leases</a></li>
+          <li><a href="payments.html">Payments</a></li>
+          <li><a href="settings.html">Settings</a></li>
+        </ul>
+      </nav>
+      <div class="burger" id="burger">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </header>
 
     <main>
-        <h1>Welcome to the Admin Dashboard</h1>
-        <section class="dashboard">
-            <div class="box total-users">
-                <h2>Total Users</h2>
-                <p id="totalUsers">{{ stats['Total Users'] }}</p>
-            </div>
-            <div class="box total-listings">
-                <h2>Total Listings</h2>
-                <p id="totalListings">{{ stats['Landowners'] }}</p>
-            </div>
-            <div class="box active-leases">
-                <h2>Active Leases</h2>
-                <p id="activeLeases">{{ stats['Active Leases'] }}</p>
-            </div>
-            <div class="box pending-payments">
-                <h2>Pending Payments</h2>
-                <p id="pendingPayments">{{ stats['Pending Payments'] }}</p>
-            </div>
-        </section>
+      <h1>Welcome to the Admin Dashboard</h1>
+      <section class="dashboard">
+        <div class="box total-users">
+          <h2>Total Users</h2>
+          <p id="totalUsers">{{ stats['Total Users'] }}</p>
+        </div>
+        <div class="box total-listings">
+          <h2>Total Listings</h2>
+          <p id="totalListings">{{ stats['Landowners'] }}</p>
+        </div>
+        <div class="box active-leases">
+          <h2>Active Leases</h2>
+          <p id="activeLeases">{{ stats['Active Leases'] }}</p>
+        </div>
+        <div class="box pending-payments">
+          <h2>Pending Payments</h2>
+          <p id="pendingPayments">{{ stats['Pending Payments'] }}</p>
+        </div>
+      </section>
 
-        <!-- User Statistics with Charts -->
-        <section class="user-statistics">
-            <h2>User Statistics</h2>
-            <div class="chart-container">
-                <canvas id="userTypeChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <canvas id="genderDistributionChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <canvas id="ageBracketChart"></canvas>
-            </div>
-        </section>
+      <!-- User Statistics with Charts -->
+      <section class="user-statistics">
+        <h2>User Statistics</h2>
+        <ul>
+          <li>Total Users: {{ stats['Total Users'] }}</li>
+          <li>Total Landowners: {{ stats['Landowners'] }}</li>
+          <li>Total Farmers: {{ stats['Farmers'] }}</li>
+        </ul>
+
+        <!-- Bar chart for Leases by Region -->
+        <div class="chart-container">
+          <canvas id="leasesByRegionChart"></canvas>
+        </div>
+
+        <!-- Pie chart for Age Distribution -->
+        <div class="chart-container">
+          <canvas id="ageDistributionChart"></canvas>
+        </div>
+
+        <!-- Pie chart for Gender Distribution -->
+        <div class="chart-container">
+          <canvas id="genderDistributionChart"></canvas>
+        </div>
+      </section>
+
+      <!-- Rejected Land Leases Section -->
+      <section class="rejected-land-leases">
+        <h2>Rejected Land Leases</h2>
+        <div class="rejected-list">
+          <div class="box rejected-lease">
+            <h3>Land Lease 1</h3>
+            <p>Status: Rejected</p>
+            <p>Reason: Insufficient Documents</p>
+          </div>
+          <div class="box rejected-lease">
+            <h3>Land Lease 2</h3>
+            <p>Status: Rejected</p>
+            <p>Reason: Invalid Location</p>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
+      <p>&copy; 2024 Agriland Connect. All Rights Reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/api/user-stats')
-                .then(response => response.json())
-                .then(stats => {
-                    // User Type Distribution (Pie Chart)
-                    new Chart(document.getElementById('userTypeChart'), {
-                        type: 'pie',
-                        data: {
-                            labels: ['Farmers', 'Landowners'],
-                            datasets: [{
-                                data: [stats['Farmers'], stats['Landowners']],
-                                backgroundColor: ['#3C5FAAFF', '#FF5722']
-                               
-                            }]
-                        },
-                        options: {
-                            responsive: true
-                        }
-                    });
+      const leaseData = {
+        labels: ["County 1", "County 2", "County 3", /* Add remaining counties */],
+        datasets: [{
+          label: "Leases by Region",
+          data: [15, 20, 12, /* Data for counties */],
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1
+        }]
+      };
 
-                    // Gender Distribution (Bar Chart) - Only Male and Female
-                    new Chart(document.getElementById('genderDistributionChart'), {
-                        type: 'bar',
-                        data: {
-                            labels: ['Male', 'Female'],
-                            datasets: [{
-                                label: 'Gender Distribution',
-                                data: [stats['Male'], stats['Female']],
-                                backgroundColor: ['#380DD1FF', '#4E8F12FF']
+      const ageData = {
+        labels: ["18-24", "25-34", "35-44", "45-54", "55+"],
+        datasets: [{
+          data: [20, 30, 25, 15, 10],
+          backgroundColor: ["#ff5733", "#33c7ff", "#ffbd33", "#75ff33", "#ff33a1"]
+        }]
+      };
 
-                            
+      const genderData = {
+        labels: ["Male", "Female", "Other"],
+        datasets: [{
+          data: [60, 35, 5],
+          backgroundColor: ["#ff5733", "#33c7ff", "#ffbd33"]
+        }]
+      };
 
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            scales: {
-                                y: {
-                                    ticks: {
-                                        beginAtZero: true,
-                                        stepSize: 10
-                                    }
-                                }
-                            }
-                        }
-                    });
+      const ctxLeases = document.getElementById("leasesByRegionChart").getContext("2d");
+      const leasesByRegionChart = new Chart(ctxLeases, {
+        type: "bar",
+        data: leaseData,
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              beginAtZero: true
+            },
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
 
-                    // Age Bracket Distribution (Bar Chart)
-                    new Chart(document.getElementById('ageBracketChart'), {
-                        type: 'bar',
-                        data: {
-                            labels: ['18-25', '26-35', '36-45', '46-60', '60+'],
-                            datasets: [{
-                                label: 'Age Bracket Distribution',
-                                data: [
-                                    stats['Age 18-25'],
-                                    stats['Age 26-35'],
-                                    stats['Age 36-45'],
-                                    stats['Age 46-60'],
-                                    stats['Age 60+']
-                                ],
-                                backgroundColor: '#FF9800'
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            scales: {
-                                y: {
-                                    ticks: {
-                                        beginAtZero: true,
-                                        stepSize: 10
-                                    }
-                                }
-                            }
-                        }
-                    });
-                })
-                .catch(error => console.error('Error fetching stats:', error));
+      const ctxAge = document.getElementById("ageDistributionChart").getContext("2d");
+      const ageDistributionChart = new Chart(ctxAge, {
+        type: "pie",
+        data: ageData
+      });
 
-            // Burger Menu Toggle
-            const burger = document.getElementById('burger');
-            const navLinks = document.getElementById('navLinks');
-            const closeBtn = document.getElementById('closeBtn');
-
-            burger.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
-            });
-
-            closeBtn.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
-        });
+      const ctxGender = document.getElementById("genderDistributionChart").getContext("2d");
+      const genderDistributionChart = new Chart(ctxGender, {
+        type: "pie",
+        data: genderData
+      });
     </script>
-</body>
+  </body>
 </html>

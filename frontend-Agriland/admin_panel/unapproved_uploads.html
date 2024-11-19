@@ -205,15 +205,9 @@
                             <label>Amenities Available:</label>
                             <input type="text" name="amenities" value="{{ listing.amenities }}" required>
                             
-                            <label>Road Access:</label>
-                            <input type="text" name="road_access" value="{{ listing.road_access }}" required>
+                            <label>Price:</label>
+                            <input type="text" name="price_per_acre" value="{{ listing.price_per_acre }}" required>
 
-                            <label>Fencing:</label>
-                            <input type="text" name="fencing" value="{{ listing.fencing }}" required>
-
-                            <label>Lease Duration:</label>
-                            <input type="text" name="lease_duration" value="{{ listing.lease_duration }}" required>
-                            
                             <div class="actions">
                                 <button type="submit" name="action" value="approve">Approve</button>
                                 <button type="button" onclick="rejectListing(this.form)">Reject</button>
@@ -252,3 +246,4 @@
     </script>
 </body>
 </html>
+    

@@ -1,33 +1,62 @@
 from flask import current_app as app
+from bson import ObjectId
 
 def process_user_data(form_data, db):
-    # Extract user role and other details from the form data
-    user_role = form_data.get('user-role')
-    email = form_data.get('email')
-    password = form_data.get('password')
-    name = form_data.get('name')
+    # Extract user details from the form data
+    first_name = form_data.get('first-name')
+    middle_name = form_data.get('middle-name', '')  # Optional
+    last_name = form_data.get('last-name')
+    id_number = form_data.get('id-number')
     phone = form_data.get('phone')
-    site_status = form_data.get('site-status')
+    email = form_data.get('email')
+    dob = form_data.get('dob')
+    role = form_data.get('role')
 
-    # Depending on the role, insert the data into the appropriate collection
-    if user_role == 'farmer':
-        collection = db['farmers']
-    elif user_role == 'landlord':
-        collection = db['landlord']
-    elif user_role == 'admin':
+    # Select the correct collection based on role
+    if role == 'farmer':
+        collection = db['farmer']
+    elif role == 'landlord':
+        collection = db['land_listings']
+    elif role == 'admin':
         collection = db['admins']
     else:
-        return 'Invalid user role'
+        return 'Invalid role selected'
 
-    # Create a document to insert
+    # Create user document
     user_data = {
-        'email': email,
-        'password': password,
-        'name': name,
+        'first_name': first_name,
+        'middle_name': middle_name,
+        'last_name': last_name,
+        'id_number': id_number,
         'phone': phone,
-        'site_status': site_status
+        'email': email,
+        'dob': dob,
+        'role': role
     }
 
-    # Insert the document into the corresponding collection
+    # Insert the document into the collection
     collection.insert_one(user_data)
-    return f'User data successfully added to the {user_role} collection.'
+    return f'User data successfully added to the {role} collection.'
+
+def manage_user_status(email, db, action):
+    # Find the user in all relevant collections
+    for role in ['users', 'admins']:
+        collection = db[role]
+        user = collection.find_one({"email": email})
+        
+        if user:
+            if action == 'terminate':
+                if user.get('status') == 'deactivated':
+                    return f'The user with email {email} is already deactivated.'
+                else:
+                    collection.update_one({"email": email}, {"$set": {"status": "deactivated"}})
+                    return f'The user with email {email} has been terminated and status set to deactivated.'
+
+            elif action == 'reset':
+                if user.get('status') == 'deactivated':
+                    collection.update_one({"email": email}, {"$set": {"status": "active"}})
+                    return f'The user with email {email} was deactivated and has now been set to active.'
+                else:
+                    return f'The user with email {email} is already active.'
+    
+    return f'No user found with email {email}.'

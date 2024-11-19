@@ -137,6 +137,27 @@
             width: 100%;
         }
 
+        /* Back Button Styling */
+        .back-button {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .back-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button button:hover {
+            background-color: #45a049;
+        }
+
         /* Responsive Styling */
         @media (max-width: 768px) {
             .navbar {
@@ -176,6 +197,11 @@
     </header>
 
     <main>
+        <!-- Back Button -->
+        <div class="back-button">
+            <button onclick="location.href='index.html'">Back to Home</button>
+        </div>
+
         <section class="dashboard">
             <h1>Welcome, {{ user_data.name }}</h1> <!-- Dynamic User Name -->
             <div class="profile-overview">

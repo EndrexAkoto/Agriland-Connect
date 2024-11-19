@@ -193,14 +193,15 @@
     <div class="edit-profile-container">
         <h1>Edit Your Profile</h1>
 
-        <!-- Profile Picture Section -->
-        <div class="profile-picture-container">
-            <img id="profile-picture-preview" src="src/images/dashboard.jpg" alt="Upload Profile Picture">
-            <input type="file" id="profile-picture-upload" name="profile-picture" accept="image/*">
-        </div>
+        <form id="edit-profile-form" method="post" enctype="multipart/form-data" action="">
+            <div class="profile-picture-container">
+                <img id="profile-picture-preview" src="src/images/dashboard.jpg" alt="Upload Profile Picture">
+                <input type="file" id="profile-picture-upload" name="profile-picture" accept="image/*">
+            </div>
+       
 
         <!-- Edit Profile Form -->
-        <form id="edit-profile-form" method="post" enctype="multipart/form-data" action="">
+        <!-- <form id="edit-profile-form" method="post" enctype="multipart/form-data" action=""> -->
 
             <!-- Read-Only Fields (pulled from registration data) -->
             <label for="firstName">First Name:</label>

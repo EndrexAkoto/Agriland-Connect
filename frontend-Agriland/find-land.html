@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find Land & Listings - Agriland Connect</title>
-   
     <style>
     /* Basic Reset */
     * {
@@ -150,7 +149,7 @@
 
     .back-button {
         left: 20px;
-        bottom: 80px;
+        bottom: 20px;
     }
 
     footer {
@@ -229,20 +228,20 @@
         function goBack() {
             window.history.back();
         }
+
+        function clearFilters() {
+            document.getElementById('location').value = '';
+            document.getElementById('land-size').value = 'any';
+            document.getElementById('price-range').value = 'any';
+        }
     </script>
 </head>
+
 <body>
     <header>
         <nav class="navbar">
             <div class="nav-left">
                 <img src="./images/logo001.png" alt="Agriland Connect Logo">
-            </div>
-            <div class="nav-right user-links">
-                <a href="user-profile.html">User Profile</a>
-                <div class="dropdown">
-                    <a href="settings.html">Settings</a>
-                    <a href="logout.html">Logout</a>
-                </div>
             </div>
         </nav>
     </header>
@@ -273,6 +272,9 @@
                 <option value="16000-20000">Ksh. 16,000 - 20,000</option>
                 <option value="21000+">Ksh. 21,000+</option>
             </select>
+
+            <!-- Clear Filters button added here -->
+            <button type="button" onclick="clearFilters()">Clear Filters</button>
             <button type="button">Apply Filters</button>
         </section>
 
@@ -297,12 +299,11 @@
         </section>
 
         <button class="scroll-up" onclick="scrollToTop()">Scroll Up</button>
-        <button class="back-button" onclick="goBack()">Back</button>
+        <button class="back-button" onclick="goBack()">Back to Dashboard</button>
     </main>
 
     <footer>
         <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
     </footer>
 </body>
-
 </html>

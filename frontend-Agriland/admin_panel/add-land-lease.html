@@ -168,6 +168,9 @@
             </div>
 
             <button type="submit" class="submit-button">Add Lease</button>
+            {% if msg %}
+            <p style="color: red;">{{ msg }}</p>
+            {% endif %}
         </form>
     </div>
 
@@ -187,7 +190,7 @@
             const files = Array.from(imagesInput.files);
 
             // Check if the file limit exceeds 5
-            if (files.length + selectedImages.length > 5) {
+            if (files.length + selectedImages.length > 6) {
                 alert('You can only upload a maximum of 5 images.');
                 imagesInput.value = ''; // Clear the file input
                 return;

@@ -7,7 +7,8 @@ land_collection = db['land_listings']
 
 # Define functions related to land operations
 def add_land_listing(land_data):
-    land_collection.insert_one(land_data)
+    result = land_collection.insert_one(land_data)
+    return result.inserted_id if result.acknowledged else None
 
 def get_all_land_listings():
     return land_collection.find()
@@ -24,3 +25,13 @@ def add_listing_with_images(location, size, price, description, image_paths):
         'images': image_paths
     }
     add_land_listing(land_data)
+
+def get_field(listing, *keys, default='N/A'):
+    """
+    Retrieve the first matching key from the listing dictionary.
+    If no key is found, return the default value.
+    """
+    for key in keys:
+        if key in listing:
+            return listing[key]
+    return default
