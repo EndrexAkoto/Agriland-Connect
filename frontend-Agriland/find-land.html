@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find Land & Listings - Agriland Connect</title>
-   
     <style>
     /* Basic Reset */
     * {
@@ -130,13 +129,6 @@
         border-radius: 5px;
     }
 
-    footer {
-        text-align: center;
-        padding: 10px 0;
-        background: #4CAF50;
-        color: #fff;
-    }
-
     /* Adjust Scroll Up and Back Button Styles */
     .scroll-up, .back-button {
         margin: 20px;
@@ -157,160 +149,143 @@
 
     .back-button {
         left: 20px;
-        bottom: 80px;
+        bottom: 20px;
     }
 
-    .payment-button {
-        margin: 20px;
+    footer {
+        text-align: center;
+        padding: 10px 0;
         background: #4CAF50;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        display: none;
+        color: #fff;
     }
     </style>
 
-<script>
-    async function fetchLandListings() {
-        try {
-            const response = await fetch('/api/lands');
-            const data = await response.json();
-            displayLandListings(data);
-        } catch (error) {
-            console.error('Error fetching land listings:', error);
+    <script>
+        async function fetchLandListings() {
+            try {
+                const response = await fetch('/api/lands');
+                const data = await response.json();
+                displayLandListings(data);
+            } catch (error) {
+                console.error('Error fetching land listings:', error);
+            }
         }
-    }
 
-    async function fetchFullLandListings() {
-        try {
-            const response = await fetch('/api/land-listings');
-            const data = await response.json();
-            displayFullLandListings(data);
-        } catch (error) {
-            console.error('Error fetching full listings:', error);
+        async function fetchFullLandListings() {
+            try {
+                const response = await fetch('/api/land-listings');
+                const data = await response.json();
+                displayFullLandListings(data);
+            } catch (error) {
+                console.error('Error fetching full listings:', error);
+            }
         }
-    }
 
-    function displayLandListings(landList) {
-        const listingsSection = document.querySelector('.land-listings');
-        listingsSection.innerHTML = '<h2>Available Land Listings</h2>';
-        landList.forEach(land => {
-            const landItem = 
-                <div class="land-item">
-                    <img src="${land.image_url}" alt="Land Image"/>
-                    <p><strong>Location:</strong> ${land.location}</p>
-                    <p><strong>Size:</strong> ${land.size} acres</p>
-                    <p><strong>Price:</strong> Ksh ${land.price}</p>
-                    <a href="full-listing.html?id=${listing._id}" class="button">View Lease Details</a>
-                </div>
-            ;
-            listingsSection.innerHTML += landItem;
-        });
-    }
-
-    function displayFullLandListings(data) {
-        const listingsContainer = document.querySelector('.listing-cards');
-        listingsContainer.innerHTML = ''; 
-        data.forEach(listing => {
-            const listingCard = 
-                <div class="listing-card">
-                    <img src="${listing.imageUrl}" alt="${listing.name}">
-                    <div class="listing-details">
-                        <h2 style="color: #4CAF50;">${listing.name}</h2>
-                        <p>Location: ${listing.location}</p>
-                        <p>Size: ${listing.size} Acres</p>
-                        <p>Price: Ksh ${listing.price} per month</p>
-                        <p>Description: ${listing.description}</p>
-                        <p>Amenities: ${listing.amenities}</p>
-                        <a href="full-listing.html?id=${listing._id}" class="button">View Lease Details</a>
-                        <button class="payment-button" onclick="location.href='payment-page.html'">Pay via M-PESA</button> <!-- M-Pesa button here -->
+        function displayLandListings(landList) {
+            const listingsSection = document.querySelector('.land-listings');
+            listingsSection.innerHTML = '<h2>Available Land Listings</h2>';
+            landList.forEach(land => {
+                const landItem = `
+                    <div class="land-item">
+                        <img src="${land.image_url}" alt="Land Image">
+                        <p><strong>Location:</strong> ${land.location}</p>
+                        <p><strong>Size:</strong> ${land.size} acres</p>
+                        <a class="view-full-listing" href="full-details.html?id=${land.id}">View Full Details</a>
                     </div>
-                </div>;
-            listingsContainer.innerHTML += listingCard;
-        });
-    }
-
-    window.onload = function() {
-        fetchLandListings();
-        fetchFullLandListings();
-    };
-
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function goBack() {
-        window.history.back();
-    }
-
-    // Show the payment button if the user is logged in (for demo purposes)
-    function checkUserLogin() {
-        const userLoggedIn = true; // Replace with actual login check (e.g., check session or cookie)
-
-        if (userLoggedIn) {
-            document.querySelector('.payment-button').style.display = 'inline-block'; // Show the button
-        } else {
-            document.querySelector('.payment-button').style.display = 'none';
+                `;
+                listingsSection.innerHTML += landItem;
+            });
         }
-    }
 
-    checkUserLogin();
-</script>
+        function displayFullLandListings(data) {
+            const listingsContainer = document.querySelector('.listing-cards');
+            listingsContainer.innerHTML = ''; 
+            data.forEach(listing => {
+                const listingCard = `
+                    <div class="listing-card">
+                        <img src="${listing.imageUrl}" alt="${listing.name}">
+                        <div class="listing-details">
+                            <h2 style="color: #4CAF50;">${listing.name}</h2>
+                            <p>Location: ${listing.location}</p>
+                            <p>Size: ${listing.size} Acres</p>
+                            <p>Price: Ksh ${listing.price} per month</p>
+                            <a href="full-listing.html?id=${listing._id}" class="button">View Lease Details</a>
+                        </div>
+                    </div>`;
+                listingsContainer.innerHTML += listingCard;
+            });
+        }
+
+        window.onload = function() {
+            fetchLandListings();
+            fetchFullLandListings();
+        };
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function clearFilters() {
+            document.getElementById('location').value = '';
+            document.getElementById('land-size').value = 'any';
+            document.getElementById('price-range').value = 'any';
+        }
+    </script>
 </head>
+
 <body>
     <header>
         <nav class="navbar">
             <div class="nav-left">
                 <img src="./images/logo001.png" alt="Agriland Connect Logo">
             </div>
-            <div class="nav-right user-links">
-                <a href="user-profile.html">User Profile</a>
-                <div class="dropdown">
-                    <a href="settings.html">Settings</a>
-                    <a href="logout.html">Logout</a>
-                </div>
-            </div>
         </nav>
     </header>
 
     <main>
-        <!-- Search Section -->
         <section class="search-section">
             <h1>Find Land</h1>
-            <form method="GET" action="/find-land.html">
-                <label for="location">County:</label>
-                <select id="location" name="location" required>
-                    <option value="">Select a County</option>
-                    {% for county in county_names %}
-                        <option value="{{ county }}">{{ county }}</option>
-                    {% endfor %}
-                </select>
-                <label for="land-size">Land Size:</label>
-                <select id="land-size" name="land_size">
-                    <option value="any">Any Size</option>
-                    <option value="1-10">1 - 10 acres</option>
-                    <option value="11-50">11 - 50 acres</option>
-                    <option value="51-100">51 - 100 acres</option>
-                    <option value="101+">101+ acres</option>
-                </select>
-                <label for="price-range">Price Range:</label>
-                <input type="text" id="price-range" name="price_range" placeholder="e.g., 500000 - 1000000" required>
-                <button type="submit">Search</button>
-            </form>
+            <label for="location">Location:</label>
+            <select id="location" name="location" required>
+                <option value="">Select a County</option>
+                {% for county in county_names %}
+                    <option value="{{ county }}">{{ county }}</option>
+                {% endfor %}
+            </select>
+            <label for="land-size">Land Size:</label>
+            <select id="land-size">
+                <option value="any">Any Size</option>
+                <option value="1-10">1 - 10 acres</option>
+                <option value="11-50">11 - 50 acres</option>
+                <option value="51-100">51 - 100 acres</option>
+                <option value="100+">100+ acres</option>
+            </select>
+            <label for="price-range">Price Range:</label>
+            <select id="price-range">
+                <option value="any">Any Price</option>
+                <option value="5000-10000">Ksh. 5,000 - 10,000</option>
+                <option value="11000-15000">Ksh. 11,000 - 15,000</option>
+                <option value="16000-20000">Ksh. 16,000 - 20,000</option>
+                <option value="21000+">Ksh. 21,000+</option>
+            </select>
+
+            <!-- Clear Filters button added here -->
+            <button type="button" onclick="clearFilters()">Clear Filters</button>
+            <button type="button">Apply Filters</button>
         </section>
 
-        <!-- Land Listings Section -->
+        <section class="land-listings">
+            <h2>Available Land Listings</h2>
+        </section>
+
         <section class="listing-cards">
             {% for listing in listings %}
             <div class="listing-card">
-                <!-- Show the first image from the listing's images -->
-                {% if listing.farm_images and listing.farm_images|length > 0 %}
-                    <img src="{{ listing.farm_images[0] }}" alt="Land Image" style="width: 100%; height: auto;">
-                {% else %}
-                    <img src="./images/default-land-image.png" alt="No Image Available" style="width: 100%; height: auto;">
-                {% endif %}
+                <img src="{{ listing.farm_image }}" alt="Land Image" style="width: 100px; height: auto;">
                 <h3>{{ listing.location }}</h3>
                 <p>Size: {{ listing.land_size }} acres</p>
                 <p>Price per Acre: Ksh. {{ listing.price_per_acre }}</p>
@@ -319,19 +294,16 @@
                 <p>Fencing: {{ listing.fencing }}</p>
                 <p>Lease Duration: {{ listing.lease_duration }}</p>
                 <p>Payment Frequency: {{ listing.payment_frequency }}</p>
-                 <a href="full-listing.html?id=${listing._id}" class="button">View Lease Details</a>
-                 <button class="payment-button" onclick="location.href='payment-page.html'?id=${listing._id}">Pay via M-PESA</button>
-                 <a href="payment-page.html" class="button">Pay Via Mpesa</a> 
             </div>
             {% endfor %}
         </section>
+
+        <button class="scroll-up" onclick="scrollToTop()">Scroll Up</button>
+        <button class="back-button" onclick="goBack()">Back to Dashboard</button>
     </main>
 
     <footer>
         <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
     </footer>
-
-    <button class="scroll-up" onclick="scrollToTop()">Scroll Up</button>
-    <button class="back-button" onclick="goBack()">Back to Dashboard</button>
 </body>
 </html>
