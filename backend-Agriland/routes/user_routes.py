@@ -279,47 +279,33 @@ def find_land():
 
 @user_routes.route('/full-listing.html', methods=['GET'])
 def full_listing():
-    # Get the listing ID from the query parameters
-    listing_id = request.args.get('id')
+    listing_id = request.args.get('id')  # Get the ID from the URL
+    listing = land_collection.find_one({"_id": ObjectId(listing_id)})  # Query the database using the ID
 
-    # Check if the ID was provided
-    if not listing_id:
-        return "Listing ID is required", 400
+    # Handle the case where the listing is not found
+    if not listing:
+        return render_template('404.html')  # Or any appropriate error page
 
-    try:
-        # Convert the listing_id to an ObjectId
-        listing_id = ObjectId(listing_id)
+    # Process the listing data
+    listing_data = {
+        '_id': str(listing['_id']),
+        'land_size': get_field(listing, 'land_size', 'size', default='N/A'),
+        'location': get_field(listing, 'location', default='N/A'),
+        'price_per_acre': get_field(listing, 'price_per_acre', 'price', default='N/A'),
+        'amenities': get_field(listing, 'amenities', default='N/A'),
+        'road_access': get_field(listing, 'road_access', default='N/A'),
+        'fencing': get_field(listing, 'fencing', default='N/A'),
+        'title_deed': get_field(listing, 'title_deed', default='N/A'),
+        'lease_duration': get_field(listing, 'lease_duration', default='N/A'),
+        'payment_frequency': get_field(listing, 'payment_frequency', default='N/A'),
+        'farm_images': [
+            f"/admin/uploads/{str(listing['_id'])}/images/{image}"
+            for image in get_field(listing, 'images', 'farm_images', default=[])
+        ]
+    }
 
-        # Fetch the listing from the database using the ID
-        listing = land_collection.find_one({'_id': listing_id})
-
-        # Check if the listing exists
-        if not listing:
-            return "Listing not found", 404
-
-        # Process the listing into a format suitable for rendering
-        listing_details = {
-            '_id': str(listing['_id']),
-            'land_size': listing.get('land_size', 'N/A'),
-            'location': listing.get('location', 'N/A'),
-            'price_per_acre': listing.get('price_per_acre', 'N/A'),
-            'amenities': listing.get('amenities', 'N/A'),
-            'road_access': listing.get('road_access', 'N/A'),
-            'fencing': listing.get('fencing', 'N/A'),
-            'lease_duration': listing.get('lease_duration', 'N/A'),
-            'payment_frequency': listing.get('payment_frequency', 'N/A'),
-            'description': listing.get('description', 'No description available'),
-            'farm_images': [
-                f"/admin/uploads/{str(listing['_id'])}/images/{image}"
-                for image in listing.get('images', [])
-            ]
-        }
-
-        # Render the full-listing.html template with the listing details
-        return render_template('full-listing.html', listing=listing_details)
-
-    except Exception as e:
-        return f"An error occurred: {str(e)}", 500
+    # Render the full listing details page with the fetched listing data
+    return render_template('full-listing.html', listing=listing_data)
 
 @user_routes.route('/api/land-listings', methods=['GET'])
 def get_land_listings():

@@ -226,7 +226,7 @@
           data.forEach(listing => {
               const listingCard =
                   <div class="listing-card">
-                      <img src="${listing.imageUrl}" alt="${listing.name}"/>
+                      <img src="${listing.imageUrl}" alt="${listing.name}">
                       <div class="listing-details">
                           <h2 style="color: #4CAF50;">${listing.name}</h2>
                           <p>Location: ${listing.location}</p>
@@ -273,7 +273,7 @@
     <header>
       <nav class="navbar">
         <div class="nav-left">
-          <img src="./images/logo001.png" alt="Agriland Connect Logo" >
+          <img src="./images/logo001.png" alt="Agriland Connect Logo" />
         </div>
         <div class="nav-right user-links">
           <a href="user-profile.html">User Profile</a>
@@ -343,7 +343,6 @@
           <!-- Link to the full listing details, using the dynamic listing id -->
           <a href="full-listing.html?id={{ listing._id }}" class="button">View Lease Details</a>
           <button class="payment-button" onclick="location.href='payment-page.html?id={{ listing._id }}'">Pay via M-PESA</button>
-          <a href="payment-page.html" class="button">Pay Via Mpesa</a> 
         </div>
         {% endfor %}
       </section>
