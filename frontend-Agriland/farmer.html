@@ -76,13 +76,13 @@
 <body>
     <div class="form-container">
         <h1>Farmer's Information</h1>
-        <form action="/farmer.html" method="POST">
+        <form id="farmer-form" action="/farmer.html" method="POST">
             <label for="landSize">Size of Land (in acres):</label>
             <input type="number" id="landSize" name="landSize" required>
 
             <label for="location">Preferred Location:</label>
             <select id="location" name="location" required>
-                <option value="">select a County</option>
+                <option value="">Select a County</option>
                 {% for county in county_names %}
                 <option value="{{ county }}">{{ county }}</option>
                 {% endfor %}
@@ -106,9 +106,21 @@
             <button type="submit">Submit</button>
             <button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
         </form>
-        {% if msg  %}
+
+        {% if msg %}
         <p style="color: red">{{ msg }}</p>
         {% endif %}
     </div>
+
+    <script>
+        document.getElementById('farmer-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Perform any necessary validation or processing here
+
+            // After successful form submission, redirect to the dashboard
+            window.location.href = 'dashboard.html';
+        });
+    </script>
 </body>
 </html>
