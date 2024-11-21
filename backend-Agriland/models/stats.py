@@ -17,6 +17,21 @@ def categorize_age_bracket(age):
         return '36-50'
     return 'Other'
 
+def calculate_lease_rate_by_county():
+    """Calculates average lease rates by county."""
+    pipeline = [
+        {"$match": {"price_per_acre": {"$exists": True, "$ne": ""}}},  # Ensure valid price_per_acre
+        {
+            "$group": {
+                "_id": "$location",
+                "average_lease_rate": {"$avg": {"$toDouble": "$price_per_acre"}}
+            }
+        },
+        {"$project": {"county": "$_id", "average_lease_rate": 1, "_id": 0}}
+    ]
+    results = leases_collection.aggregate(pipeline)
+    return {result["county"]: result["average_lease_rate"] for result in results}
+
 def get_user_statistics():
     try:
         # Calculate general user statistics
@@ -44,6 +59,13 @@ def get_user_statistics():
         active_leases = leases_collection.count_documents({'approved': "False"})
         total_listings = leases_collection.count_documents({})
         pending_payments = payments_collection.count_documents({'Payment Status': 'Completed'})
+        county_lease_counts = {}
+        leases = leases_collection.find({}, {'location': 1})
+        for lease in leases:
+            location = lease.get('location', 'Unknown')
+            if location:
+                county_lease_counts[location] = county_lease_counts.get(location, 0) + 1
+        county_lease_rates = calculate_lease_rate_by_county()
 
         # Return all statistics
         return {
@@ -58,7 +80,9 @@ def get_user_statistics():
             'Age Bracket': age_brackets_percentage,
             'Active Leases': active_leases,
             'Total Listings': total_listings,
-            'Pending Payments': pending_payments
+            'Pending Payments': pending_payments,
+            'County Lease Counts': county_lease_counts,
+            'County Lease Rates': county_lease_rates 
         }
 
     except Exception as e:
