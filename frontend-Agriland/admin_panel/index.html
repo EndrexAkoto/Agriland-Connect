@@ -370,7 +370,7 @@
                 labels: counties,
                 datasets: [
                   {
-                    label: "Lease Rate",
+                    label: "Average Lease Rate (Per Acre)",
                     data: leaseRates,
                     backgroundColor: "#1F08A5FF",
                   },
@@ -382,8 +382,17 @@
                   y: {
                     ticks: {
                       beginAtZero: true,
-                      stepSize: 1000, // Adjust step size to fit your data
                     },
+                    title: {
+                      display: true,
+                      text: "Lease Rate (Price Per Acre)",
+                    },
+                  },
+                  x: {
+                    title: {
+                      display: true,
+                      text: "Counties",
+                    }
                   },
                 },
               },
