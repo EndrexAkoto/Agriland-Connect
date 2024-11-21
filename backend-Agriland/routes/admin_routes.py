@@ -215,9 +215,29 @@ def unapproved_uploads():
     return render_template('admin_panel/unapproved_uploads.html', listings=listings)
 
 
-@admin_routes.route("/admin/leases.html")
+@admin_routes.route("/admin/rejected-land-leases.html", methods=["GET"])
 def leases():
-    return render_template('admin_panel/leases.html')
+    return render_template('admin_panel/rejected-land-leases.html')
+
+@admin_routes.route("/api/rejected-leases", methods=["GET"])
+def fetch_rejected_leases():
+    # Query for rejected land leases
+    rejected_leases = [
+        {
+            '_id': str(lease['_id']),
+            'name': lease.get('user_name', 'Unknown User'),
+            'reason': lease.get('message', 'No reason provided'),
+            'land_size': lease.get('land_size', 'N/A'),
+            'location': lease.get('location', 'N/A'),
+            'price_per_acre': lease.get('price_per_acre', 'N/A'),
+            'images': [
+                f"/admin/uploads/{str(lease['_id'])}/images/{image_filename}"
+                for image_filename in lease.get('images', [])
+            ] if lease.get('images') else []
+        }
+        for lease in land_listing_collection.find({'approved': 'Rejected'})
+    ]
+    return jsonify({'rejectedLeases': rejected_leases})
 
 @admin_routes.route("/admin/listings.html")
 def listings():

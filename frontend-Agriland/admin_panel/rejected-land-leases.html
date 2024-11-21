@@ -194,9 +194,13 @@
                 const leaseDiv = document.createElement('div');
                 leaseDiv.classList.add('rejected-lease');
                 leaseDiv.innerHTML = `
-                  <h3>${lease.name}</h3>
+                  <h3>Land by: ${lease.name}</h3>
                   <p>Status: Rejected</p>
                   <p>Reason: ${lease.reason}</p>
+                  <p>Land Size: ${lease.land_size}</p>
+                  <p>Location: ${lease.location}</p>
+                  <p>Price per Acre: ${lease.price_per_acre}</p>
+                  ${lease.images.map(image => `<img src="${image}" alt="Land Image" />`).join('')}
                 `;
                 rejectedLeasesContainer.appendChild(leaseDiv);
               });
