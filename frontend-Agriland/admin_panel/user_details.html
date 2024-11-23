@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details - Agriland Connect</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>User Details</h1>
+    </header>
+
+    <main>
+        <a href="/admin/users.html" class="back-button">Back to User List</a>
+
+        <section class="user-details">
+            <h2>KRA Pin: {{ user.kra_pin }}</h2>
+            <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+            <p><strong>ID Number:</strong> {{ user.id_number }}</p>
+
+            {% if user.id_image_url %}
+            <h3>ID Image:</h3>
+            <img src="{{ user.id_image_url }}" alt="ID Image" style="width: 300px; height: auto;">
+            {% else %}
+            <p><strong>ID Image:</strong> No image uploaded.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
+    </footer>
+</body>
+</html>

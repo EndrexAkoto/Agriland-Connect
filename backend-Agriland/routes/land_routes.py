@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, current_app, session, redirect, url_for
-
+from flask import current_app as app
 from models.land import land_collection  # Import your land model
 from bson import ObjectId  # To work with MongoDB ObjectId
 # from utils.helpers import *
@@ -35,6 +35,11 @@ def upload_file():
 
 @land_routes.route('/landlord.html', methods=['GET', 'POST'])
 def landlord(): 
+    msg = ''
+    # Fetch county names for rendering
+    counties = counties_collection.find({}, {'_id': 0, 'County': 1})
+    county_names = [county['County'] for county in counties]
+
     if request.method == 'POST':
         user_id = session.get('id')
         username = session.get('name')
@@ -56,23 +61,10 @@ def landlord():
 
         # Validate form fields and files
         files = request.files.getlist('farmImages')
-        print(f"Received files: {files}")  # Debug: Check received files
 
         if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency]) or not files:
-            return render_template('landlord.html', msg='Please fill out all fields and upload at least one image!')
-
-        # Define upload folder
-        UPLOAD_FOLDER = 'static/uploads'  # Ensure this folder exists
-        os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Create folder if it doesn't exist
-
-        # Handle image uploads
-        image_paths = []
-        for file in files:
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                image_path = os.path.join(UPLOAD_FOLDER, filename)
-                file.save(image_path)  # Save file to upload folder
-                image_paths.append(f'uploads/{filename}')  # Save relative path for storage
+            msg = 'Please fill out all fields and upload at least one image!'
+            return render_template('landlord.html', county_names=county_names, msg=msg)
 
         # Prepare data for MongoDB
         land_listing_data = {
@@ -87,22 +79,45 @@ def landlord():
             'lease_duration': lease_duration,
             'payment_frequency': payment_frequency,
             'approved': approved,
-            'farm_images': image_paths  # Store relative paths of images
+            'images': []  # Initialize as empty; images will be added later
         }
 
-        # Insert land listing into MongoDB
+        # Insert the initial data into MongoDB to get the ObjectId
         try:
             result = land_collection.insert_one(land_listing_data)
             listing_id = result.inserted_id
-            print(f"Inserted land listing with ID: {listing_id}")  # Debug: Check insertion success
+            print(f"Inserted land listing with ID: {listing_id}")
+        except Exception as e:
+            print(f"Error: {e}")
+            msg = 'An error occurred while saving the land listing.'
+            return render_template('landlord.html', county_names=county_names, msg=msg)
+
+        # Set up directory to store images using ObjectId
+        listing_folder = os.path.join(current_app.config['UPLOAD_FOLDER'], str(listing_id), 'images')
+        os.makedirs(listing_folder, exist_ok=True)
+
+        # Handle image uploads
+        image_filenames = []
+        for file in files:
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(listing_folder, filename)
+                file.save(file_path)
+                image_filenames.append(filename)  # Store filename only
+
+        # Update MongoDB with the image filenames
+        try:
+            land_collection.update_one(
+                {'_id': listing_id},
+                {'$set': {'images': image_filenames}}
+            )
             msg = 'Land listing submitted successfully!'
         except Exception as e:
-            msg = f'An error occurred: {e}'
-            print(f"Error: {e}")  # Debug: Log the error
+            print(f"Error while updating images: {e}")
+            msg = 'An error occurred while saving the images.'
 
-        return render_template('landlord.html', msg=msg)
+        return render_template('landlord.html', county_names=county_names, msg=msg)
 
-    # Render form with county names
-    counties = counties_collection.find({}, {'_id': 0, 'County': 1})
-    county_names = [county['County'] for county in counties]
-    return render_template('landlord.html', county_names=county_names, msg='')
+    # Render the form with county names for a GET request
+    return render_template('landlord.html', county_names=county_names, msg=msg)
+

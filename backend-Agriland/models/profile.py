@@ -21,6 +21,7 @@ def extract_and_validate_form_data():
     dob_str = request.form.get('dob')
     age = calculate_age(dob_str) if dob_str else None
 
+    # Profile data
     profile_data = {
         'first_name': request.form.get('firstName'),
         'middle_name': request.form.get('middleName'),
@@ -34,6 +35,7 @@ def extract_and_validate_form_data():
         'kra_pin': request.form.get('kraPin')
     }
 
+    # Next of kin data
     next_of_kin_data = {
         'name': request.form.get('kinName'),
         'relationship': request.form.get('kinRelationship')
@@ -52,23 +54,26 @@ def calculate_age(dob_str):
 # Save images to a specified path or database
 def save_id_image():
     id_image = request.files.get('idImage')
-    id_image_id = None
     if id_image:
         id_image_id = fs.put(id_image, filename=id_image.filename)
-    return id_image_id
+        return id_image_id
+    return None
 
 
 # Save profile data in MongoDB
-def save_profile_data(profile_data, id_image_id):
+def save_profile_data(profile_data, next_of_kin_data, profile_picture_id, id_image_id):
+    # Add images to the profile data
+    profile_data['profile_picture_id'] = profile_picture_id
     profile_data['id_image_id'] = id_image_id
+    profile_data['next_of_kin'] = next_of_kin_data
 
     existing_profile = profiles_collection.find_one({'email': profile_data['email']})
     if existing_profile:
-        result = profiles_collection.update_one({'email': profile_data['email']}, {'$set': profile_data})
-        return result.modified_count > 0
+        # Update existing profile
+        profiles_collection.update_one({'email': profile_data['email']}, {'$set': profile_data})
     else:
-        result = profiles_collection.insert_one(profile_data)
-        return result.inserted_id is not None
+        # Insert new profile
+        profiles_collection.insert_one(profile_data)
 
 def get_user_by_id(user_id):
     try:
@@ -81,7 +86,7 @@ def get_user_by_id(user_id):
 
 def save_profile_picture():
     profile_picture = request.files.get('profile-picture')
-    profile_picture_id = None
     if profile_picture:
-        profile_picture_id = fs.put(profile_picture, filename=profile_picture.filename)  # Save to GridFS
-    return profile_picture_id
+        profile_picture_id = fs.put(profile_picture, filename=profile_picture.filename)
+        return profile_picture_id
+    return None

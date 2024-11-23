@@ -1,196 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Profile - Agriland Connect</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/style.css" />
     <script src="scripts/main.js" defer></script>
     <style>
-        /* General reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      /* General reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f8f8f8;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f8f8f8;
+      }
 
-        /* Navbar styling */
+      /* Navbar styling */
+      .navbar {
+        width: 100%;
+        background-color: #4caf50; /* Theme color */
+        padding: 10px 20px;
+        display: flex;
+        align-items: center; /* Align items vertically */
+      }
+
+      .logo-container {
+        flex-grow: 1; /* Allow logo to take available space */
+        display: flex;
+        justify-content: flex-start; /* Align logo to the left */
+      }
+
+      .logo-container img {
+        max-width: 120px;
+        height: auto;
+      }
+
+      .nav-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .nav-actions button {
+        background-color: #fff;
+        color: #4caf50; /* Text color matches theme */
+        border: 1px solid #4caf50;
+        border-radius: 5px;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+
+      .nav-actions button:hover {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      /* Profile Section */
+      .user-profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        width: 100%;
+        max-width: 500px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-top: 20px;
+      }
+
+      .profile-picture {
+        position: relative;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .profile-picture img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #4caf50;
+      }
+
+      .upload-btn {
+        display: block;
+        margin-top: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .upload-btn:hover {
+        background-color: #45a049;
+      }
+
+      /* Footer Styling */
+      footer {
+        margin-top: auto;
+        width: 100%;
+        background-color: #4caf50; /* Theme color */
+        text-align: center;
+        padding: 10px 0;
+        color: white;
+      }
+
+      /* Responsive design */
+      @media (max-width: 600px) {
         .navbar {
-            width: 100%;
-            background-color: #4caf50; /* Theme color */
-            padding: 10px 20px;
-            display: flex;
-            align-items: center; /* Align items vertically */
+          flex-direction: column;
+          align-items: center; /* Center navbar items on mobile */
         }
 
         .logo-container {
-            flex-grow: 1; /* Allow logo to take available space */
-            display: flex;
-            justify-content: flex-start; /* Align logo to the left */
-        }
-
-        .logo-container img {
-            max-width: 120px;
-            height: auto;
+          justify-content: center; /* Center logo on mobile */
+          width: 100%; /* Take full width */
         }
 
         .nav-actions {
-            display: flex;
-            gap: 10px;
+          flex-direction: column; /* Stack buttons on mobile */
+          align-items: center;
         }
 
         .nav-actions button {
-            background-color: #fff;
-            color: #4caf50; /* Text color matches theme */
-            border: 1px solid #4caf50;
-            border-radius: 5px;
-            padding: 8px 12px;
-            cursor: pointer;
+          width: 100%; /* Full width for mobile buttons */
+          margin: 5px 0; /* Add some margin */
         }
-
-        .nav-actions button:hover {
-            background-color: #4caf50;
-            color: white;
-        }
-
-        /* Profile Section */
-        .user-profile {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin-top: 20px;
-        }
-
-        .profile-picture {
-            position: relative;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .profile-picture img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #4caf50;
-        }
-
-        .upload-btn {
-            display: block;
-            margin-top: 10px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .upload-btn:hover {
-            background-color: #45a049;
-        }
-
-        /* Footer Styling */
-        footer {
-            margin-top: auto;
-            width: 100%;
-            background-color: #4caf50; /* Theme color */
-            text-align: center;
-            padding: 10px 0;
-            color: white;
-        }
-
-        /* Responsive design */
-        @media (max-width: 600px) {
-            .navbar {
-                flex-direction: column;
-                align-items: center; /* Center navbar items on mobile */
-            }
-
-            .logo-container {
-                justify-content: center; /* Center logo on mobile */
-                width: 100%; /* Take full width */
-            }
-
-            .nav-actions {
-                flex-direction: column; /* Stack buttons on mobile */
-                align-items: center;
-            }
-
-            .nav-actions button {
-                width: 100%; /* Full width for mobile buttons */
-                margin: 5px 0; /* Add some margin */
-            }
-        }
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- Navbar Section -->
     <header>
-        <nav class="navbar">
-            <div class="logo-container">
-                <img src="images/logo001.png" alt="Agriland Connect Logo">
-            </div>
-            <div class="nav-actions">
-                <button onclick="openProfile()">Profile</button>
-                <button onclick="openSettings()">Settings</button>
-                <button onclick="logout()">Logout</button>
-            </div>
-        </nav>
+      <nav class="navbar">
+        <div class="logo-container">
+          <img src="images/logo001.png" alt="Agriland Connect Logo" />
+        </div>
+        <div class="nav-actions">
+          <button onclick="openProfile()">Profile</button>
+          <button onclick="openSettings()">Settings</button>
+          <button onclick="logout()">Logout</button>
+        </div>
+      </nav>
     </header>
 
     <!-- Main User Profile Section -->
     <section class="user-profile">
-        <!-- Profile Picture -->
-        <div class="profile-picture">
-            <img src="{{ url_for('user.image', image_id=user_profile['profile_picture_id']) }}" alt="User Profile Picture" id="profile-pic">
-            <input type="file" class="upload-btn" accept="image/*" onchange="uploadProfilePicture()">
-        </div>
+      <!-- Profile Picture -->
+      <div class="profile-picture">
+        <img
+          src="{{ url_for('user.image', image_id=user_profile['profile_image_id']) if user_profile['profile_image_id'] else url_for('static', filename='default_profile_picture.jpg') }}"
+          alt="User Profile Picture"
+          id="profile-pic"
+        />
+        <input
+          type="file"
+          class="upload-btn"
+          accept="image/*"
+          onchange="uploadProfilePicture()"
+        />
+      </div>
     </section>
 
     <!-- Footer Section -->
     <footer>
-        <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
+      <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
     </footer>
 
     <script>
-        function uploadProfilePicture() {
-            const input = document.querySelector('.upload-btn');
-            const profilePic = document.getElementById('profile-pic');
-            const file = input.files[0];
-            if (file) {
-                profilePic.src = URL.createObjectURL(file);
-            }
+      function uploadProfilePicture() {
+        const input = document.querySelector(".upload-btn");
+        const profilePic = document.getElementById("profile-pic");
+        const file = input.files[0];
+        if (file) {
+          profilePic.src = URL.createObjectURL(file);
         }
+      }
 
-        function logout() {
-            window.location.href = "logout.html";
-        }
+      function logout() {
+        window.location.href = "logout.html";
+      }
 
-        function openSettings() {
-            alert("Settings will be available soon!");
-        }
+      function openSettings() {
+        alert("Settings will be available soon!");
+      }
 
-        function openProfile() {
-            alert("Profile section will be available soon!");
-        }
+      function openProfile() {
+        alert("Profile section will be available soon!");
+      }
     </script>
-
-</body>
+  </body>
 </html>

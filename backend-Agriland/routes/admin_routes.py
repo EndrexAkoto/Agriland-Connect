@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory, jsonify, current_app
+from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory, jsonify, current_app, send_file
 from flask import current_app as app
 from models.user import get_user_by_email, create_user
 from models.stats import get_user_statistics
 from models.land import add_land_listing, get_all_land_listings, add_listing_with_images
 from models.settings import process_user_data, manage_user_status
+from gridfs import GridFS
 from bson import ObjectId
 from pymongo import MongoClient
 from db import db
@@ -19,6 +20,7 @@ db = client['Agriconnect']
 users_collection = db['users']
 land_listing_collection = db['land_listings']
 counties_collection = db['Counties']
+fs = GridFS(db)
 
 # Serve the 'index.html' file from the admin panel directory
 def allowed_file(filename):
@@ -62,6 +64,7 @@ def add_land_lease():
 
         # Prepare data for database insertion
         lease_data = {
+            'name': "admin",
             'location': location,
             'land_size': size,
             'price_per_acre': price,
@@ -193,7 +196,7 @@ def unapproved_uploads():
     listings = [
         {
             '_id': str(listing['_id']),
-            'user_name': listing.get('user_name', 'Unknown User'),
+            'user_name': listing.get('name', 'Unknown User'),
             'land_size': listing.get('land_size', 'N/A'),
             'location': listing.get('location', 'N/A'),
             'price_per_acre': listing.get('price_per_acre', 'N/A'),
@@ -225,7 +228,7 @@ def fetch_rejected_leases():
     rejected_leases = [
         {
             '_id': str(lease['_id']),
-            'name': lease.get('user_name', 'Unknown User'),
+            'name': lease.get('name', 'Unknown User'),
             'reason': lease.get('message', 'No reason provided'),
             'land_size': lease.get('land_size', 'N/A'),
             'location': lease.get('location', 'N/A'),
@@ -256,6 +259,41 @@ def serve_uploaded_image(listing_id, filename):
 def users():
     users = list(users_collection.find())
     return render_template('admin_panel/users.html', users=users)
+
+@admin_routes.route("/admin/user-details/<user_id>")
+def user_details(user_id):
+    # Fetch the user details from the database
+    user = users_collection.find_one({"_id": ObjectId(user_id)})
+
+    if not user:
+        return render_template('404.html')  # Handle user not found
+
+    # Extract ID image details
+    id_image_id = user.get("id_image_id")
+    id_image_url = None
+    if id_image_id:
+        id_image_url = f"/admin/user-details/{user_id}/id-image"  # Create a route to serve the image
+
+    user_data = {
+        "id_number": user.get("id_number", "N/A"),
+        "kra_pin": user.get("kra_pin", "N/A"),
+        "phone_number": user.get("phone", "N/A"),
+        "id_image_url": id_image_url
+    }
+    return render_template('admin_panel/user_details.html', user=user_data)
+
+@admin_routes.route("/admin/user-details/<user_id>/id-image")
+def serve_id_image(user_id):
+    user = users_collection.find_one({"_id": ObjectId(user_id)})
+    if not user or not user.get("id_image_id"):
+        return "Image not found", 404  # Handle cases where the image doesn't exist
+
+    # Fetch the image from GridFS
+    gridfs_id = user["id_image_id"]
+    image_file = fs.get(ObjectId(gridfs_id))
+
+    # Serve the file as a response
+    return send_file(image_file, mimetype="image/jpeg") 
 
 # Serve CSS files from the 'admin_panel/css' directory
 @admin_routes.route('/admin/css/<path:filename>')
