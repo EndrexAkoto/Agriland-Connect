@@ -234,8 +234,12 @@
                     <td>{{ user.gender or 'N/A' }}</td>
                     <td>{{ user.age or 'N/A' }}</td>
                     <td>
+<<<<<<< HEAD
                         <button onclick="window.location.href='./user_details.html'">View KRA Pin, Phone Number & ID Images</button>
 
+=======
+                        <button onclick="window.location.href='/admin/user-details/{{ user._id }}'">View KRA Pin, Phone Number & ID Images</button>
+>>>>>>> a3789da (pictures correct in terms of  fetchin and placing)
                     </td>
                 </tr>
                 {% endfor %}

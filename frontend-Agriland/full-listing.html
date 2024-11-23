@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+<<<<<<< HEAD
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Full Listing - Agriland Connect</title>
     <style>
@@ -451,6 +452,9 @@
             background-color: rgba(0, 0, 0, 0.8);
         }
     </style>
+=======
+    <title>Full Listing - Agriland Connect</title>
+>>>>>>> a3789da (pictures correct in terms of  fetchin and placing)
 </head>
 <body>
 
@@ -459,6 +463,7 @@
     </header>
 
     <main>
+<<<<<<< HEAD
 
         <!-- Image Section -->
         <section class="image-gallery">
@@ -508,6 +513,24 @@
 
             <!-- Back Button -->
             <a href="javascript:history.back()" class="back-button">Back</a>
+=======
+        <section class="listing-details">
+            <h2>Price per Acre: Ksh {{ listing.price_per_acre }}</h2>
+            <p><strong>Amenities:</strong> {{ listing.amenities }}</p>
+            <p><strong>Road Access:</strong> {{ listing.road_access }}</p>
+            <p><strong>Fencing:</strong> {{ listing.fencing }}</p>
+            <p><strong>Lease Duration:</strong> {{ listing.lease_duration }}</p>
+            <p><strong>Payment Frequency:</strong> {{ listing.payment_frequency }}</p>
+        </section>
+
+        <section class="listing-images">
+            <h3>Images</h3>
+            <div class="image-gallery">
+                {% for image in listing.farm_images %}
+                <img src="{{ image }}" alt="Land Image" style="width: 100%; max-width: 400px; margin: 10px;">
+                {% endfor %}
+            </div>
+>>>>>>> a3789da (pictures correct in terms of  fetchin and placing)
         </section>
     </main>
 
@@ -521,6 +544,7 @@
     <footer>
         <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
     </footer>
+<<<<<<< HEAD
 
     <!-- Full Screen Overlay -->
     <div id="full-screen-overlay" class="full-screen-overlay" onclick="closeFullScreen()">
@@ -553,5 +577,7 @@
             gallery.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
     </script>
+=======
+>>>>>>> a3789da (pictures correct in terms of  fetchin and placing)
 </body>
 </html>
