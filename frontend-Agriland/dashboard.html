@@ -37,6 +37,28 @@
 
         .nav-right {
             position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Notification Icon Styling */
+        .notification-icon {
+            width: 30px;
+            height: 30px;
+            background-image: url('./images/notification.png'); /* Use your actual notification icon image */
+            background-size: cover;
+            border-radius: 50%;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .profile-icon {
+            width: 45px;
+            height: 45px;
+            background-image: url('{{ user_data.profile_icon }}'); /* Dynamic icon URL from backend */
+            background-size: cover;
+            border-radius: 80%;
+            cursor: pointer;
         }
 
         .nav-right a {
@@ -187,7 +209,10 @@
                 <img src="./images/logo001.png" alt="Agriland Connect Logo">
             </div>
             <div class="nav-right">
-                <a href="user-profile.html">User Profile</a>
+                <!-- Notification Icon -->
+                <div class="notification-icon" onclick="location.href='notifications.html'"></div>
+                <!-- Profile Icon -->
+                <div class="profile-icon" onclick="location.href='user-profile.html'"></div> <!-- Dynamic profile icon -->
                 <div class="dropdown">
                     <a href="settings.html">Settings</a>
                     <a href="logout.html">Logout</a>
