@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard - Agriland Connect</title>
+    <style>
+      /* Basic Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f9f9f9;
+      }
+
+      header {
+        background: #4caf50;
+        color: #fff;
+        padding: 10px 0;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      .nav-left img {
+        height: 40px; /* Adjust as needed */
+      }
+
+        .nav-right {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Notification Icon Styling */
+        .notification-icon {
+            width: 30px;
+            height: 30px;
+            background-image: url('./images/notification.png'); /* Use your actual notification icon image */
+            background-size: cover;
+            border-radius: 50%;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .profile-icon {
+            width: 45px;
+            height: 45px;
+            background-image: url('{{ user_data.profile_icon }}'); /* Dynamic icon URL from backend */
+            background-size: cover;
+            border-radius: 80%;
+            cursor: pointer;
+        }
+
+      .nav-right a {
+        color: #fff;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .nav-right a:hover {
+        background: #45a049;
+      }
+
+      .dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        background: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+
+      .dropdown a {
+        color: #333;
+        padding: 10px 15px;
+        text-decoration: none;
+        display: block;
+      }
+
+      .dropdown a:hover {
+        background: #f0f0f0;
+      }
+
+      .nav-right:hover .dropdown {
+        display: block;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      .dashboard {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .profile-overview,
+      .notifications-section,
+      .land-listings,
+      .lease-management,
+      .recent-activity,
+      .user-role-selection,
+      .payment-history {
+        margin-bottom: 20px;
+      }
+
+      h1,
+      h2 {
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .user-role-selection {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background: #f0f0f0;
+      }
+
+      .user-role-selection button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: white;
+        transition: background-color 0.3s;
+      }
+
+      .user-role-selection button:hover {
+        background-color: #45a049;
+      }
+
+      footer {
+        text-align: center;
+        padding: 10px 0;
+        background: #4caf50;
+        color: #fff;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+      }
+
+      /* Back Button Styling */
+      .back-button {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .back-button button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .back-button button:hover {
+        background-color: #45a049;
+      }
+
+      /* Responsive Styling */
+      @media (max-width: 768px) {
+        .navbar {
+          position: relative;
+          display: flex;
+          justify-content: center; /* Center the logo */
+          align-items: center; /* Align items vertically */
+        }
+
+        .nav-left {
+          margin: 0 auto; /* Center the logo in the navbar */
+        }
+
+        .nav-right {
+          position: absolute;
+          right: 20px;
+          top: 50%; /* Align to the middle of navbar height */
+          transform: translateY(-50%); /* Center vertically */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="nav-left">
+          <img src="./images/logo001.png" alt="Agriland Connect Logo" />
+        </div>
+        <div class="nav-right">
+            <!-- Display user profile image if available, otherwise show default image -->
+            <a href="user-profile.html">
+                <img
+                    src="{{ url_for('user.image', image_id=user_data['profile_picture_id']) if user_data['profile_picture_id'] else url_for('static', filename='default_profile_picture.jpg') }}"
+                    alt="User Profile Picture"
+                    id="profile-pic"
+                    class="profile-image"
+                />
+            </a>
+            <div class="dropdown">
+                <a href="settings.html">Settings</a>
+                <a href="logout.html">Logout</a>
+            </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Back Button -->
+      <div class="back-button">
+        <button onclick="location.href='index.html'">Back to Home</button>
+      </div>
+
+      <section class="dashboard">
+        <h1>Welcome, {{ user_data.name }}</h1>
+        <!-- Dynamic User Name -->
+        <div class="profile-overview">
+          <h2>Your Profile</h2>
+          <p>Email: {{ user_data.email }}</p>
+          <!-- Dynamic User Email -->
+          <a href="edit-profile.html">Edit Profile</a>
+        </div>
+
+        <!-- Role Selection Section -->
+        <div class="user-role-selection">
+          <h2>Select Your Role</h2>
+          <button onclick="location.href='farmer.html'">Farmer</button>
+          <button onclick="location.href='landlord.html'">Landlord</button>
+        </div>
+
+        <div class="notifications-section">
+            <h2>Notifications</h2>
+            <ul id="notification-list">
+                {% for notification in notifications %}
+                    <li>{{ notification.message }}</li> <!-- Display the notification message -->
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="land-listings">
+          <h2>Your Land Listings</h2>
+          <ul>
+            {% for listing in land_listings %}
+            <li>
+              <a href="#">{{ listing.title }}</a> - <button>Edit</button>
+              <button>Delete</button>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="lease-management">
+          <h2>Your Leases</h2>
+          <ul>
+            {% for lease in leases %}
+            <li>
+              <p>
+                {{ lease.land.title }} - Expires on {{ lease.expiration_date }}
+              </p>
+              <button>Renew Lease</button>
+              <button>View Details</button>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="payment-history">
+          <h2>Payment History</h2>
+          <table>
+            <tr>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Transaction ID</th>
+              <th>Status</th>
+            </tr>
+            {% for payment in payments %}
+            <tr>
+              <td>{{ payment.date }}</td>
+              <td>{{ payment.amount }}</td>
+              <td>{{ payment.transaction_id }}</td>
+              <td>{{ payment.status }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+
+        <div class="recent-activity">
+          <h2>Recent Activity</h2>
+          <ul>
+            {% for activity in recent_activities %}
+            <li>{{ activity.description }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Agriland Connect. All Rights Reserved.</p>
+    </footer>
+  </body>
+</html>

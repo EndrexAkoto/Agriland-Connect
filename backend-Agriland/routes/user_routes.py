@@ -86,25 +86,38 @@ def login():
 def dashboard():
     user_id = session.get('id')  # Assuming the user ID is stored in the session
 
-    # Check if user ID is present in the session
     if user_id:
         # Retrieve the user's data from the database using the user ID
         user = users_collection.find_one(
             {"_id": ObjectId(user_id)},
-            {"first_name": 1, "last_name": 1, "email": 1}  # Only fetch required fields
+            {"first_name": 1, "last_name": 1, "email": 1, "profile_picture_id": 1}  # Fetch profile_picture_id
         )
         if user:
-            # Extract user details
             user_data = {
                 "name": f"{user.get('first_name', 'Guest')} {user.get('last_name', '')}",
-                "email": user.get('email', 'Not Available')
+                "email": user.get('email', 'Not Available'),
+                "profile_picture_id": user.get('profile_picture_id', None)  # Include profile picture ID
             }
-            # Render dashboard.html with the actual user data
-            return render_template('dashboard.html', user_data=user_data)
 
-    # If user ID is not in the session or no user is found, render with default values
-    user_data = {"name": "Guest", "email": "Not Available"}
-    return render_template('dashboard.html', user_data=user_data)
+            # Fetch the user's land listings from the land_listings collection
+            land_listings = land_collection.find({"name": user.get("first_name")})
+
+            # Generate notifications for unapproved land listings
+            notifications = []
+            for listing in land_listings:
+                if listing.get("approved") == "False":
+                    notifications.append({
+                        "message": f"Your land listing in {listing.get('location')} is pending approval."
+                    })
+
+            # Render the dashboard template with user data and notifications
+            return render_template('dashboard.html', user_data=user_data, notifications=notifications)
+
+    # Default response when no user is found or not logged in
+    user_data = {"name": "Guest", "email": "Not Available", "profile_picture_id": None}
+    return render_template('dashboard.html', user_data=user_data, notifications=[])
+
+
 
 
 
