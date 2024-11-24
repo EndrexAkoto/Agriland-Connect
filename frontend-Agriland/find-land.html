@@ -407,6 +407,7 @@ footer {
 
       <!-- Land Listings Section -->
       <section class="listing-cards">
+<<<<<<< HEAD
   {% for listing in listings %}
   <div class="listing-card">
     <!-- Show the first image from the listing's images -->
@@ -434,6 +435,23 @@ footer {
   </div>
   {% endfor %}
 </section>
+=======
+        {% for listing in listings %}
+        <div class="listing-card">
+          <!-- Show the first image from the listing's images -->
+          {% if listing.farm_images and listing.farm_images|length > 0 %}
+          <img src="{{ listing.farm_images[0] }}" alt="Land Image" style="width: 100%; height: auto" />
+          {% else %}
+          <img
+            src="./images/default-land-image.png"
+            alt="No Image Available"
+            style="width: 100%; height: auto"
+          />
+          {% endif %}
+          <h3>{{ listing.location }}</h3>
+          <p>Size: {{ listing.land_size }} acres</p>
+          <p>Price per Acre: Ksh. {{ listing.price_per_acre }}</p>
+>>>>>>> a3789da (pictures correct in terms of  fetchin and placing)
 
     </main>
 
