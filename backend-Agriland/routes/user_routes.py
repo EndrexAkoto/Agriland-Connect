@@ -126,7 +126,25 @@ def dashboard():
     user_data = {"name": "Guest", "email": "Not Available", "profile_picture_id": None}
     return render_template('dashboard.html', user_data=user_data, notifications=[], active_count=0, total_count=0)
 
+@user_routes.route("/notifications.html")
+def notifications():
+    user_id = session.get('id')  # Get the user ID from the session
 
+    if user_id:
+        # Fetch all land listings belonging to the user
+        land_listings = list(land_collection.find({"user_id": ObjectId(user_id)}))  # Match user_id to listings
+
+        # Generate notifications for unapproved land listings
+        notifications = [
+            {"message": f"Your land listing in {listing.get('location')} is pending approval."}
+            for listing in land_listings if listing.get("approved") == "False"
+        ]
+    else:
+        # Default: No notifications if user is not logged in
+        notifications = []
+
+    # Render the notifications page
+    return render_template("notification.html", notifications=notifications)
 
 @user_routes.route('/edit_listing/<string:listing_id>', methods=['GET', 'POST'])
 def edit_listing(listing_id):
