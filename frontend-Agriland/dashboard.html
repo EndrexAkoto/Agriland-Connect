@@ -36,19 +36,17 @@
         }
 
         .nav-right {
-            position: relative;
             display: flex;
             align-items: center;
         }
 
-        /* Notification Icon Styling */
         .notification-icon {
             width: 30px;
             height: 30px;
             background-image: url('./images/notification.png'); /* Use your actual notification icon image */
             background-size: cover;
             border-radius: 50%;
-            margin-right: 15px;
+            margin-right: 50px;
             cursor: pointer;
         }
 
@@ -58,6 +56,7 @@
             background-size: cover;
             border-radius: 80%;
             cursor: pointer;
+            margin-right: 15px; /* Space between icons */
         }
 
         .nav-right a {
@@ -210,11 +209,13 @@
             <div class="nav-right">
                 <!-- Notification Icon -->
                 <div class="notification-icon" onclick="location.href='notifications.html'"></div>
-                <!-- Dynamic Profile Icon -->
+
+                <!-- Profile Icon -->
                 <div class="profile-icon" 
-                     style="background-image: url('{{ url_for('user.image', image_id=user_data["profile_picture_id"]) if user_data["profile_picture_id"] else url_for('static', filename="default_profile_picture.jpg") }}');"
+                     style="background-image: url('./images/04.jpg');"
                      onclick="location.href='user-profile.html'">
                 </div>
+                <!-- Dropdown Menu -->
                 <div class="dropdown">
                     <a href="settings.html">Settings</a>
                     <a href="logout.html">Logout</a>
@@ -232,7 +233,6 @@
         <section class="dashboard">
             <h1>Welcome, {{ user_data.name }}</h1> <!-- Dynamic User Name -->
             <div class="profile-overview">
-                <h2>Your Profile</h2>
                 <p>Email: {{ user_data.email }}</p> <!-- Dynamic User Email -->
                 <a href="edit-profile.html">Edit Profile</a>
             </div>
@@ -279,8 +279,7 @@
                         {% endif %}
                       </p>
                     </div>
-              
-                    Edit and Delete buttons
+          
                     <div class="listing-actions">
                       <a href="{{ url_for('user.edit_listing', listing_id=listing['_id']) }}">
                         <button>Edit</button>
