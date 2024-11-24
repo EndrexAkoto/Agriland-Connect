@@ -25,7 +25,7 @@
         padding: 15px;
         display: flex;
         align-items: center;
-        justify-content: space-between; /* Space between logo and navbar */
+        justify-content: space-between;
         flex-wrap: wrap;
       }
 
@@ -60,8 +60,8 @@
         color: white;
         text-decoration: none;
         font-weight: bold;
-        display: block; /* Ensure the link takes up space */
-        padding: 10px; /* Add padding for better touch targets */
+        display: block;
+        padding: 10px;
       }
 
       .nav-links a:hover {
@@ -69,10 +69,10 @@
       }
 
       .burger {
-        display: none; /* Hidden for now, can be styled for mobile later */
+        display: none;
         flex-direction: column;
         cursor: pointer;
-        margin-left: auto; /* Push burger icon to the right */
+        margin-left: auto;
       }
 
       .burger div {
@@ -83,16 +83,16 @@
       }
 
       .close-btn {
-        display: none; /* Hidden by default */
+        display: none;
         background-color: transparent;
         color: white;
         border: none;
         cursor: pointer;
         position: absolute;
-        top: 15px; /* Position at the top */
-        left: 15px; /* Align to the left */
+        top: 15px;
+        left: 15px;
         font-size: 20px;
-        z-index: 1001; /* Ensure it's on top */
+        z-index: 1001;
       }
 
       main {
@@ -115,17 +115,17 @@
         margin: 0 10px;
         min-width: 200px;
         box-sizing: border-box;
-        text-align: center; /* Centers the text */
+        text-align: center;
       }
 
       .box h2 {
-        font-size: 1.5rem; /* Adjust the size of the headings */
+        font-size: 1.5rem;
         color: #4caf50;
         margin-bottom: 10px;
       }
 
       .box p {
-        font-size: 1.2rem; /* Adjust the size of the data values */
+        font-size: 1.2rem;
         font-weight: bold;
       }
 
@@ -142,6 +142,9 @@
       /* User Statistics Section */
       .user-statistics {
         margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
         background-color: rgba(255, 255, 255, 0.9);
         padding: 20px;
         border-radius: 5px;
@@ -151,61 +154,63 @@
       .user-statistics h2 {
         color: #4caf50;
         margin-bottom: 15px;
+        grid-column: span 4; /* Make the header span across all columns */
+        text-align: center;
       }
 
-      .user-statistics ul {
-        list-style: none;
-        padding: 0;
-      }
-
-      .user-statistics li {
-        margin: 5px 0;
-      }
-
-      /* Adjusting chart size */
       .chart-container {
-        width: 100%; /* Makes the chart container responsive */
-        max-width: 500px; /* Set a maximum width for the chart */
-        margin: 0 auto; /* Centers the chart container */
-        padding: 10px;
+        background: white;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
 
       canvas {
-        width: 100% !important; /* Ensures the chart takes up the full width of the container */
-        height: 300px !important; /* Sets a fixed height for the chart */
+        width: 100% !important;
+        height: 300px !important;
       }
 
       /* Responsive Styles */
+      @media (max-width: 1024px) {
+        .user-statistics {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
       @media (max-width: 768px) {
+        .user-statistics {
+          grid-template-columns: 1fr;
+        }
+
         .nav-links {
-          display: none; /* Hide regular nav links */
+          display: none;
           flex-direction: column;
           position: absolute;
           background-color: #4caf50;
-          top: 60px; /* Position below the header */
+          top: 60px;
           right: 0;
           width: 100%;
           z-index: 1000;
         }
 
         .nav-links.active {
-          display: flex; /* Show links when active */
+          display: flex;
         }
 
         .burger {
-          display: flex; /* Show burger icon */
+          display: flex;
         }
 
         .close-btn {
-          display: block; /* Show close button when menu is open */
+          display: block;
         }
 
         .dashboard {
-          flex-direction: column; /* Stack dashboard boxes vertically */
+          flex-direction: column;
         }
 
         .box {
-          margin: 10px 0; /* Add vertical margin */
+          margin: 10px 0;
         }
       }
     </style>
@@ -221,11 +226,10 @@
           <li><a href="users.html">Users</a></li>
           <li><a href="unapproved_uploads.html">Unapproved Uploads</a></li>
           <li><a href="add-land-lease.html">Add Land Lease</a></li>
-          <li><a href="rejected-land-leases.html">Rejected Land Leases</a></li>          
+          <li><a href="rejected-land-leases.html">Rejected Land Leases</a></li>
           <li><a href="payments.html">Payments</a></li>
           <li><a href="settings.html">Settings</a></li>
         </ul>
-          
       </nav>
       <div class="burger" id="burger">
         <div></div>
@@ -268,7 +272,7 @@
           <canvas id="ageBracketChart"></canvas>
         </div>
         <div class="chart-container">
-          <canvas id="countyLeaseRateChart"></canvas> <!-- New chart -->
+          <canvas id="countyLeaseRateChart"></canvas>
         </div>
       </section>
     </main>
@@ -283,7 +287,6 @@
         fetch("/api/user-stats")
           .then((response) => response.json())
           .then((stats) => {
-            // User Type Distribution (Pie Chart)
             new Chart(document.getElementById("userTypeChart"), {
               type: "pie",
               data: {
@@ -291,127 +294,60 @@
                 datasets: [
                   {
                     data: [stats["Farmers"], stats["Landowners"]],
-                    backgroundColor: ["#3C5FAAFF", "#FF5722"],
+                    backgroundColor: ["#4CAF50", "#FF9800"],
                   },
                 ],
               },
-              options: {
-                responsive: true,
-              },
             });
 
-            const gender = stats["Gender Distribution"];
-            const gLabels = Object.keys(gender);
-            const gValues = Object.values(gender);
-
-            // Gender Distribution (Bar Chart) - Only Male and Female
             new Chart(document.getElementById("genderDistributionChart"), {
               type: "bar",
               data: {
-                labels: gLabels,
+                labels: ["Male", "Female", "Other"],
                 datasets: [
                   {
                     label: "Gender Distribution",
-                    data: gValues,
-                    backgroundColor: ["#380DD1FF", "#4E8F12FF"],
+                    data: [
+                      stats["Gender Distribution"]["Male"],
+                      stats["Gender Distribution"]["Female"],
+                      stats["Gender Distribution"]["Other"],
+                    ],
+                    backgroundColor: ["#2196F3", "#E91E63", "#9C27B0"],
                   },
                 ],
               },
-              options: {
-                responsive: true,
-                scales: {
-                  y: {
-                    ticks: {
-                      beginAtZero: true,
-                      stepSize: 10,
-                    },
-                  },
-                },
-              },
             });
-
-            const ageBracketData = stats["Age Bracket"];
-            const ageLabels = Object.keys(ageBracketData);
-            const ageValues = Object.values(ageBracketData);
 
             new Chart(document.getElementById("ageBracketChart"), {
               type: "bar",
               data: {
-                labels: ageLabels,
+                labels: Object.keys(stats["Age Bracket"]),
                 datasets: [
                   {
-                    label: "Age Bracket",
-                    data: ageValues,
-                    backgroundColor: "#FF9800",
+                    label: "Age Distribution",
+                    data: Object.values(stats["Age Bracket"]),
+                    backgroundColor: "#6A1B9A",
                   },
                 ],
               },
-              options: {
-                responsive: true,
-                scales: {
-                  y: {
-                    ticks: {
-                      beginAtZero: true,
-                      stepSize: 10,
-                    },
-                  },
-                },
-              },
             });
-
-            // County Lease Rate Distribution (Bar Chart) - New chart
-            const countyLeaseRates = stats["County Lease Rates"];
-            const counties = Object.keys(countyLeaseRates);
-            const leaseRates = Object.values(countyLeaseRates);
 
             new Chart(document.getElementById("countyLeaseRateChart"), {
-              type: "bar",
+              type: "line",
               data: {
-                labels: counties,
+                labels: Object.keys(stats["County Lease Rates"]),
                 datasets: [
                   {
-                    label: "Average Lease Rate (Per Acre)",
-                    data: leaseRates,
-                    backgroundColor: "#1F08A5FF",
+                    label: "County Lease Rate",
+                    data: Object.values(stats["County Lease Rates"]),
+                    fill: false,
+                    borderColor: "#4CAF50",
+                    tension: 0.1,
                   },
                 ],
               },
-              options: {
-                responsive: true,
-                scales: {
-                  y: {
-                    ticks: {
-                      beginAtZero: true,
-                    },
-                    title: {
-                      display: true,
-                      text: "Lease Rate (Price Per Acre)",
-                    },
-                  },
-                  x: {
-                    title: {
-                      display: true,
-                      text: "Counties",
-                    }
-                  },
-                },
-              },
             });
-          })
-          .catch((error) => console.error("Error fetching stats:", error));
-
-        // Burger Menu Toggle
-        const burger = document.getElementById("burger");
-        const navLinks = document.getElementById("navLinks");
-        const closeBtn = document.getElementById("closeBtn");
-
-        burger.addEventListener("click", () => {
-          navLinks.classList.toggle("active");
-        });
-
-        closeBtn.addEventListener("click", () => {
-          navLinks.classList.remove("active");
-        });
+          });
       });
     </script>
   </body>
