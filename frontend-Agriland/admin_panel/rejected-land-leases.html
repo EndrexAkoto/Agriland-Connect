@@ -26,12 +26,14 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap; /* Allow the logo and nav links to stack on smaller screens */
       }
 
       .logo-container {
         flex: 0 0 auto;
         display: flex;
         justify-content: flex-start;
+        margin-bottom: 10px; /* Space below the logo on smaller screens */
       }
 
       .logo {
@@ -42,6 +44,7 @@
         flex: 1;
         display: flex;
         justify-content: flex-end;
+        flex-wrap: wrap; /* Allow nav links to stack on smaller screens */
       }
 
       .nav-links {
@@ -101,7 +104,7 @@
 
       .rejected-list {
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: column; /* Keep leases in a column layout */
         gap: 20px;
       }
 
@@ -114,7 +117,6 @@
         flex: 1;
         min-width: 200px;
         box-sizing: border-box;
-        text-align: center;
       }
 
       .rejected-lease h3 {
@@ -123,6 +125,20 @@
 
       .rejected-lease p {
         color: #333;
+      }
+
+      /* Arrange the images horizontally */
+      .rejected-lease-images {
+        display: flex;
+        gap: 15px; /* Space between images */
+        flex-wrap: wrap; /* Allow images to wrap onto the next line if necessary */
+      }
+
+      .rejected-lease img {
+        width: 100%;
+        max-width: 200px; /* Ensure images are sized consistently */
+        height: auto;
+        border-radius: 5px;
       }
 
       /* Footer */
@@ -136,14 +152,61 @@
         width: 100%;
       }
 
-      /* Responsive Styles */
+      /* Mobile Responsiveness */
       @media (max-width: 768px) {
+        header {
+          padding: 10px;
+        }
+
+        .logo-container {
+          margin-bottom: 5px; /* Reduced space below the logo on smaller screens */
+        }
+
+        .nav-links {
+          display: flex;
+          flex-direction: column; /* Stack navigation links vertically */
+          text-align: center; /* Center the links */
+        }
+
+        .nav-links li {
+          margin: 10px 0;
+        }
+
         .rejected-land-leases {
           padding: 15px;
         }
 
         .rejected-lease {
           min-width: 150px;
+        }
+
+        .rejected-lease img {
+          width: 100%;
+          max-width: 180px; /* Smaller images on mobile */
+        }
+
+        .back-btn {
+          font-size: 0.9rem; /* Slightly smaller font size for mobile */
+          padding: 8px 16px;
+        }
+
+        footer {
+          font-size: 0.9rem; /* Smaller font size for mobile */
+        }
+      }
+
+      /* Extra Small Screen Responsiveness (for phones under 480px) */
+      @media (max-width: 480px) {
+        .rejected-land-leases {
+          padding: 10px;
+        }
+
+        .rejected-lease {
+          min-width: 100%; /* Take up full width on very small screens */
+        }
+
+        .rejected-lease img {
+          max-width: 100%; /* Ensure images are full-width */
         }
       }
     </style>
@@ -200,7 +263,9 @@
                   <p>Land Size: ${lease.land_size}</p>
                   <p>Location: ${lease.location}</p>
                   <p>Price per Acre: ${lease.price_per_acre}</p>
-                  ${lease.images.map(image => `<img src="${image}" alt="Land Image" />`).join('')}
+                  <div class="rejected-lease-images">
+                    ${lease.images.map(image => `<img src="${image}" alt="Land Image" />`).join('')}
+                  </div>
                 `;
                 rejectedLeasesContainer.appendChild(leaseDiv);
               });

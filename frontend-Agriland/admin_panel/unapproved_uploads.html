@@ -100,7 +100,7 @@
 
         .images img {
             width: 100%;
-            height: 120px;
+            height: 200px; /* Increased image size */
             border-radius: 5px;
             object-fit: cover;
             cursor: pointer;
@@ -150,6 +150,38 @@
 
         footer p {
             margin: 0;
+        }
+
+        /* Full Screen Image Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .modal .cancel-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
         }
 
         /* Responsive Adjustments */
@@ -225,10 +257,23 @@
         <p>&copy; 2024 Agriland. All Rights Reserved.</p>
     </footer>
 
+    <!-- Full Screen Image Modal -->
+    <div class="modal" id="imageModal">
+        <img id="fullScreenImage" src="" alt="Full Screen Image">
+        <button class="cancel-button" onclick="closeModal()">Cancel</button>
+    </div>
+
     <script>
         function openImage(src) {
-            const newWindow = window.open();
-            newWindow.document.write('<img src="' + src + '" style="width:100%;height:auto;">');
+            const modal = document.getElementById('imageModal');
+            const fullScreenImage = document.getElementById('fullScreenImage');
+            fullScreenImage.src = src;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
         }
 
         function rejectListing(form) {
@@ -246,4 +291,3 @@
     </script>
 </body>
 </html>
-    

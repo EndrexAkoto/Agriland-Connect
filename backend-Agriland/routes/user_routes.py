@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory, Response, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory, Response, jsonify, send_file
 from models.user import get_user_by_email, create_user, authenticate_user
 from models.profile import *
 from models.land import *
@@ -7,6 +7,8 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from datetime import datetime
 from bson import ObjectId
+from io import BytesIO
+from gridfs import GridFS
 
 # Assuming MongoDB setup
 client = MongoClient('localhost', 27017)
@@ -109,34 +111,30 @@ def dashboard():
 @user_routes.route("/edit-profile.html", methods=['GET', 'POST'])
 def profile():
     msg = ''
-    user_id = session.get('id')  # Assuming you store the user_id in the session
-    if user_id:
-        user = get_user_by_id(user_id)
-        if not user:
-            return "User not found", 404
-    else:
+    user_id = session.get('id')  # Retrieve logged-in user ID
+    if not user_id:
         return "User not logged in", 401
 
+    user = get_user_by_id(user_id)
+    if not user:
+        return "User not found", 404
+
     if request.method == 'POST':
-        # Extract form data and validate it
+        # Extract form data
         profile_data, next_of_kin_data, msg = extract_and_validate_form_data()
         if msg:
-            return render_template('edit-profile.html', msg=msg)
+            return render_template('edit-profile.html', msg=msg, user=user)
 
-        # Process profile picture and ID image
-        profile_picture_id = save_profile_picture()  # Save profile picture
-        id_image_id = save_id_image()  # Save ID image
+        # Process uploaded images
+        profile_picture_id = save_profile_picture()
+        id_image_id = save_id_image()
 
-        # Update profile data with image IDs
-        profile_data['profile_picture_id'] = profile_picture_id
-        profile_data['id_image_id'] = id_image_id
+        # Save profile data
+        save_profile_data(profile_data, next_of_kin_data, profile_picture_id, id_image_id)
 
-        # Update or insert profile in the database
-        save_profile_data(profile_data, id_image_id)
+        msg = 'Profile updated successfully!'
+        return render_template('edit-profile.html', user=profile_data, msg=msg)
 
-        msg = 'Profile updated successfully!' if profiles_collection.find_one({'email': profile_data['email']}) else 'Profile created successfully!'
-        return redirect(url_for('user.profile'))
-    
     return render_template('edit-profile.html', user=user, msg=msg)
 
 @user_routes.route("/farmer.html", methods=['GET', 'POST'])
@@ -307,6 +305,7 @@ def full_listing():
     # Render the full listing details page with the fetched listing data
     return render_template('full-listing.html', listing=listing_data)
 
+
 @user_routes.route('/api/land-listings', methods=['GET'])
 def get_land_listings():
     try:
@@ -338,6 +337,13 @@ def get_land_listings():
     except Exception as e:
         print(f"Error fetching land listings: {e}")
         return jsonify({'success': False, 'error': 'Failed to fetch listings'}), 500
+
+@user_routes.route('/user-image/<image_id>')
+def user_image(image_id):
+    # Connect to GridFS
+    fs = GridFS(db)  # Assuming db is your MongoDB database
+    file = fs.get(ObjectId(image_id))
+    return send_file(BytesIO(file.read()), mimetype='image/jpeg') 
 
 @user_routes.route('/image/<image_id>')
 def image(image_id):

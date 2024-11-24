@@ -319,34 +319,34 @@
 
       <!-- Land Listings Section -->
       <section class="listing-cards">
-        {% for listing in listings %}
-        <div class="listing-card">
-          <!-- Show the first image from the listing's images -->
-          {% if listing.farm_images and listing.farm_images|length > 0 %}
-          <img src="{{ listing.farm_images[0] }}" alt="Land Image" style="width: 100%; height: auto" />
-          {% else %}
-          <img
-            src="./images/default-land-image.png"
-            alt="No Image Available"
-            style="width: 100%; height: auto"
-          />
-          {% endif %}
-          <h3>{{ listing.location }}</h3>
-          <p>Size: {{ listing.land_size }} acres</p>
-          <p>Price per Acre: Ksh. {{ listing.price_per_acre }}</p>
-          <p>Amenities: {{ listing.amenities }}</p>
-          <p>Road Access: {{ listing.road_access }}</p>
-          <p>Fencing: {{ listing.fencing }}</p>
-          <p>Lease Duration: {{ listing.lease_duration }}</p>
-          <p>Payment Frequency: {{ listing.payment_frequency }}</p>
+  {% for listing in listings %}
+  <div class="listing-card">
+    <!-- Show the first image from the listing's images -->
+    {% if listing.farm_images and listing.farm_images|length > 0 %}
+    <img src="{{ listing.farm_images[0] }}" alt="Land Image" style="width: 100%; height: auto" />
+    {% else %}
+    <img
+      src="./images/default-land-image.png"
+      alt="No Image Available"
+      style="width: 100%; height: auto"
+    />
+    {% endif %}
+    <h3>{{ listing.location }}</h3>
+    <p><strong>Size:</strong> {{ listing.land_size }} acres</p>
+    <p><strong>Price per Acre:</strong> <strong>Ksh. {{ listing.price_per_acre }}</strong></p>
+    <p>Amenities: {{ listing.amenities }}</p>
+    <p>Road Access: {{ listing.road_access }}</p>
+    <p>Fencing: {{ listing.fencing }}</p>
+    <p>Lease Duration: {{ listing.lease_duration }}</p>
+    <p>Payment Frequency: {{ listing.payment_frequency }}</p>
 
-          <!-- Link to the full listing details, using the dynamic listing id -->
-          <a href="full-listing.html?id={{ listing._id }}" class="button">View Lease Details</a>
-          <button class="payment-button" onclick="location.href='payment-page.html?id={{ listing._id }}'">Pay via M-PESA</button>
-          <a href="payment-page.html" class="button">Pay Via Mpesa</a> 
-        </div>
-        {% endfor %}
-      </section>
+    <!-- Link to the full listing details, using the dynamic listing id -->
+    <a href="full-listing.html?id={{ listing._id }}" class="button">View Lease Details</a>
+    <button class="payment-button" onclick="location.href='payment-page.html?id={{ listing._id }}'">Pay via M-PESA</button>
+  </div>
+  {% endfor %}
+</section>
+
     </main>
 
     <footer>

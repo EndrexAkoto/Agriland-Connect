@@ -140,7 +140,7 @@
                 <option value="yearly">Yearly</option>
             </select>
 
-            <button type="submit">Submit</button>
+            <button id="submit" type="submit">Submit</button>
             <button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
             {% if msg %}
             <p style="color: red">{{ msg }}</p>
@@ -149,39 +149,41 @@
     </div>
 
     <script>
-        let uploadedImages = []; // Array to store uploaded images
+        // let uploadedImages = []; // Array to store uploaded images
 
-        document.getElementById('farmImages').addEventListener('change', function(event) {
-            const imagePreviewContainer = document.getElementById('imagePreview');
+        // document.getElementById('farmImages').addEventListener('change', function(event) {
+        //     const imagePreviewContainer = document.getElementById('imagePreview');
 
-            if (uploadedImages.length >= 5) {
-                alert('You can upload a maximum of 5 images.'); // Limit reached
-                return;
-            }
+        //     if (uploadedImages.length >= 5) {
+        //         alert('You can upload a maximum of 5 images.'); // Limit reached
+        //         return;
+        //     }
 
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imgElement = document.createElement('img');
-                    imgElement.src = e.target.result;
-                    uploadedImages.push(file); // Store the uploaded file
-                    imagePreviewContainer.appendChild(imgElement);
-                };
-                reader.readAsDataURL(file);
-            }
+        //     const file = event.target.files[0];
+        //     if (file) {
+        //         const reader = new FileReader();
+        //         reader.onload = function(e) {
+        //             const imgElement = document.createElement('img');
+        //             imgElement.src = e.target.result;
+        //             uploadedImages.push(file); // Store the uploaded file
+        //             imagePreviewContainer.appendChild(imgElement);
+        //         };
+        //         reader.readAsDataURL(file);
+        //     }
 
-            event.target.value = ''; // Clear the file input after upload
-        });
+        //     event.target.value = ''; // Clear the file input after upload
+        // });
 
         // Redirect after form submission
-        document.getElementById('landlord-form').addEventListener('submit', function(event) {
+        document.getElementById('submit').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent form from submitting immediately
+            console.log("submit button called")
 
             // Perform any necessary validation or form submission handling here
 
             // Redirect to dashboard
-            window.location.href = 'dashboard.html';
+           alert("Submited")
+            //window.location.href = 'dashboard.html';
         });
     </script>
 
