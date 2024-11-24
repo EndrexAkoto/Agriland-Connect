@@ -170,6 +170,50 @@
         height: 300px !important;
       }
 
+      /* Profile Menu Styles */
+      .profile-menu {
+        position: relative;
+        display: inline-block;
+        margin-right: 15px;
+      }
+
+      .profile-icon {
+        width: 40px;
+        height: 40px;
+        background-color: #fff;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .profile-menu-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 40px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+      }
+
+      .profile-menu-content a {
+        color: black;
+        padding: 10px;
+        text-decoration: none;
+        display: block;
+      }
+
+      .profile-menu-content a:hover {
+        background-color: #f1f1f1;
+      }
+
+      .profile-menu:hover .profile-menu-content {
+        display: block;
+      }
+
       /* Responsive Styles */
       @media (max-width: 1024px) {
         .user-statistics {
@@ -222,13 +266,23 @@
       </div>
       <nav class="navbar">
         <ul class="nav-links" id="navLinks">
-          <li><button class="close-btn" id="closeBtn">&times;</button></li>
           <li><a href="users.html">Users</a></li>
           <li><a href="unapproved_uploads.html">Unapproved Uploads</a></li>
           <li><a href="add-land-lease.html">Add Land Lease</a></li>
           <li><a href="rejected-land-leases.html">Rejected Land Leases</a></li>
           <li><a href="payments.html">Payments</a></li>
           <li><a href="settings.html">Settings</a></li>
+          
+          <!-- Profile Menu Link after Settings -->
+          <li class="profile-menu">
+            <div class="profile-icon">
+              <span>👤</span> <!-- Profile icon -->
+            </div>
+            <div class="profile-menu-content">
+              <a href="profile.html">View Profile</a>
+              <a href="../logout.html">Logout</a>
+            </div>
+          </li>
         </ul>
       </nav>
       <div class="burger" id="burger">
@@ -347,7 +401,8 @@
                 ],
               },
             });
-          });
+          })
+          .catch((error) => console.error("Error fetching stats:", error));
       });
     </script>
   </body>
