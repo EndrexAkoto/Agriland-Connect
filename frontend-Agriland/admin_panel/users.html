@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users - Agriland Connect</title>
-    <link rel="stylesheet" href="css/admin_style..css">
     <style>
         /* General Body Styles */
         body {
@@ -234,7 +233,8 @@
                     <td>{{ user.gender or 'N/A' }}</td>
                     <td>{{ user.age or 'N/A' }}</td>
                     <td>
-                        <button onclick="window.location.href='/admin/user-details/{{ user._id }}'">View KRA Pin, Phone Number & ID Images</button>
+                        <button onclick="window.location.href='./user_details.html'">View KRA Pin, Phone Number & ID Images</button>                       
+
                     </td>
                 </tr>
                 {% endfor %}
