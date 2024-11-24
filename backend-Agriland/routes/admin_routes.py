@@ -260,10 +260,18 @@ def users():
     users = list(users_collection.find())
     return render_template('admin_panel/users.html', users=users)
 
+from bson.errors import InvalidId
+
 @admin_routes.route("/admin/user-details/<user_id>")
 def user_details(user_id):
+    print(f"Received user_id: {user_id}")  # Add this to debug
+    try:
+        user_id = ObjectId(user_id)  # Try to convert the user_id to ObjectId
+    except InvalidId:
+        return render_template('404.html')  # Handle invalid user_id (non-ObjectId)
+
     # Fetch the user details from the database
-    user = users_collection.find_one({"_id": ObjectId(user_id)})
+    user = users_collection.find_one({"_id": user_id})
 
     if not user:
         return render_template('404.html')  # Handle user not found
@@ -281,6 +289,7 @@ def user_details(user_id):
         "id_image_url": id_image_url
     }
     return render_template('admin_panel/user_details.html', user=user_data)
+
 
 @admin_routes.route("/admin/user-details/<user_id>/id-image")
 def serve_id_image(user_id):
