@@ -159,7 +159,7 @@
       <!-- Profile Picture -->
       <div class="profile-picture">
         <img
-          src="{{ url_for('user.image', image_id=user_profile['profile_image_id']) if user_profile['profile_image_id'] else url_for('static', filename='default_profile_picture.jpg') }}"
+          src="{{ url_for('user.image', image_id=user_profile['profile_picture_id']) if user_profile['profile_picture_id'] else url_for('static', filename='default_profile_picture.jpg') }}"
           alt="User Profile Picture"
           id="profile-pic"
         />
