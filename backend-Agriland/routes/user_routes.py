@@ -99,25 +99,39 @@ def dashboard():
                 "profile_picture_id": user.get('profile_picture_id', None)  # Include profile picture ID
             }
 
-            # Fetch the user's land listings from the land_listings collection
-            land_listings = land_collection.find({"name": user.get("first_name")})
+            # Fetch all land listings belonging to the user
+            land_listings = list(land_collection.find({"name": user.get("first_name")}))
 
-            # Generate notifications for unapproved land listings
-            notifications = []
-            for listing in land_listings:
-                if listing.get("approved") == "False":
-                    notifications.append({
-                        "message": f"Your land listing in {listing.get('location')} is pending approval."
-                    })
+            # Filter approved listings
+            approved_listings = [listing for listing in land_listings if listing.get("approved") == "True"]
+            active_count = len(approved_listings)  # Count the approved listings
 
-            # Render the dashboard template with user data and notifications
-            return render_template('dashboard.html', user_data=user_data, notifications=notifications)
+            # Notifications for unapproved land listings
+            notifications = [
+                {"message": f"Your land listing in {listing.get('location')} is pending approval."}
+                for listing in land_listings if listing.get("approved") == "False"
+            ]
+
+            # Render the dashboard template with user data, notifications, and land counts
+            return render_template(
+                'dashboard.html',
+                user_data=user_data,
+                notifications=notifications,
+                active_count=active_count,  # Pass the active (approved) count
+                total_count=len(land_listings),  # Total number of listings
+                land_listings=land_listings  # Pass all listings
+            )
 
     # Default response when no user is found or not logged in
     user_data = {"name": "Guest", "email": "Not Available", "profile_picture_id": None}
-    return render_template('dashboard.html', user_data=user_data, notifications=[])
+    return render_template('dashboard.html', user_data=user_data, notifications=[], active_count=0, total_count=0)
 
 
+
+@user_routes.route('/edit_listing/<string:listing_id>', methods=['GET', 'POST'])
+def edit_listing(listing_id):
+    # Logic for editing the listing
+    pass
 
 
 
