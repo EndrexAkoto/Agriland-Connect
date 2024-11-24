@@ -227,6 +227,231 @@
             background-color: rgba(0, 0, 0, 0.8);
         }
     </style>
+    <title>Full Listing - Agriland Connect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        header {
+            background-color: #4CAF50; /* Theme color */
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .listing-details {
+            flex: 0 0 35%; /* Right-side details */
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .listing-details h2, .listing-details h3 {
+            font-weight: bold;
+            color: black; /* Black color for bold sections */
+        }
+
+        .listing-details p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .listing-details h3 {
+            margin-top: 20px;
+            font-size: 1.3em;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 10px; /* Reduced space above */
+            padding: 8px 16px; /* Reduced size */
+            background-color: #4CAF50; /* Theme color */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+        }
+
+        .mpesa {
+            background-color: #25b56a;
+            padding: 8px 15px;
+            margin-top: 20px;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            display: inline-block;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        .mpesa:hover {
+            background-color: #1a8c4e;
+        }
+
+        footer {
+            background-color: #4CAF50; /* Theme color */
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Marsabit section */
+        .marsabit-info {
+            background-color: #fff;
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        /* Image Section */
+        .image-gallery {
+            position: relative;
+            width: 65%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin: auto;
+        }
+
+        .image-gallery img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        /* Horizontal image list */
+        .thumbnail-images {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .thumbnail-images img {
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .thumbnail-images img:hover {
+            opacity: 0.7;
+        }
+
+        /* Scroll buttons */
+        .scroll-button {
+            position: absolute;
+            top: 50%;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            font-size: 1.5em;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .scroll-button.left {
+            left: 0;
+        }
+
+        .scroll-button.right {
+            right: 0;
+        }
+
+        /* For small screen adjustments */
+        @media (max-width: 768px) {
+            main {
+                flex-direction: column;
+            }
+
+            .listing-details {
+                flex: 0 0 100%;
+                margin-bottom: 20px;
+            }
+
+            .image-gallery {
+                width: 100%;
+            }
+
+            .thumbnail-images {
+                justify-content: center;
+            }
+        }
+
+        /* Full Screen Overlay */
+        .full-screen-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .full-screen-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+
+        .cancel-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .cancel-button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    </style>
+    <title>Full Listing - Agriland Connect</title>
 </head>
 <body>
 
@@ -235,6 +460,7 @@
     </header>
 
     <main>
+
         <!-- Image Section -->
         <section class="image-gallery">
             <img id="main-image" src="{{ listing.farm_images[0] }}" alt="Land Image" class="zoomable" onclick="openFullScreen(this)">
@@ -243,6 +469,23 @@
         </section>
 
         <!-- Details Section -->
+
+        <section class="listing-details">
+            <h2><strong>Price per Acre:</strong> Ksh {{ listing.price_per_acre }}</h2>
+            <p><strong>Amenities:</strong> {{ listing.amenities }}</p>
+            <p><strong>Road Access:</strong> {{ listing.road_access }}</p>
+            <p><strong>Fencing:</strong> {{ listing.fencing }}</p>
+            <p><strong>Lease Duration:</strong> {{ listing.lease_duration }} years</p>
+            <p><strong>Payment Frequency:</strong> {{ listing.payment_frequency }}</p>
+
+            <!-- M-Pesa Button -->
+            <div class="mpesa">
+                <p>Pay with M-Pesa</p>
+            </div>
+
+            <!-- Back Button -->
+            <a href="javascript:history.back()" class="back-button">Back</a>
+
         <section class="listing-details">
             <div class="marsabit-info">
                 <h3><strong>Marsabit - 4500 Acres</strong></h3>
@@ -262,6 +505,23 @@
 
             <!-- Back Button -->
             <a href="javascript:history.back()" class="back-button">Back</a>
+
+        <section class="listing-details">
+            <h2>Price per Acre: Ksh {{ listing.price_per_acre }}</h2>
+            <p><strong>Amenities:</strong> {{ listing.amenities }}</p>
+            <p><strong>Road Access:</strong> {{ listing.road_access }}</p>
+            <p><strong>Fencing:</strong> {{ listing.fencing }}</p>
+            <p><strong>Lease Duration:</strong> {{ listing.lease_duration }}</p>
+            <p><strong>Payment Frequency:</strong> {{ listing.payment_frequency }}</p>
+        </section>
+
+        <section class="listing-images">
+            <h3>Images</h3>
+            <div class="image-gallery">
+                {% for image in listing.farm_images %}
+                <img src="{{ image }}" alt="Land Image" style="width: 100%; max-width: 400px; margin: 10px;">
+                {% endfor %}
+            </div>
         </section>
     </main>
 
