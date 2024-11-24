@@ -141,6 +141,36 @@
             width: 100%;
         }
 
+        /* Search input and button container */
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        /* Search input style */
+        #searchUser {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: calc(100% - 120px); /* Adjust width to accommodate the button */
+            margin-right: 10px;
+        }
+
+        /* Search button style */
+        #searchButton {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #searchButton:hover {
+            background-color: #45a049;
+        }
+
         /* Responsive Styles */
         @media (max-width: 768px) {
             .nav-links {
@@ -178,7 +208,10 @@
     <main>
         <h1>Manage Users</h1>
         <a href="index.html" class="back-button">Back to Dashboard</a> <!-- Back Button -->
-        <input type="text" id="searchUser" placeholder="Search users..." onkeyup="filterUsers()">
+        <div class="search-container">
+            <input type="text" id="searchUser" placeholder="Search users..." onkeyup="filterUsers()">
+            <button id="searchButton" onclick="filterUsers()">Search</button>
+        </div>
         <table>
             <thead>
                 <tr>
