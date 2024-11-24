@@ -389,11 +389,11 @@
             new Chart(document.getElementById("countyLeaseRateChart"), {
               type: "line",
               data: {
-                labels: Object.keys(stats["County Lease Rates"]),
+                labels: Object.keys(stats["County Lease Counts"]),
                 datasets: [
                   {
                     label: "County Lease Rate",
-                    data: Object.values(stats["County Lease Rates"]),
+                    data: Object.values(stats["County Lease Counts"]),
                     fill: false,
                     borderColor: "#4CAF50",
                     tension: 0.1,

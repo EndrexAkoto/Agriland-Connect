@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+</head>
+<body>
+    <div class="notifications-section">
+        <h2>Notifications</h2>
+        <ul id="notification-list">
+            {% if notifications %}
+                {% for notification in notifications %}
+                    <li>{{ notification.message }}</li> <!-- Display each notification -->
+                {% endfor %}
+            {% else %}
+                <li>No new notifications</li> <!-- Fallback if there are no notifications -->
+            {% endif %}
+        </ul>
+    </div>
+</body>
+</html>
