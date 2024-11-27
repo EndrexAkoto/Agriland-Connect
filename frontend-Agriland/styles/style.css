@@ -1,330 +1,349 @@
 /* Global Styles */
 body {
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    margin: 0;
-    padding: 0;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
 }
 
 /* Header Styling */
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #4CAF50; /* Theme color */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-}
-
-/* Logo Styling */
-header .logo img {
-    height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #4caf50;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  position: sticky;
 }
 
 /* Navigation Menu */
 .nav-menu {
-    display: flex;
-    justify-content: center; /* Center align links */
-    align-items: center;
-    width: 100%;
+  display: flex;
+  justify-content: center; /* Center align links */
+  align-items: center;
+  width: 100%;
 }
 
-.nav-left, .nav-right {
-    display: flex;
-    align-items: center;
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
 }
 
 header nav a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    margin: 0 20px;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 0 20px;
 }
 
 /* Hide Hamburger in Desktop */
 .hamburger {
+  display: none;
+  content: "";
+}
+
+.header-mobile {
+  display: none;
+  content: "";
+}
+
+@media (max-width: 764px) {
+  .header-desktop {
     display: none;
-}
-
-/* Mobile Styles */
-@media (max-width: 768px) {
-    /* Show hamburger on mobile */
-    .hamburger {
-        display: block;
-        cursor: pointer;
-        margin-right: 20px;
-    }
-
-    /* Hide the regular menu and show mobile layout */
-    header .nav-menu {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 60px;
-        left: 0;
-        right: 0;
-        background-color: rgba(76, 175, 80, 0.9);
-        z-index: 10;
-    }
-
-    header .nav-menu.active {
-        display: flex; /* Show menu when active */
-    }
-
-    .nav-left, .nav-right {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
-
-    header nav a {
-        padding: 10px 15px;
-        text-align: center;
-        width: 100%;
-        margin: 5px 0;
-        color: white;
-    }
-}
-
-/* Hero Section */
-.hero {
-    text-align: center;
-    padding: 100px 70px;
-    background: url('../images/hero01.jpg') no-repeat center center;
-    background-size: cover;
-    color: #f0f7f1;
+    content: "";
+  }
+  .header-mobile {
+    display: flex;
     position: relative;
-}
-
-.hero button {
-    background-color: #F4CA50;
+    align-items: center;
+  }
+  .header-mobile_logo-image {
+    width: 60px;
+  }
+  .header-mobile_button {
+    background-color: transparent;
     color: white;
-    padding: 15px 30px;
     border: none;
     cursor: pointer;
     border-radius: 5px;
     font-size: 1.2rem;
+    margin-right: 2rem;
+    transform: scaleY(140%);
+  }
+  .header-mobile_navigation {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: fit-content;
+    z-index: 1000;
+    background: #4caf50;
+    top: 3.6rem;
+    border-radius: 4px;
+    transition: max-height 0.3s ease-in-out;
+    overflow: hidden;
+  }
+  .header-mobile_nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  .header-mobile_nav a {
+    padding: 10px 0px;
+    margin: 0 !important;
+  }
+  .header-mobile_nav a:not(:last-child) {
+    border-bottom: 1px solid #464343a1;
+  }
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 100px 70px;
+  background: url("../images/hero01.jpg") no-repeat center center;
+  background-size: cover;
+  color: #f0f7f1;
+  position: relative;
+}
+
+.hero button {
+  background-color: #f4ca50;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1.2rem;
 }
 
 /* Text Overlay for readability */
 .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
-    z-index: 1; /* Above background, below content */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  z-index: 1; /* Above background, below content */
 }
 
 /* Reusable Button Class */
 .btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 /* Button Hover Effect */
 .btn:hover {
-    background-color: #45a049; /* Darker shade */
-    transform: scale(1.05); /* Slight scale */
+  background-color: #45a049; /* Darker shade */
+  transform: scale(1.05); /* Slight scale */
 }
 
 /* Button Focus Effect */
 .btn:focus {
-    outline: 2px solid #4CAF50; /* Outline effect for accessibility */
-    outline-offset: 2px;
+  outline: 2px solid #4caf50; /* Outline effect for accessibility */
+  outline-offset: 2px;
 }
 
 /* Footer Styling */
 footer {
-    text-align: center;
-    padding: 20px 0;
-    background-color: #4CAF50; /* Use theme color */
-    color: #f6f7fa;
-    font-size: 1.3rem;
+  text-align: center;
+  padding: 20px 0;
+  background-color: #4caf50; /* Use theme color */
+  color: #f6f7fa;
+  font-size: 1.3rem;
 }
 
 /* Section: Mission and Vision */
 .mission-vision {
-    padding: 40px;
-    background-color: #ffffff57; /* Semi-transparent background */
-    text-align: center;
+  padding: 40px;
+  background-color: #ffffff57; /* Semi-transparent background */
+  text-align: center;
 }
 
 .mission-vision h2 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
 }
 
 .mission-vision .content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
 }
 
 .mission-vision .image-and-text {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  text-align: center;
 }
 
 .mission-vision img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    margin-bottom: 15px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 15px;
 }
 
 .mission-vision h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
 }
 
 .mission-vision p {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
 /* Section: How It Works */
 .how-it-works {
-    padding: 40px;
-    background-color: #ffffffaf;
-    text-align: center;
+  padding: 40px;
+  background-color: #ffffffaf;
+  text-align: center;
 }
 
 .how-it-works h2 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
 }
 
 .how-it-works .steps {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around; /* Space between items */
-    max-width: 1200px;
-    margin: 0 auto; /* Center content */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; /* Space between items */
+  max-width: 1200px;
+  margin: 0 auto; /* Center content */
 }
 
 .how-it-works .step {
-    flex: 1;
-    min-width: 300px;
-    max-width: 400px;
-    margin: 20px;
-    padding: 20px;
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  margin: 20px;
+  padding: 20px;
 }
 
 .how-it-works .small-image {
-    width: 20%;
-    height: auto;
-    margin-bottom: 10px;
+  width: 20%;
+  height: auto;
+  margin-bottom: 10px;
 }
 
 /* Section: Services */
 .services {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px;
-    background-color: #ffffffaf;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  background-color: #ffffffaf;
 }
 
 .services h2 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
 }
 
 .services .content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .services .image-and-text {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
-    margin: 20px;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  margin: 20px;
+  text-align: center;
 }
 
 .services img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
 }
 
 .services h3 {
-    font-size: 1.5rem;
-    margin: 10px 0;
+  font-size: 1.5rem;
+  margin: 10px 0;
 }
 
 .services p {
-    font-size: 1rem;
-    color: #070606;
+  font-size: 1rem;
+  color: #070606;
 }
 
 /* Section: Why Choose Us */
 .why-choose-us {
-    padding: 40px;
-    background-color: #ffffffaf;
-    text-align: center;
+  padding: 40px;
+  background-color: #ffffffaf;
+  text-align: center;
 }
 
 .why-choose-us h2 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    color: #4CAF50; /* Use theme color for the main heading */
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #4caf50; /* Use theme color for the main heading */
 }
 
 /* Apply theme color to all headings (h3, h4) and any bold text */
-.why-choose-us h3, .why-choose-us h4, .why-choose-us strong {
-    color: #4CAF50; /* Apply theme color */
-    font-size: 1.5rem;
-    margin: 10px 0; /* Add spacing for better layout */
+.why-choose-us h3,
+.why-choose-us h4,
+.why-choose-us strong {
+  color: #4caf50; /* Apply theme color */
+  font-size: 1.5rem;
+  margin: 10px 0; /* Add spacing for better layout */
 }
 
 /* Ensure any paragraph tags within 'why-choose-us' also inherit proper styles */
 .why-choose-us p {
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 15px;
-    color: #333; /* Default text color */
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: #333; /* Default text color */
 }
 
 .why-choose-us ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0;
-    list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0;
+  list-style: none;
 }
 
 .highlight-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 150px;
-    margin: 50px;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 150px;
+  margin: 50px;
+  text-align: center;
 }
 
 .why-choose-img {
-    max-width: 60%;
-    height: auto;
-    border-radius: 20px;
+  max-width: 60%;
+  height: auto;
+  border-radius: 20px;
 }
 
 /* Theme color for all headings */
-h1, h2, h3, h4, h5, h6 {
-    color: #4CAF50; /* Set theme color for all headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #4caf50; /* Set theme color for all headings */
 }
