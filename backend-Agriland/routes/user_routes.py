@@ -106,17 +106,10 @@ def dashboard():
             approved_listings = [listing for listing in land_listings if listing.get("approved") == "True"]
             active_count = len(approved_listings)  # Count the approved listings
 
-            # Notifications for unapproved land listings
-            notifications = [
-                {"message": f"Your land listing in {listing.get('location')} is pending approval."}
-                for listing in land_listings if listing.get("approved") == "False"
-            ]
-
-            # Render the dashboard template with user data, notifications, and land counts
+            # Render the dashboard template with user data and land counts
             return render_template(
                 'dashboard.html',
                 user_data=user_data,
-                notifications=notifications,
                 active_count=active_count,  # Pass the active (approved) count
                 total_count=len(land_listings),  # Total number of listings
                 land_listings=land_listings  # Pass all listings
@@ -124,27 +117,37 @@ def dashboard():
 
     # Default response when no user is found or not logged in
     user_data = {"name": "Guest", "email": "Not Available", "profile_picture_id": None}
-    return render_template('dashboard.html', user_data=user_data, notifications=[], active_count=0, total_count=0)
+    return render_template('dashboard.html', user_data=user_data, active_count=0, total_count=0)
 
 @user_routes.route("/notifications.html")
 def notifications():
-    user_id = session.get('id')  # Get the user ID from the session
+    # Step 1: Get the session user ID
+    user_id = session.get('id')
 
     if user_id:
-        # Fetch all land listings belonging to the user
-        land_listings = list(land_collection.find({"user_id": ObjectId(user_id)}))  # Match user_id to listings
+        # Step 2: Fetch user details from `users_collection` using the session ID
+        user = users_collection.find_one({"_id": ObjectId(user_id)})
+        
+        if user:
+            first_name = user.get('first_name')  # Get the user's first name
 
-        # Generate notifications for unapproved land listings
-        notifications = [
-            {"message": f"Your land listing in {listing.get('location')} is pending approval."}
-            for listing in land_listings if listing.get("approved") == "False"
-        ]
+            # Step 3: Fetch all land listings where `name` matches the user's `first_name`
+            land_listings = list(land_collection.find({"name": first_name}))
+
+            # Step 4: Generate notifications for unapproved land listings
+            notifications = [
+                {"message": f"Your land listing in {listing.get('location')} is pending approval."}
+                for listing in land_listings if listing.get("approved") == "False"
+            ]
+        else:
+            # If user is not found in the database
+            notifications = []
     else:
         # Default: No notifications if user is not logged in
         notifications = []
 
     # Render the notifications page
-    return render_template("notification.html", notifications=notifications)
+    return render_template("notifications.html", notifications=notifications)
 
 @user_routes.route('/edit_listing/<string:listing_id>', methods=['GET', 'POST'])
 def edit_listing(listing_id):
