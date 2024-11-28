@@ -71,12 +71,17 @@
         .back-button:hover {
             background-color: #0056b3;
         }
+
+        #error-message {
+            color: red;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="form-container">
         <h1>Farmer's Information</h1>
-        <form id="farmer-form" action="/farmer.html" method="POST">
+        <form id="farmer-form">
             <label for="landSize">Size of Land (in acres):</label>
             <input type="number" id="landSize" name="landSize" required>
 
@@ -107,19 +112,40 @@
             <button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
         </form>
 
-        {% if msg %}
-        <p style="color: red">{{ msg }}</p>
-        {% endif %}
+        <!-- Error Message -->
+        <p id="error-message"></p>
     </div>
 
     <script>
-        document.getElementById('farmer-form').addEventListener('submit', function(event) {
+        document.getElementById('farmer-form').addEventListener('submit', async function (event) {
             event.preventDefault(); // Prevent default form submission
 
-            // Perform any necessary validation or processing here
+            // Gather form data
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
 
-            // After successful form submission, redirect to the dashboard
-            window.location.href = 'dashboard.html';
+            try {
+                // Send form data to the backend
+                const response = await fetch('/api/farmers', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.ok) {
+                    // Redirect to dashboard on success
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // Show error message on failure
+                    const error = await response.json();
+                    document.getElementById('error-message').textContent = error.message || 'Failed to upload data.';
+                    document.getElementById('error-message').style.display = 'block';
+                }
+            } catch (err) {
+                // Handle any unexpected errors
+                document.getElementById('error-message').textContent = 'An unexpected error occurred. Please try again.';
+                document.getElementById('error-message').style.display = 'block';
+            }
         });
     </script>
 </body>
