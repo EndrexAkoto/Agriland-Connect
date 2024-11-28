@@ -30,6 +30,7 @@
         padding: 10px 20px;
         display: flex;
         align-items: center; /* Align items vertically */
+        justify-content: flex-start;
       }
 
       .logo-container {
@@ -76,9 +77,33 @@
         margin-top: 20px;
       }
 
+      /* Profile Header (Picture + Username) */
+      .profile-header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between; /* Align username to the right */
+        align-items: center;
+        padding: 10px 20px;
+      }
+
+      .profile-header img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #4caf50;
+      }
+
+      .profile-header .username {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+      }
+
+      /* Profile Picture Change Section */
       .profile-picture {
         position: relative;
-        margin-bottom: 20px;
+        margin-top: 10px;
         text-align: center;
       }
 
@@ -156,19 +181,34 @@
 
     <!-- Main User Profile Section -->
     <section class="user-profile">
-      <!-- Profile Picture -->
+      <!-- Profile Header (Picture + Username) -->
+      <div class="profile-header">
+        <!-- Profile Picture -->
+        <img
+          src="{{ url_for('user.image', image_id=user_profile['profile_picture_id']) if user_profile['profile_picture_id'] else url_for('static', filename='default_profile_picture.jpg') }}"
+          alt="User Profile Picture"
+        />
+        <!-- Username -->
+        <span class="username">{{ user_profile.username }}</span>
+      </div>
+
+      <!-- Profile Picture Change Section -->
       <div class="profile-picture">
+        <!-- Profile Picture Preview -->
         <img
           src="{{ url_for('user.image', image_id=user_profile['profile_picture_id']) if user_profile['profile_picture_id'] else url_for('static', filename='default_profile_picture.jpg') }}"
           alt="User Profile Picture"
           id="profile-pic"
         />
+        <!-- File Input to Upload/Change Picture -->
         <input
           type="file"
           class="upload-btn"
           accept="image/*"
           onchange="uploadProfilePicture()"
+          id="profile-pic-upload"
         />
+        <label for="profile-pic-upload" class="upload-btn">Change Profile Picture</label>
       </div>
     </section>
 
