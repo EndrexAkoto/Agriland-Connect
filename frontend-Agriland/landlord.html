@@ -156,20 +156,23 @@
     
         farmImagesInput.addEventListener('change', function (event) {
             const files = Array.from(event.target.files);
-    
+
+            // Clear previous previews
+            imagePreviewContainer.innerHTML = '';
+
             // Check if adding these files exceeds the maximum limit
             if (uploadedImages.length + files.length > 5) {
                 alert("You can upload a maximum of 5 images.");
                 farmImagesInput.value = ""; // Clear the file input
                 return;
             }
-    
+
             files.forEach(file => {
                 if (uploadedImages.length >= 5) {
                     alert("You can upload a maximum of 5 images.");
                     return;
                 }
-    
+
                 if (file && file.type.startsWith("image/")) {
                     const reader = new FileReader();
                     reader.onload = function (e) {
@@ -180,14 +183,14 @@
                         imgElement.style.margin = "5px";
                         imgElement.style.border = "1px solid #ccc";
                         imagePreviewContainer.appendChild(imgElement);
-    
+
                         // Add the file to the uploaded images list
                         uploadedImages.push(file);
                     };
                     reader.readAsDataURL(file);
                 }
             });
-    
+
             // Clear the file input to allow re-upload of same file
             farmImagesInput.value = "";
         });
