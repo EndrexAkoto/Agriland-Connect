@@ -23,16 +23,64 @@
       header img {
         height: 40px;
       }
-      header .badge {
+      .profile-notification {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .notification-icon {
+        position: relative;
+        cursor: pointer;
+      }
+      .notification-icon img {
+        width: 24px;
+        height: 24px;
+      }
+      .notification-icon .badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
         background: red;
         color: white;
         border-radius: 50%;
-        padding: 5px 10px;
-        font-size: 14px;
+        padding: 3px 7px;
+        font-size: 12px;
         font-weight: bold;
+      }
+      .profile-icon {
         position: relative;
-        top: -10px;
-        right: -10px;
+        cursor: pointer;
+      }
+      .profile-icon img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid white;
+      }
+      .dropdown {
+        display: none;
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 100;
+      }
+      .dropdown a {
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        color: #333;
+        font-size: 14px;
+        transition: background 0.3s;
+      }
+      .dropdown a:hover {
+        background: #f9f9f9;
+      }
+      .profile-icon:hover .dropdown {
+        display: block;
       }
       .notifications-section {
         max-width: 600px;
@@ -55,24 +103,16 @@
       #notification-list li {
         background: #f9f9f9;
         border: 1px solid #ddd;
-        padding: 15px;
+        padding: px;
         margin-bottom: 15px;
-        border-radius: 8px;
-        font-size: 16px;
+        border-radius: 10px;
+        font-size: 20px;
         color: #555;
         transition: transform 0.2s, box-shadow 0.2s;
       }
       #notification-list li.urgent {
         color: red;
         font-weight: bold;
-      }
-      footer {
-        text-align: center;
-        padding: 10px;
-        background-color: #4caf50; /* Agriland Theme Color */
-        color: white;
-        margin-top: 20px;
-        font-size: 14px;
       }
     </style>
   </head>
@@ -81,7 +121,22 @@
     <header>
       <img src="./images/logo001.png" alt="Agriland Logo" />
       <h1>Notifications</h1>
-      <span id="urgent-count" class="badge">0</span>
+      <div class="profile-notification">
+        <!-- Notifications Icon -->
+        <div class="notification-icon">
+          <img src="./images/notification.png" alt="Notifications" />
+          <span class="badge" id="urgent-count">0</span>
+        </div>
+        <!-- Profile Icon -->
+        <div class="profile-icon">
+          <img src="./images/backImg.jpg" alt="Profile" />
+          <div class="dropdown">
+            <a href="/profile">View Profile</a>
+            <a href="/settings">Settings</a>
+            <a href="/logout">Logout</a>
+          </div>
+        </div>
+      </div>
     </header>
 
     <!-- Notifications Section -->
@@ -94,7 +149,9 @@
 
     <!-- Footer Section -->
     <footer>
-      © 2024 Agriland | All rights reserved
+      <div style="text-align: center; background-color: #4caf50; color: white; padding: 10px;">
+        © 2024 Agriland | All rights reserved
+      </div>
     </footer>
 
     <script>
