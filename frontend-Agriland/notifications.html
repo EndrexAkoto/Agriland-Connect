@@ -292,6 +292,43 @@
       urgentCountBadge.textContent = urgentCount;
     </script>
     
+
+    <!-- Footer Section -->
+    <footer>
+      © 2024 Agriland | All rights reserved
+    </footer>
+
+    <script>
+      // Example data fetched from the backend
+      const notifications = [
+        { message: "Irrigation schedule updated", is_urgent: true },
+        { message: "New weather forecast available", is_urgent: false },
+        { message: "Crop health report ready", is_urgent: false },
+      ];
+
+      const notificationList = document.getElementById("notification-list");
+      const urgentCountBadge = document.getElementById("urgent-count");
+
+      // Populate the notifications and count urgent messages
+      let urgentCount = 0;
+
+      notifications.forEach((notification) => {
+        const li = document.createElement("li");
+        li.textContent = notification.message;
+
+        // Highlight urgent notifications
+        if (notification.is_urgent) {
+          li.classList.add("urgent");
+          urgentCount++;
+        }
+
+        notificationList.appendChild(li);
+      });
+
+      // Update the urgent count badge
+      urgentCountBadge.textContent = urgentCount;
+    </script>
   </body>
 </html>
+
 
