@@ -7,13 +7,36 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        margin: 20px;
+        margin: 0;
         background-color: #f4f4f9;
         color: #333;
       }
+      header {
+        background-color: #4caf50; /* Agriland Theme Color */
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      header img {
+        height: 40px;
+      }
+      header .badge {
+        background: red;
+        color: white;
+        border-radius: 50%;
+        padding: 5px 10px;
+        font-size: 14px;
+        font-weight: bold;
+        position: relative;
+        top: -10px;
+        right: -10px;
+      }
       .notifications-section {
         max-width: 600px;
-        margin: 0 auto;
+        margin: 20px auto;
         padding: 20px;
         background-color: #ffffff;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -39,29 +62,70 @@
         color: #555;
         transition: transform 0.2s, box-shadow 0.2s;
       }
-      #notification-list li:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-        background-color: #e8f5e9; /* Light Green Accent */
-        border-color: #c8e6c9; /* Light Green Border */
+      #notification-list li.urgent {
+        color: red;
+        font-weight: bold;
       }
-      #notification-list li:last-child {
-        margin-bottom: 0;
+      footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #4caf50; /* Agriland Theme Color */
+        color: white;
+        margin-top: 20px;
+        font-size: 14px;
       }
     </style>
   </head>
   <body>
+    <!-- Header Section -->
+    <header>
+      <img src="./images/logo001.png" alt="Agriland Logo" />
+      <h1>Notifications</h1>
+      <span id="urgent-count" class="badge">0</span>
+    </header>
+
+    <!-- Notifications Section -->
     <div class="notifications-section">
-        <h2>Your Notifications</h2>
-        <ul id="notification-list">
-            {% if notifications %}
-                {% for notification in notifications %}
-                    <li>{{ notification.message }}</li>
-                {% endfor %}
-            {% else %}
-                <li>No new notifications</li>
-            {% endif %}
-        </ul>
+      <h2>Your Notifications</h2>
+      <ul id="notification-list">
+        <!-- Messages will be dynamically inserted here -->
+      </ul>
     </div>
+
+    <!-- Footer Section -->
+    <footer>
+      © 2024 Agriland | All rights reserved
+    </footer>
+
+    <script>
+      // Example data fetched from the backend
+      const notifications = [
+        { message: "Irrigation schedule updated", is_urgent: true },
+        { message: "New weather forecast available", is_urgent: false },
+        { message: "Crop health report ready", is_urgent: false },
+      ];
+
+      const notificationList = document.getElementById("notification-list");
+      const urgentCountBadge = document.getElementById("urgent-count");
+
+      // Populate the notifications and count urgent messages
+      let urgentCount = 0;
+
+      notifications.forEach((notification) => {
+        const li = document.createElement("li");
+        li.textContent = notification.message;
+
+        // Highlight urgent notifications
+        if (notification.is_urgent) {
+          li.classList.add("urgent");
+          urgentCount++;
+        }
+
+        notificationList.appendChild(li);
+      });
+
+      // Update the urgent count badge
+      urgentCountBadge.textContent = urgentCount;
+    </script>
   </body>
 </html>
