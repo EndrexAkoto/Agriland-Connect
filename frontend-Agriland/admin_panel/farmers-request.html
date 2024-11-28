@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Agriland Connect</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #ffffff; /* White background */
+            color: #831010;
+            padding: 30px;
+            margin: 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4CAF50; /* Header background */
+            padding: 10px 20px;
+            color: white;
+        }
+
+        .header img {
+            width: 150px; /* Adjust the size of the logo */
+        }
+
+        .user-info {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            cursor: pointer; /* Make image interactive */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #4CAF50;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 5px;
+            top: 50px; /* Adjust for dropdown placement */
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #3e8e41;
+        }
+
+        .user-info:hover .dropdown-content {
+            display: block;
+        }
+
+        h1 {
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .form-container {
+            background-color: rgba(32, 231, 49, 0.596);
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.904);
+            max-width: 1000px; /* Wider container to fit table */
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        table td {
+            background-color: #f9f9f9;
+        }
+
+        .back-button {
+            background-color: #007BFF;
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #555;
+            background-color: #4CAF50; /* Footer background */
+            padding: 10px;
+            color: white;
+        }
+
+        footer a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with logo and user info -->
+    <div class="header">
+        <img src="../images/logo001.png" alt="Agriland Connect Logo"> <!-- Adjust logo path -->
+        <h1>Admin Dashboard</h1>
+        
+        <!-- User profile image and dropdown for settings/logout -->
+        <div class="user-info">
+            <img src="../images/community.jpg" alt=""> <!-- Replace with actual user image path -->
+            <!-- Dropdown content -->
+            <div class="dropdown-content">
+                <a href="#">Profile Settings</a>
+                <a href="../logout.html">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <h2>Farmers Details</h2>
+        
+        <!-- Table to display farmer data -->
+        <table id="farmer-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Email Address</th>
+                    <th>Land Size (Acres)</th>
+                    <th>Preferred Location</th>
+                    <th>Type of Farming</th>
+                    <th>Budget per Acre</th>
+                    <th>Lease Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Farmer data will be dynamically inserted here -->
+            </tbody>
+        </table>
+
+        <button class="back-button" onclick="window.location.href='../admin_panel/index.html'">Back to Dashboard</button>
+    </div>
+
+    <!-- Footer with copyright -->
+    <footer>
+        <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Fetch the farmer registration data from the backend
+        async function fetchFarmersData() {
+            try {
+                const response = await fetch('/api/farmers');
+                if (response.ok) {
+                    const farmers = await response.json();
+                    const tableBody = document.querySelector('#farmer-table tbody');
+
+                    // Clear existing rows
+                    tableBody.innerHTML = '';
+
+                    // Populate the table with fetched data
+                    farmers.forEach(farmer => {
+                        const row = document.createElement('tr');
+                        
+                        row.innerHTML = `
+                            <td>${farmer.name}</td>
+                            <td>${farmer.phoneNumber}</td>
+                            <td>${farmer.email}</td>
+                            <td>${farmer.landSize}</td>
+                            <td>${farmer.location}</td>
+                            <td>${farmer.typeOfFarming}</td>
+                            <td>${farmer.budgetPerAcre}</td>
+                            <td>${farmer.leaseDuration}</td>
+                        `;
+                        
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    alert('Failed to load farmer data.');
+                }
+            } catch (err) {
+                alert('Error fetching data: ' + err.message);
+            }
+        }
+
+        // Fetch and display the farmer data when the page loads
+        window.onload = fetchFarmersData;
+    </script>
+
+</body>
+</html>
