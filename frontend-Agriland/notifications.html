@@ -180,15 +180,17 @@
 
     <!-- Notifications Section -->
     <div class="notifications-section">
-      <h2>Your Notifications</h2>
-      <ul id="notification-list">
-        <!-- Messages will be dynamically inserted here -->
-      </ul>
-      <h2>Your Notifications</h2>
-      <ul id="notification-list">
-        <!-- Messages will be dynamically inserted here -->
-      </ul>
-    </div>
+        <h2>Your Notifications</h2>
+        <ul id="notification-list">
+          {% if notifications %}
+          {% for notification in notifications %}
+          <li>{{ notification.message }}</li>
+          {% endfor %}
+          {% else %}
+          <li>No new notifications</li>
+          {% endif %}
+        </ul>
+      </div>
 
     <!-- Footer Section -->
     <footer>
@@ -227,18 +229,7 @@
       // Update the urgent count badge
       urgentCountBadge.textContent = urgentCount;
     </script>
-    <div class="notifications-section">
-      <h2>Your Notifications</h2>
-      <ul id="notification-list">
-        {% if notifications %}
-        {% for notification in notifications %}
-        <li>{{ notification.message }}</li>
-        {% endfor %}
-        {% else %}
-        <li>No new notifications</li>
-        {% endif %}
-      </ul>
-    </div>
+    
   </body>
 </html>
 
