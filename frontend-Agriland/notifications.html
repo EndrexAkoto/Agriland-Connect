@@ -1,50 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notifications</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .notifications-section {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .notifications-section h2 {
-            text-align: center;
-        }
-        #notification-list {
-            list-style: none;
-            padding: 0;
-        }
-        #notification-list li {
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f4f4f9;
+        color: #333;
+      }
+      .notifications-section {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
+      .notifications-section h2 {
+        text-align: center;
+        font-size: 24px;
+        color: #4caf50; /* Agriland Theme Color */
+        margin-bottom: 20px;
+      }
+      #notification-list {
+        list-style: none;
+        padding: 0;
+      }
+      #notification-list li {
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        font-size: 16px;
+        color: #555;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      #notification-list li:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        background-color: #e8f5e9; /* Light Green Accent */
+        border-color: #c8e6c9; /* Light Green Border */
+      }
+      #notification-list li:last-child {
+        margin-bottom: 0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="notifications-section">
         <h2>Your Notifications</h2>
         <ul id="notification-list">
             {% if notifications %}
                 {% for notification in notifications %}
-                    <li>
-                        <h3>{{ notification.title }}</h3>
-                        <p>{{ notification.message }}</p>
-                    </li>
+                    <li>{{ notification.message }}</li>
                 {% endfor %}
             {% else %}
                 <li>No new notifications</li>
             {% endif %}
         </ul>
     </div>
-</body>
+  </body>
 </html>
-
