@@ -96,7 +96,7 @@ def dashboard():
             user_data = {
                 "name": f"{user.get('first_name', 'Guest')} {user.get('last_name', '')}",
                 "email": user.get('email', 'Not Available'),
-                "profile_picture_id": user.get('profile_picture_id', None)  # Include profile picture ID
+                "profile_picture_id": user.get('profile_picture_id')  # Include profile picture ID
             }
 
             # Fetch all land listings belonging to the user
@@ -118,6 +118,7 @@ def dashboard():
     # Default response when no user is found or not logged in
     user_data = {"name": "Guest", "email": "Not Available", "profile_picture_id": None}
     return render_template('dashboard.html', user_data=user_data, active_count=0, total_count=0)
+
 
 @user_routes.route("/notifications.html")
 def notifications():

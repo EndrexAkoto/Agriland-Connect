@@ -419,14 +419,10 @@ footer {
       style="width: 100%; height: auto"
     />
     {% endif %}
-    <h3>{{ listing.location }}</h3>
+    <h3>{{ listing.location }} county</h3>
+    <p><strong>Locaton</strong> {{ listing.location }}</p>
     <p><strong>Size:</strong> {{ listing.land_size }} acres</p>
     <p><strong>Price per Acre:</strong> <strong>Ksh. {{ listing.price_per_acre }}</strong></p>
-    <p>Amenities: {{ listing.amenities }}</p>
-    <p>Road Access: {{ listing.road_access }}</p>
-    <p>Fencing: {{ listing.fencing }}</p>
-    <p>Lease Duration: {{ listing.lease_duration }}</p>
-    <p>Payment Frequency: {{ listing.payment_frequency }}</p>
 
     <!-- Link to the full listing details, using the dynamic listing id -->
     <a href="full-listing.html?id={{ listing._id }}" class="button">View Lease Details</a>
