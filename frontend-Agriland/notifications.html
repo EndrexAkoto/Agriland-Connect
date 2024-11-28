@@ -85,6 +85,13 @@
       .notifications-section {
         max-width: 600px;
         margin: 20px auto;
+        margin: 20px;
+        background-color: #f4f4f9;
+        color: #333;
+      }
+      .notifications-section {
+        max-width: 600px;
+        margin: 0 auto;
         padding: 20px;
         background-color: #ffffff;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -113,6 +120,21 @@
       #notification-list li.urgent {
         color: red;
         font-weight: bold;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        font-size: 16px;
+        color: #555;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      #notification-list li:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        background-color: #e8f5e9; /* Light Green Accent */
+        border-color: #c8e6c9; /* Light Green Border */
+      }
+      #notification-list li:last-child {
+        margin-bottom: 0;
       }
     </style>
   </head>
@@ -184,5 +206,17 @@
       // Update the urgent count badge
       urgentCountBadge.textContent = urgentCount;
     </script>
+    <div class="notifications-section">
+      <h2>Your Notifications</h2>
+      <ul id="notification-list">
+        {% if notifications %}
+        {% for notification in notifications %}
+        <li>{{ notification.message }}</li>
+        {% endfor %}
+        {% else %}
+        <li>No new notifications</li>
+        {% endif %}
+      </ul>
+    </div>
   </body>
 </html>
