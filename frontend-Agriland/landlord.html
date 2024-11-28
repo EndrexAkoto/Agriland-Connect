@@ -149,41 +149,60 @@
     </div>
 
     <script>
-        // let uploadedImages = []; // Array to store uploaded images
-
-        // document.getElementById('farmImages').addEventListener('change', function(event) {
-        //     const imagePreviewContainer = document.getElementById('imagePreview');
-
-        //     if (uploadedImages.length >= 5) {
-        //         alert('You can upload a maximum of 5 images.'); // Limit reached
-        //         return;
-        //     }
-
-        //     const file = event.target.files[0];
-        //     if (file) {
-        //         const reader = new FileReader();
-        //         reader.onload = function(e) {
-        //             const imgElement = document.createElement('img');
-        //             imgElement.src = e.target.result;
-        //             uploadedImages.push(file); // Store the uploaded file
-        //             imagePreviewContainer.appendChild(imgElement);
-        //         };
-        //         reader.readAsDataURL(file);
-        //     }
-
-        //     event.target.value = ''; // Clear the file input after upload
-        // });
-
-        // Redirect after form submission
-        document.getElementById('submit').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form from submitting immediately
-            console.log("submit button called")
-
-            // Perform any necessary validation or form submission handling here
-
-            // Redirect to dashboard
-           alert("Submited")
-            //window.location.href = 'dashboard.html';
+        // Store uploaded images temporarily
+        const uploadedImages = [];
+        const farmImagesInput = document.getElementById('farmImages');
+        const imagePreviewContainer = document.getElementById('imagePreview');
+    
+        farmImagesInput.addEventListener('change', function (event) {
+            const files = Array.from(event.target.files);
+    
+            // Check if adding these files exceeds the maximum limit
+            if (uploadedImages.length + files.length > 5) {
+                alert("You can upload a maximum of 5 images.");
+                farmImagesInput.value = ""; // Clear the file input
+                return;
+            }
+    
+            files.forEach(file => {
+                if (uploadedImages.length >= 5) {
+                    alert("You can upload a maximum of 5 images.");
+                    return;
+                }
+    
+                if (file && file.type.startsWith("image/")) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        // Create and display image preview
+                        const imgElement = document.createElement('img');
+                        imgElement.src = e.target.result;
+                        imgElement.style.maxWidth = "100px";
+                        imgElement.style.margin = "5px";
+                        imgElement.style.border = "1px solid #ccc";
+                        imagePreviewContainer.appendChild(imgElement);
+    
+                        // Add the file to the uploaded images list
+                        uploadedImages.push(file);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+    
+            // Clear the file input to allow re-upload of same file
+            farmImagesInput.value = "";
+        });
+    
+        // Submit form with validation and redirect to dashboard
+        document.getElementById('landlord-form').addEventListener('submit', function (event) {
+            if (uploadedImages.length === 0) {
+                alert("Please upload at least one image before submitting.");
+                event.preventDefault(); // Stop form submission
+                return;
+            }
+    
+            // Allow submission to backend
+            alert("Form submitted successfully!");
+            window.location.href = "dashboard.html"; // Redirect to dashboard
         });
     </script>
 

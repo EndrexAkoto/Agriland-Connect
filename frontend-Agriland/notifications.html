@@ -35,7 +35,10 @@
         <ul id="notification-list">
             {% if notifications %}
                 {% for notification in notifications %}
-                    <li>{{ notification.message }}</li>
+                    <li>
+                        <h3>{{ notification.title }}</h3>
+                        <p>{{ notification.message }}</p>
+                    </li>
                 {% endfor %}
             {% else %}
                 <li>No new notifications</li>

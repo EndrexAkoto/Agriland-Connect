@@ -125,27 +125,56 @@ def notifications():
     # Step 1: Get the session user ID
     user_id = session.get('id')
 
+    notifications = []  # Initialize an empty list for notifications
+
     if user_id:
         # Step 2: Fetch user details from `users_collection` using the session ID
         user = users_collection.find_one({"_id": ObjectId(user_id)})
-        
+
         if user:
             first_name = user.get('first_name')  # Get the user's first name
+            role = user.get('role')  # Assuming role field determines farmer or landowner
 
-            # Step 3: Fetch all land listings where `name` matches the user's `first_name`
+            # Fetch all land listings where `name` matches the user's `first_name`
             land_listings = list(land_collection.find({"name": first_name}))
 
-            # Step 4: Generate notifications for unapproved land listings
-            notifications = [
-                {"message": f"Your land listing in {listing.get('location')} is pending approval."}
-                for listing in land_listings if listing.get("approved") == "False"
-            ]
+            if role == "farmer":
+                # Farmer notifications
+                for listing in land_listings:
+                    notifications.append({
+                        "title": "Accepted and Reviewing Request",
+                        "message": "Thank you for submitting your land requirements! Your submission has been received and is currently being reviewed by our team."
+                    })
+            elif role == "landowner":
+                # Landowner notifications based on approval status
+                for listing in land_listings:
+                    if listing.get("approved") == "False":
+                        notifications.append({
+                            "title": "Accepted and Pending Verification",
+                            "message": "Thank you for listing your land! Your submission has been received and is awaiting verification by our team."
+                        })
+                    elif listing.get("approved") == "True":
+                        notifications.append({
+                            "title": "Approved",
+                            "message": "Congratulations! Your land listing has been approved and is now live for farmers to view and lease."
+                        })
+                    elif listing.get("approved") == "Rejected":
+                        notifications.append({
+                            "title": "Rejected",
+                            "message": "We’re sorry, but your land listing was not approved. Please review our guidelines and re-upload your details or contact support for help."
+                        })
         else:
             # If user is not found in the database
-            notifications = []
+            notifications.append({
+                "title": "No Notifications",
+                "message": "No new notifications at this time."
+            })
     else:
         # Default: No notifications if user is not logged in
-        notifications = []
+        notifications.append({
+            "title": "No Notifications",
+            "message": "You must log in to view notifications."
+        })
 
     # Render the notifications page
     return render_template("notifications.html", notifications=notifications)
