@@ -212,8 +212,9 @@
 
                 <!-- Profile Icon -->
                 <div class="profile-icon" 
-                     style="background-image: url('./images/04.jpg');"
+                     style="background-image: url('{{ url_for('user.image', image_id=user_data["profile_picture_id"]) if user_data["profile_picture_id"] else url_for("static", filename="./images/04.jpg") }}');"
                      onclick="location.href='user-profile.html'">
+                     
                 </div>
                 <!-- Dropdown Menu -->
                 <div class="dropdown">
