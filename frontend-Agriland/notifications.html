@@ -8,6 +8,7 @@
       body {
         font-family: Arial, sans-serif;
         margin: 0;
+        margin: 0;
         background-color: #f4f4f9;
         color: #333;
       }
@@ -136,6 +137,22 @@
       #notification-list li:last-child {
         margin-bottom: 0;
       }
+      footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #4caf50; /* Agriland Theme Color */
+        color: white;
+        margin-top: 20px;
+        font-size: 14px;
+      }
+      footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #4caf50; /* Agriland Theme Color */
+        color: white;
+        margin-top: 20px;
+        font-size: 14px;
+      }
     </style>
   </head>
   <body>
@@ -163,11 +180,17 @@
 
     <!-- Notifications Section -->
     <div class="notifications-section">
-      <h2>Your Notifications</h2>
-      <ul id="notification-list">
-        <!-- Messages will be dynamically inserted here -->
-      </ul>
-    </div>
+        <h2>Your Notifications</h2>
+        <ul id="notification-list">
+          {% if notifications %}
+          {% for notification in notifications %}
+          <li>{{ notification.message }}</li>
+          {% endfor %}
+          {% else %}
+          <li>No new notifications</li>
+          {% endif %}
+        </ul>
+      </div>
 
     <!-- Footer Section -->
     <footer>
@@ -206,17 +229,7 @@
       // Update the urgent count badge
       urgentCountBadge.textContent = urgentCount;
     </script>
-    <div class="notifications-section">
-      <h2>Your Notifications</h2>
-      <ul id="notification-list">
-        {% if notifications %}
-        {% for notification in notifications %}
-        <li>{{ notification.message }}</li>
-        {% endfor %}
-        {% else %}
-        <li>No new notifications</li>
-        {% endif %}
-      </ul>
-    </div>
+    
   </body>
 </html>
+
