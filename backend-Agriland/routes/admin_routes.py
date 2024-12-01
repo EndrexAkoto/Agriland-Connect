@@ -217,6 +217,9 @@ def unapproved_uploads():
     
     return render_template('admin_panel/unapproved_uploads.html', listings=listings)
 
+@admin_routes.route("/admin/user-details/users.html", methods=["GET"])
+def backtouser():
+    return render_template("/admin_panel/users.html")
 
 @admin_routes.route("/admin/rejected-land-leases.html", methods=["GET"])
 def leases():
@@ -242,6 +245,17 @@ def fetch_rejected_leases():
     ]
     return jsonify({'rejectedLeases': rejected_leases})
 
+@admin_routes.route("/admin/farmers-request.html")
+def farmersrequest():
+    # Connect to the MongoDB farmers collection
+    farmers_collection = db['farmer']  # Replace `mongo.db.farmers` with the actual database and collection object you're using
+
+    # Fetch all farmer data from the database
+    farmers_data = list(farmers_collection.find())
+
+    # Pass the data to the HTML template
+    return render_template('admin_panel/farmers-request.html', farmers=farmers_data)
+
 @admin_routes.route("/admin/listings.html")
 def listings():
     return render_template('admin_panel/listings.html')
@@ -255,7 +269,7 @@ def serve_uploaded_image(listing_id, filename):
     images_directory = os.path.join(upload_path, listing_id, 'images')
     return send_from_directory(images_directory, filename)
 
-@admin_routes.route("/admin/users.html")
+@admin_routes.route("/admin/users.html", methods=["GET"], endpoint="users")
 def users():
     users = list(users_collection.find())
     return render_template('admin_panel/users.html', users=users)
