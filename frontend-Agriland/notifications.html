@@ -162,76 +162,52 @@
 
     <!-- Notifications Section -->
     <div class="notifications-section">
-      <h2>Your Notifications</h2>
-      <ul id="notification-list">
-        <!-- Messages will be dynamically inserted here -->
-      </ul>
+      <h2>Notification</h2>
+      <div id="notification">
+        <h3 id="notification-title"></h3>
+        <p id="notification-message"></p>
+        <button id="mark-as-read-btn">Mark as Read</button>
+      </div>
     </div>
 
     <!-- Footer Section -->
     <footer>
-      <div>
-        © 2024 Agriland | All rights reserved
-      </div>
+      <div>© 2024 Agriland | All rights reserved</div>
     </footer>
 
     <!-- JavaScript Section -->
     <script>
-  const notificationList = document.getElementById("notification-list");
-  const urgentCountBadge = document.getElementById("urgent-count");
-  let urgentCount = 0;
-
-  async function fetchNotifications() {
-    try {
-      const response = await fetch("/api/notifications");
-      const notifications = await response.json();
-      notificationList.innerHTML = ""; // Clear previous notifications
-
-      urgentCount = 0; // Reset the count
-      notifications.forEach((notification) => {
-        const li = document.createElement("li");
-        li.textContent = notification.message;
-        li.classList.add("notification-item");
-        li.dataset.id = notification.id; // Attach the notification ID
-
-        if (notification.isUrgent && !notification.isRead) {
-          li.classList.add("urgent");
-          urgentCount++;
+      const notificationData = {{ notification | tojson }}; // Flask data passed to JS
+    
+      // Function to render the notification
+      function renderNotification() {
+        const title = document.getElementById("notification-title");
+        const message = document.getElementById("notification-message");
+        const container = document.getElementById("notification-container");
+    
+        if (notificationData && notificationData.id !== "0") {
+          // Display the notification details
+          title.textContent = notificationData.title;
+          message.textContent = notificationData.message;
+        } else {
+          // Hide the container if no notifications
+          container.style.display = "none";
         }
-
-        li.addEventListener("click", () => markAsRead(notification.id, li)); // Add click event to mark as read
-
-        notificationList.appendChild(li);
-      });
-
-      urgentCountBadge.textContent = urgentCount;
-    } catch (error) {
-      console.error("Failed to fetch notifications:", error);
-    }
-  }
-
-  async function markAsRead(notificationId, notificationElement) {
-    try {
-      const response = await fetch(`/api/notifications/${notificationId}`, {
-        method: "PATCH", // PATCH to update the "read" status
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isRead: true }),
-      });
-
-      if (response.ok) {
-        notificationElement.classList.remove("urgent"); // Remove urgent styling
-        urgentCount--; // Decrease the count
-        urgentCountBadge.textContent = urgentCount;
-      } else {
-        console.error("Failed to mark as read.");
       }
-    } catch (error) {
-      console.error("Error marking notification as read:", error);
-    }
-  }
-
-  // Fetch notifications every 5 seconds
-  setInterval(fetchNotifications, 5000);
-</script>
+    
+      // Function to mark the notification as read
+      function markAsRead() {
+        const container = document.getElementById("notification-container");
+        container.style.display = "none"; // Hide the notification after marking as read
+    
+        // Optionally, send an API request to update the notification status in the database
+        // fetch('/mark-notification-as-read', { method: 'POST', body: JSON.stringify({ id: notificationData.id }) });
+      }
+    
+      document.getElementById("mark-as-read-btn").addEventListener("click", markAsRead);
+    
+      // Initialize the notification on page load
+      document.addEventListener("DOMContentLoaded", renderNotification);
+    </script>
   </body>
 </html>
