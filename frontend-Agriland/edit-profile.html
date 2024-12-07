@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <style>
-        /* General reset */
+        /* General Reset */
         * {
             margin: 0;
             padding: 0;
@@ -14,130 +14,135 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-image: url('images/logout.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background-color: #f5f5f5;
             display: flex;
             flex-direction: column;
-            min-height: 150vh;
+            min-height: 100vh;
         }
 
-        /* Navbar styling */
+        /* Navbar Styling */
         .navbar {
             background-color: #4caf50;
             padding: 15px;
-            text-align: center;
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
+        .navbar img {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+        }
+
         .navbar h2 {
-            color: white;
             margin: 0;
+        }
+
+        .navbar .dropdown {
+            position: relative;
+        }
+
+        .navbar .dropdown span {
+            cursor: pointer;
+        }
+
+        .navbar .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 150px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .navbar .dropdown-menu a {
+            text-decoration: none;
+            color: black;
+            padding: 10px;
+            display: block;
+        }
+
+        .navbar .dropdown-menu a:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            background-color: #4caf50;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
             display: flex;
             align-items: center;
         }
 
-        .navbar .logo {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .navbar ul {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-        }
-
-        .navbar ul li {
-            display: inline;
-        }
-
-        .navbar ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .navbar ul li a:hover {
+        .sidebar ul li a:hover {
             text-decoration: underline;
         }
 
-        /* Main container for edit profile */
-        .edit-profile-container {
-            background-color: #f8eeee;
+        /* Form Container */
+        .form-container {
+            margin-left: 270px;
             padding: 40px;
-            border-radius: 16px;
-            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-            margin: 40px auto;
+            flex: 1;
         }
 
-        h1, h2 {
-            margin-bottom: 15px;
+        .form-container h1 {
             color: #4caf50;
-            text-align: center;
-        }
-
-        /* Profile picture styling */
-        .profile-picture-container {
-            text-align: center;
             margin-bottom: 20px;
+            text-align: center;
         }
 
-        .profile-picture-container img {
-            width: 120px;
-            height: 120px;
-            border-radius: 150%;
-            object-fit: cover;
-            border: 10px solid #4caf50;
+        .form-container form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .profile-picture-container input {
-            margin-top: 10px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 8px 12px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-        }
-
-        .profile-picture-container input:hover {
-            background-color: #45a049;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
+        form label {
             margin-bottom: 5px;
             font-weight: bold;
             color: #555;
         }
 
-        input[type="text"], input[type="email"], input[type="date"], select {
+        form input, form select, form button {
             padding: 10px;
-            border: 1px solid #112bc2;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            margin-bottom: 15px;
             font-size: 16px;
             width: 100%;
         }
 
-        input[type="text"]:focus, input[type="email"]:focus, input[type="date"]:focus, select:focus {
+        form input:focus, form select:focus {
             border-color: #4caf50;
             outline: none;
         }
@@ -146,151 +151,135 @@
             background-color: #4caf50;
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            grid-column: span 2;
+            padding: 12px;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #388e3c;
+        }
+
+        /* Footer Styling */
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #4caf50;
+            color: white;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .edit-profile-container {
-                width: 90%;
+            .form-container {
+                margin-left: 0;
+                padding: 20px;
             }
 
-            button {
-                padding: 10px;
+            .form-container form {
+                grid-template-columns: 1fr;
             }
-        }
-
-        /* Notification styling */
-        .notification {
-            display: none;
-            background-color: #4caf50;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 20px;
-            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <!-- Navbar Section -->
+    <!-- Navbar -->
     <div class="navbar">
-        <img src="images/logo001.png" alt="Logo" class="logo" />
-    </div>
-    {% if msg %}
-        <p style="color: red;">{{ msg }}</p>
-    {% endif %}
-    
-    <!-- Edit Profile Container -->
-    <div class="edit-profile-container">
-        <h1>Edit Your Profile</h1>
-
-        <form id="edit-profile-form" method="post" enctype="multipart/form-data" action="">
-            <div class="profile-picture-container">
-                <img id="profile-picture-preview" src="src/images/dashboard.jpg" alt="Upload Profile Picture">
-                <input type="file" id="profile-picture-upload" name="profile-picture" accept="image/*">
+        <img src="./images/logo001.png" alt="Logo">
+        <h2>Welcome to Agriland Edit Profile</h2>
+        <div class="dropdown">
+            <span>Welcome, User ▼</span>
+            <div class="dropdown-menu">
+                <a href="profile.html">My Profile</a>
+                <a href="logout.html">Logout</a>
             </div>
-       
+        </div>
+    </div>
 
-        <!-- Edit Profile Form -->
-        <!-- <form id="edit-profile-form" method="post" enctype="multipart/form-data" action=""> -->
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <ul>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Reports</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Logout</a></li>
+        </ul>
+    </div>
 
-            <!-- Read-Only Fields (pulled from registration data) -->
-            <label for="firstName">First Name:</label>
+    <!-- Main Form Container -->
+    <div class="form-container">
+        <h1>Edit Profile</h1>
+        <form id="edit-profile-form" method="post" enctype="multipart/form-data" action="">
+            <!-- Profile Picture -->
+            <div>
+                <label for="profile-picture">Profile Picture:</label>
+                <input type="file" id="profile-picture" name="profile-picture" accept="image/*">
+            </div>
 
-            <input type="text" id="firstName" name="firstName" value="{{ user.first_name  }}" readonly>
+            <!-- Personal Details -->
+            <div>
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" value="{{ user.first_name }}" readonly>
+            </div>
+            <div>
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" value="{{ user.last_name }}" readonly>
+            </div>
+            <div>
+                <label for="middleName">Middle Name:</label>
+                <input type="text" id="middleName" name="middleName" placeholder="Enter your middle name">
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
+            </div>
+            <div>
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob">
+            </div>
+            <div>
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender">
+                    <option value="none" selected>None</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
 
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" value="{{ user.last_name }}" readonly>
+            <!-- Contact Details -->
+            <div>
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" placeholder="Enter your phone number">
+            </div>
+            <div>
+                <label for="idNumber">ID Number:</label>
+                <input type="text" id="idNumber" name="idNumber" placeholder="Enter your ID number">
+            </div>
+            <div>
+                <label for="kraPin">KRA PIN:</label>
+                <input type="text" id="kraPin" name="kraPin" placeholder="Enter your KRA PIN">
+            </div>
 
-            <label for="middleName">Middle Name:</label>
-            <input type="text" id="middleName" name="middleName" placeholder="Enter your middle name">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
-
-
-            <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" name="dob">
-
-            <label for="gender">Gender:</label>
-            <select id="gender" name="gender">
-                <option value="none" selected>None</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-            </select>
-
-            <label for="phone">Phone Number:</label>
-            <input type="text" id="phone" name="phone" placeholder="Enter your phone number">
-
-            <label for="idNumber">ID Number:</label>
-            <input type="text" id="idNumber" name="idNumber" placeholder="Enter your ID number">
-
-            <label for="kraPin">KRA PIN:</label>
-            <input type="text" id="kraPin" name="kraPin" placeholder="Enter your KRA PIN">
-
-            <!-- ID Image Upload Section -->
-            <label for="idImage">Upload ID Image:</label>
-            <input type="file" id="idImage" name="idImage" accept="image/*">
-
-            <!-- Next of Kin Section -->
-            <h2>Next of Kin</h2>
-            <label for="kinName">Name:</label>
-            <input type="text" id="kinName" name="kinName" placeholder="Enter next of kin's name">
-
-            <label for="kinRelationship">Relationship:</label>
-            <input type="text" id="kinRelationship" name="kinRelationship" placeholder="Enter relationship to next of kin">
-
-            <!-- Success Notification -->
-            <div id="notification" class="notification">Profile updated successfully!</div>
+            <!-- Next of Kin -->
+            <h2 style="grid-column: span 2;">Next of Kin</h2>
+            <div>
+                <label for="kinName">Name:</label>
+                <input type="text" id="kinName" name="kinName" placeholder="Enter next of kin's name">
+            </div>
+            <div>
+                <label for="kinRelationship">Relationship:</label>
+                <input type="text" id="kinRelationship" name="kinRelationship" placeholder="Enter relationship to next of kin">
+            </div>
 
             <button type="submit">Save Changes</button>
         </form>
     </div>
 
-    {% if msg %}
-        <p style="color: red;">{{ msg }}</p>
-    {% endif %}
-
-    <script>
-        // Makes fields readonly if they have a value, otherwise allows input
-        document.querySelectorAll("#email, #phone, #idNumber, #kraPin").forEach(input => {
-            if (input.value) input.readOnly = true;
-        });
-
-        document.getElementById("edit-profile-form").onsubmit = function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            // Handle the form submission via Fetch API
-            const formData = new FormData(this); // 'this' refers to the form
-
-            fetch(this.action, {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => {
-                if (response.ok) {
-                    document.getElementById("notification").style.display = "block"; // Show success message
-                    setTimeout(() => {
-                        window.location.href = './dashboard.html'; // Redirect to homepage after 3 seconds
-                    }, 3000);
-                } else {
-                    // Handle error case
-                    console.error('Failed to update profile');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        };
-    </script>
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2024 Agriland. All rights reserved.
+    </div>
 
 </body>
 </html>
