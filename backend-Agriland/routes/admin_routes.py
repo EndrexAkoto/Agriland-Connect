@@ -245,7 +245,7 @@ def fetch_rejected_leases():
     ]
     return jsonify({'rejectedLeases': rejected_leases})
 
-<<<<<<< HEAD
+
 from bson import ObjectId
 
 @admin_routes.route("/admin/farmers-request.html")
@@ -284,8 +284,7 @@ def farmersrequest():
     # Pass the enriched data to the HTML template
     return render_template('admin_panel/farmers-request.html', farmers=enriched_farmers)
 
-=======
-@admin_routes.route("/admin/farmers-request.html")
+
 def farmersrequest():
     # Connect to the MongoDB farmers collection
     farmers_collection = db['farmer']  # Replace `mongo.db.farmers` with the actual database and collection object you're using
@@ -295,7 +294,6 @@ def farmersrequest():
 
     # Pass the data to the HTML template
     return render_template('admin_panel/farmers-request.html', farmers=farmers_data)
->>>>>>> 6a95d41aa154977e6b3b6ee2e5f5d80eb2774dd0
 
 @admin_routes.route("/admin/listings.html")
 def listings():
