@@ -119,74 +119,85 @@ def dashboard():
     user_data = {"name": "Guest", "email": "Not Available", "profile_picture_id": None}
     return render_template('dashboard.html', user_data=user_data, active_count=0, total_count=0)
 
-
 @user_routes.route("/notifications.html")
 def notifications():
     from flask import session, render_template
     from bson import ObjectId
 
+    # Step 1: Get the session user ID
     user_id = session.get('id')
-    notification = None  # Initialize notification as None
+    notifications = []  # Initialize an empty list for notifications
+    user_data = {}  # Initialize user data
 
     if user_id:
-        user = users_collection.find_one({"_id": ObjectId(user_id)})
-
+        # Step 2: Fetch user details from `users_collection` using the session ID
+        user = users_collection.find_one({"_id": ObjectId(user_id)}, {"first_name": 1, "role": 1, "profile_picture_id": 1})
+        
         if user:
-            first_name = user.get('first_name')
-            role = user.get('role', 'N/A')
+            first_name = user.get('first_name')  # Get the user's first name
+            role = user.get('role', 'N/A')  # Role can be farmer, landowner, or N/A
+            profile_picture_id = user.get('profile_picture_id')  # Get the profile picture ID
+
+            # Include user data to pass to the template
+            user_data = {
+                "first_name": first_name,
+                "role": role,
+                "profile_picture_id": profile_picture_id
+            }
+
+            # Fetch all land listings where `name` matches the user's `first_name`
             land_listings = list(land_collection.find({"name": first_name}))
 
-            # Determine the highest-priority notification
             if role == "farmer":
-                # Farmer-specific notification
-                notification = {
+                # Farmer-specific notifications
+                notifications.append({
                     "id": "1",
                     "title": "Accepted and Reviewing Request",
                     "message": "Thank you for submitting your land requirements! Your submission has been received and is currently being reviewed by our team.",
-                    "isUrgent": False
-                }
+                    "isUrgent": False,
+                    "isRead": False
+                })
 
             if role == "landowner":
-                # Check land listing status and prioritize urgent ones
+                # Landowner-specific notifications
                 for listing in land_listings:
                     status = listing.get("approved", "Pending")
                     if status == "False":
-                        notification = {
+                        notifications.append({
                             "id": str(listing["_id"]),
-                            "title": "Pending Verification",
-                            "message": "Your land listing is awaiting verification by our team.",
-                            "isUrgent": True
-                        }
-                        break  # Exit loop once an urgent notification is found
-                    elif status == "Rejected":
-                        notification = {
-                            "id": str(listing["_id"]),
-                            "title": "Rejected",
-                            "message": "Your land listing was not approved. Please contact support for assistance.",
-                            "isUrgent": True
-                        }
-                        break
-                    elif status == "True" and not notification:
-                        # Default notification if no urgent ones
-                        notification = {
+                            "title": "Accepted and Pending Verification",
+                            "message": "Thank you for listing your land! Your submission has been received and is awaiting verification by our team.",
+                            "isUrgent": True,
+                            "isRead": False
+                        })
+                    elif status == "True":
+                        notifications.append({
                             "id": str(listing["_id"]),
                             "title": "Approved",
-                            "message": "Your land listing has been approved and is now live.",
-                            "isUrgent": False
-                        }
-
-    if not notification:
-        # Default notification if no user or relevant data
-        notification = {
+                            "message": "Congratulations! Your land listing has been approved and is now live for farmers to view and lease.",
+                            "isUrgent": False,
+                            "isRead": False
+                        })
+                    elif status == "Rejected":
+                        notifications.append({
+                            "id": str(listing["_id"]),
+                            "title": "Rejected",
+                            "message": "We’re sorry, but your land listing was not approved. Please review our guidelines and re-upload your details or contact support for help.",
+                            "isUrgent": True,
+                            "isRead": False
+                        })
+    else:
+        # Default: No notifications if user is not logged in
+        notifications.append({
             "id": "0",
             "title": "No Notifications",
-            "message": "You have no new notifications at this time.",
-            "isUrgent": False
-        }
+            "message": "You must log in to view notifications.",
+            "isUrgent": False,
+            "isRead": False
+        })
 
-    return render_template("notifications.html", notification=notification)
-
-
+    # Render the notifications page with notifications and user data
+    return render_template("notifications.html", notifications=notifications, user_data=user_data)
 
 @user_routes.route('/edit_listing/<string:listing_id>', methods=['GET', 'POST'])
 def edit_listing(listing_id):
