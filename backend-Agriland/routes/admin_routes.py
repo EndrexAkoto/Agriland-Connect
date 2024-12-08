@@ -245,6 +245,45 @@ def fetch_rejected_leases():
     ]
     return jsonify({'rejectedLeases': rejected_leases})
 
+from bson import ObjectId
+
+@admin_routes.route("/admin/farmers-request.html")
+def farmersrequest():
+    # Connect to the MongoDB farmers and users collections
+    farmers_collection = db['farmer']
+    users_collection = db['users']
+
+    # Fetch all farmers
+    farmers_data = list(farmers_collection.find())
+
+    # Enrich farmer data with details from the users collection
+    enriched_farmers = []
+    for farmer in farmers_data:
+        user = None
+        
+        # Check if the 'user_id' field exists and is a valid ObjectId
+        user_id = farmer.get("user_id")
+        if user_id and ObjectId.is_valid(user_id):
+            user = users_collection.find_one({"_id": ObjectId(user_id)})
+        else:
+            user = None
+
+        # Append enriched farmer details
+        enriched_farmers.append({
+            "name": f"{user.get('first_name', '')} {user.get('last_name', '')}" if user else "N/A",
+            "phone_number": user.get("phone", "N/A") if user else "N/A",
+            "email": user.get("email", "N/A") if user else "N/A",
+            "land_size": farmer.get("land_size", "N/A"),
+            "location": farmer.get("location", "N/A"),
+            "crop_type": farmer.get("crop_type", "N/A"),
+            "budget_per_acre": farmer.get("budget_per_acre", "N/A"),
+            "lease_duration": farmer.get("lease_duration", "N/A"),
+        })
+
+    # Pass the enriched data to the HTML template
+    return render_template('admin_panel/farmers-request.html', farmers=enriched_farmers)
+
+
 @admin_routes.route("/admin/farmers-request.html")
 def farmersrequest():
     # Connect to the MongoDB farmers collection
@@ -255,6 +294,7 @@ def farmersrequest():
 
     # Pass the data to the HTML template
     return render_template('admin_panel/farmers-request.html', farmers=farmers_data)
+
 
 @admin_routes.route("/admin/listings.html")
 def listings():

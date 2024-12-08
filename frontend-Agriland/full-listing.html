@@ -460,72 +460,39 @@
     </header>
 
     <main>
-        <!-- Image Section -->
-        <section class="image-gallery">
-            <img id="main-image" src="{{ listing.farm_images[0] }}" alt="Land Image" class="zoomable" onclick="openFullScreen(this)">
-            <button class="scroll-button left" onclick="scrollImages('left')">&#10094;</button>
-            <button class="scroll-button right" onclick="scrollImages('right')">&#10095;</button>
-        </section>
+    <!-- Image Section -->
+    <section class="image-gallery">
+        <img id="main-image" src="{{ listing.farm_images[0] }}" alt="Land Image" class="zoomable" onclick="openFullScreen(this)">
+        <button class="scroll-button left" onclick="scrollImages('left')">&#10094;</button>
+        <button class="scroll-button right" onclick="scrollImages('right')">&#10095;</button>
+    </section>
 
-        <!-- Details Section -->
-        <section class="listing-details">
-            <h2><strong>Price per Acre:</strong> Ksh {{ listing.price_per_acre }}</h2>
-            <p><strong>Amenities:</strong> {{ listing.amenities }}</p>
-            <p><strong>Road Access:</strong> {{ listing.road_access }}</p>
-            <p><strong>Fencing:</strong> {{ listing.fencing }}</p>
-            <p><strong>Lease Duration:</strong> {{ listing.lease_duration }} years</p>
-            <p><strong>Payment Frequency:</strong> {{ listing.payment_frequency }}</p>
-
-            <!-- M-Pesa Button -->
-            <div class="mpesa">
-                <p>Pay with M-Pesa</p>
-            </div>
-
-            <!-- Back Button -->
-            <a href="javascript:history.back()" class="back-button">Back</a>
-
-        <section class="listing-details">
-            
-            <h2><strong>Price per Acre:</strong> Ksh {{ listing.price_per_acre }}</h2>
-            <p><strong>Amenities:</strong> {{ listing.amenities }}</p>
-            <p><strong>Road Access:</strong> {{ listing.road_access }}</p>
-            <p><strong>Fencing:</strong> {{ listing.fencing }}</p>
-            <p><strong>Lease Duration:</strong> {{ listing.lease_duration }} years</p>
-            <p><strong>Payment Frequency:</strong> {{ listing.payment_frequency }}</p>
-
-            <!-- M-Pesa Button -->
-            <div class="mpesa">
-                <p>Pay with M-Pesa</p>
-            </div>
-
-            <!-- Back Button -->
-            <a href="javascript:history.back()" class="back-button">Back</a>
-
-        <section class="listing-details">
-            <h2>Price per Acre: Ksh {{ listing.price_per_acre }}</h2>
-            <p><strong>Amenities:</strong> {{ listing.amenities }}</p>
-            <p><strong>Road Access:</strong> {{ listing.road_access }}</p>
-            <p><strong>Fencing:</strong> {{ listing.fencing }}</p>
-            <p><strong>Lease Duration:</strong> {{ listing.lease_duration }}</p>
-            <p><strong>Payment Frequency:</strong> {{ listing.payment_frequency }}</p>
-        </section>
-
-        <section class="listing-images">
-            <h3>Images</h3>
-            <div class="image-gallery">
-                {% for image in listing.farm_images %}
-                <img src="{{ image }}" alt="Land Image" style="width: 100%; max-width: 400px; margin: 10px;">
-                {% endfor %}
-            </div>
-        </section>
-    </main>
-
-    <!-- Thumbnail Image Section -->
+    <!-- Thumbnail Section -->
     <section class="thumbnail-images" id="thumbnail-container">
         {% for image in listing.farm_images %}
-            <img src="{{ image }}" alt="Thumbnail Image" onclick="changeImage(this)">
+            <img src="{{ image }}" alt="Thumbnail Image" onclick="changeImage(this)" class="thumbnail">
         {% endfor %}
     </section>
+
+    <!-- Details Section -->
+    <section class="listing-details">
+        <h2><strong>Price per Acre:</strong> Ksh {{ listing.price_per_acre }}</h2>
+        <p><strong>Description:</strong> {{ listing.description }}</p>
+        <p><strong>Amenities:</strong> {{ listing.amenities }}</p>
+        <p><strong>Road Access:</strong> {{ listing.road_access }}</p>
+        <p><strong>Fencing:</strong> {{ listing.fencing }}</p>
+        <p><strong>Lease Duration:</strong> {{ listing.lease_duration }} years</p>
+        <p><strong>Payment Frequency:</strong> {{ listing.payment_frequency }}</p>
+        <a href="javascript:history.back()" class="back-button">Back</a>
+    </section>
+</main>
+
+<!-- Full Screen Overlay -->
+<div id="full-screen-overlay" class="full-screen-overlay" onclick="closeFullScreen()">
+    <button class="cancel-button" onclick="closeFullScreen()">X</button>
+    <img id="full-screen-image" src="{{ listing.farm_images[0] }}" alt="Full Screen Image">
+</div>
+
 
     <footer>
         <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
@@ -543,24 +510,25 @@
             document.getElementById("main-image").src = element.src;
             document.getElementById("full-screen-image").src = element.src;
         }
-
+    
         // Function to open image in full screen on click
         function openFullScreen(element) {
             document.getElementById("full-screen-overlay").style.display = "flex";
             document.getElementById("full-screen-image").src = element.src;
         }
-
+    
         // Function to close full screen view
         function closeFullScreen() {
             document.getElementById("full-screen-overlay").style.display = "none";
         }
-
+    
         // Function for left-right scroll
         function scrollImages(direction) {
-            const gallery = document.querySelector('.thumbnail-images');
+            const gallery = document.getElementById('thumbnail-container');
             const scrollAmount = direction === 'left' ? -200 : 200;
             gallery.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
     </script>
+    
 </body>
 </html>

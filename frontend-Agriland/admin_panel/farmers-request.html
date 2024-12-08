@@ -177,7 +177,11 @@
         <tbody>
           {% for farmer in farmers %}
           <tr>
+
+            <td>{{ farmer.name }}</td>
+
             <td>{{ farmer.username }}</td>
+
             <td>{{farmer.phone_number if farmer.phone_number else 'N/A' }}</td>
             <!-- Update if phone_number exists -->
             <td>{{ farmer.email if farmer.email else 'N/A' }}</td>
