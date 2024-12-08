@@ -71,29 +71,13 @@
         .back-button:hover {
             background-color: #0056b3;
         }
-
-        /* New styles for image previews */
-        .image-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .image-preview img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
     </style>
 </head>
 <body>
     <div class="form-container">
         <h1>Landlord Information Form</h1>
 
-        <form id="landlord-form" method="post" enctype="multipart/form-data">
+        <form id="landlord-form" method="post">
             <label for="landSize">Land Size (in acres):</label>
             <input type="number" id="landSize" name="landSize" required>
 
@@ -126,10 +110,6 @@
             <label for="titleDeed">Title Deed Serial Number:</label>
             <input type="text" id="titleDeed" name="titleDeed" required>
 
-            <label for="farmImage">Upload Farm Image (Max 5 images):</label>
-            <input type="file" id="farmImages" name="farmImages" accept="image/*" multiple>
-            <div class="image-preview" id="imagePreview"></div> <!-- Image preview container -->
-
             <label for="leaseDuration">Lease Duration (minimum and maximum in months):</label>
             <input type="text" id="leaseDuration" name="leaseDuration" placeholder="e.g., 6 months to 12 months" required>
 
@@ -147,70 +127,5 @@
             {% endif %}
         </form>
     </div>
-
-    <script>
-        // Store uploaded images temporarily
-        const uploadedImages = [];
-        const farmImagesInput = document.getElementById('farmImages');
-        const imagePreviewContainer = document.getElementById('imagePreview');
-    
-        farmImagesInput.addEventListener('change', function (event) {
-            const files = Array.from(event.target.files);
-
-            // Clear previous previews
-            imagePreviewContainer.innerHTML = '';
-
-            // Check if adding these files exceeds the maximum limit
-            if (uploadedImages.length + files.length > 5) {
-                alert("You can upload a maximum of 5 images.");
-                farmImagesInput.value = ""; // Clear the file input
-                return;
-            }
-
-            files.forEach(file => {
-                if (uploadedImages.length >= 5) {
-                    alert("You can upload a maximum of 5 images.");
-                    return;
-                }
-
-                if (file && file.type.startsWith("image/")) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        // Create and display image preview
-                        const imgElement = document.createElement('img');
-                        imgElement.src = e.target.result;
-                        imgElement.style.maxWidth = "100px";
-                        imgElement.style.margin = "5px";
-                        imgElement.style.border = "1px solid #ccc";
-                        imagePreviewContainer.appendChild(imgElement);
-
-                        // Add the file to the uploaded images list
-                        uploadedImages.push(file);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            // Clear the file input to allow re-upload of same file
-            farmImagesInput.value = "";
-        });
-    
-        // Submit form with validation and redirect to dashboard
-        document.getElementById('landlord-form').addEventListener('submit', function (event) {
-            if (uploadedImages.length === 0) {
-                alert("Please upload at least one image before submitting.");
-                event.preventDefault(); // Stop form submission
-                return;
-            }
-    
-            // Allow submission to backend
-            alert("Form submitted successfully!");
-            window.location.href = "dashboard.html"; // Redirect to dashboard
-        });
-    </script>
-
-    {% if msg %}
-    <p style="color: green">{{ msg }}</p>
-    {% endif %}
 </body>
 </html>
