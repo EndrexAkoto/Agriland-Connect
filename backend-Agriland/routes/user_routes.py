@@ -237,6 +237,7 @@ def profile():
 
 @user_routes.route("/farmer.html", methods=['GET', 'POST'])
 def farmer():
+    msg = ''
     if request.method == 'POST':
         # Retrieve user ID from the session
         user_id = session.get('id')  # Get user ID from session
@@ -395,6 +396,7 @@ def full_listing():
         'title_deed': get_field(listing, 'title_deed', default='N/A'),
         'lease_duration': get_field(listing, 'lease_duration', default='N/A'),
         'payment_frequency': get_field(listing, 'payment_frequency', default='N/A'),
+        'description': get_field(listing, 'description', default='N/A'),
         'farm_images': [
             f"/admin/uploads/{str(listing['_id'])}/images/{image}"
             for image in get_field(listing, 'images', 'farm_images', default=[])
