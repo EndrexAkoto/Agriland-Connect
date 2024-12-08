@@ -150,7 +150,7 @@
         </div>
         <!-- Profile Icon -->
         <div class="profile-icon">
-          <img src="./images/user-profile.jpg" alt="" />
+          <img src="{{ url_for('user.image', image_id=user_data['profile_picture_id']) if user_data.get('profile_picture_id') else url_for('static', filename='./images/04.jpg') }}" alt="Profile Picture" />
           <div class="dropdown">
             <a href="./user-profile.html">View Profile</a>
             <a href="/settings">Settings</a>
@@ -162,52 +162,65 @@
 
     <!-- Notifications Section -->
     <div class="notifications-section">
-      <h2>Notification</h2>
-      <div id="notification">
-        <h3 id="notification-title"></h3>
-        <p id="notification-message"></p>
-        <button id="mark-as-read-btn">Mark as Read</button>
-      </div>
+      <h2>Your Notifications</h2>
+      <ul id="notification-list">
+        <!-- Messages will be dynamically inserted here -->
+      </ul>
     </div>
 
     <!-- Footer Section -->
     <footer>
-      <div>© 2024 Agriland | All rights reserved</div>
+      <div>
+        © 2024 Agriland | All rights reserved
+      </div>
     </footer>
 
     <!-- JavaScript Section -->
     <script>
-      const notificationData = {{ notification | tojson }}; // Flask data passed to JS
+      const notificationList = document.getElementById("notification-list");
+      const urgentCountBadge = document.getElementById("urgent-count");
     
-      // Function to render the notification
-      function renderNotification() {
-        const title = document.getElementById("notification-title");
-        const message = document.getElementById("notification-message");
-        const container = document.getElementById("notification-container");
+      let urgentCount = 0; // Keeps track of urgent notifications
     
-        if (notificationData && notificationData.id !== "0") {
-          // Display the notification details
-          title.textContent = notificationData.title;
-          message.textContent = notificationData.message;
-        } else {
-          // Hide the container if no notifications
-          container.style.display = "none";
-        }
+      // Notifications passed from Flask as a JSON array
+      const notifications = {{ notifications | tojson }};
+    
+      // Function to render notifications
+      function renderNotifications() {
+        notificationList.innerHTML = ""; // Clear existing notifications
+        urgentCount = 0; // Reset urgent count
+    
+        notifications.forEach((notification) => {
+          // Create a new list item
+          const li = document.createElement("li");
+          li.textContent = `${notification.title}: ${notification.message}`;
+          li.dataset.id = notification.id;
+    
+          if (notification.isUrgent) {
+            li.classList.add("urgent");
+            urgentCount++;
+          }
+    
+          // Add click event to mark as read
+          li.addEventListener("click", () => markAsRead(notification.id, li));
+          notificationList.appendChild(li);
+        });
+    
+        // Update the urgent notification badge
+        urgentCountBadge.textContent = urgentCount;
       }
     
-      // Function to mark the notification as read
-      function markAsRead() {
-        const container = document.getElementById("notification-container");
-        container.style.display = "none"; // Hide the notification after marking as read
-    
-        // Optionally, send an API request to update the notification status in the database
-        // fetch('/mark-notification-as-read', { method: 'POST', body: JSON.stringify({ id: notificationData.id }) });
+      // Function to mark notifications as read
+      function markAsRead(notificationId, notificationElement) {
+        // Simulate marking the notification as read (e.g., server API call)
+        notificationElement.classList.remove("urgent");
+        urgentCount = Math.max(0, urgentCount - 1);
+        urgentCountBadge.textContent = urgentCount;
       }
     
-      document.getElementById("mark-as-read-btn").addEventListener("click", markAsRead);
-    
-      // Initialize the notification on page load
-      document.addEventListener("DOMContentLoaded", renderNotification);
+      // Initialize notifications on page load
+      document.addEventListener("DOMContentLoaded", renderNotifications);
     </script>
   </body>
 </html>
+
