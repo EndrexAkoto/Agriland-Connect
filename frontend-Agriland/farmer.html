@@ -108,7 +108,7 @@
     </style>
 </head>
 <body>
-    <div class="form-container">
+    <div class="form-container" method="POST">
         <h1>Farmer's Information</h1>
         <form id="farmer-form" method="post" action="/farmer.html">
             <label for="landSize">Size of Land (in acres):</label>
@@ -121,7 +121,7 @@
                     <option value="{{ county }}">{{ county }}</option>
                 {% endfor %}
             </select>
-
+            County
             <label for="cropType">Type of Crops:</label>
             <input type="text" id="cropType" name="cropType" required>
 
@@ -137,16 +137,28 @@
                 <option value="bank">Bank Transfer</option>
             </select>
 
+            <!-- Image Upload Section -->
+            <!-- <label for="imageUpload">Upload Profile Image (one at a time, up to 5 images):</label>
+            <input type="file" id="imageUpload" name="image" accept="image/*">
+            <div class="image-preview" id="imagePreview"></div> -->
+
+
             <button type="submit">Submit</button>
             <button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
         </form>
+        {%  if farmer_form_errors %}
+        <p style="color: red">{{ msg }}</p>
+        {% endif %}
 
         <!-- Display error message if any -->
         {% if msg %}
         <p style="color: red;">{{ msg }}</p>
         {% endif %}
     </div>
+
 </body>
+
+
     <!-- <script>
         const maxFiles = 5;
         let uploadedImages = []; // Array to store uploaded image data
@@ -224,5 +236,9 @@
             }
         });
     </script> -->
+
+
+
+</body>
 
 </html>

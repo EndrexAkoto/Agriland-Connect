@@ -284,6 +284,18 @@ def farmersrequest():
     return render_template('admin_panel/farmers-request.html', farmers=enriched_farmers)
 
 
+@admin_routes.route("/admin/farmers-request.html")
+def farmersrequest():
+    # Connect to the MongoDB farmers collection
+    farmers_collection = db['farmer']  # Replace `mongo.db.farmers` with the actual database and collection object you're using
+
+    # Fetch all farmer data from the database
+    farmers_data = list(farmers_collection.find())
+
+    # Pass the data to the HTML template
+    return render_template('admin_panel/farmers-request.html', farmers=farmers_data)
+
+
 @admin_routes.route("/admin/listings.html")
 def listings():
     return render_template('admin_panel/listings.html')
