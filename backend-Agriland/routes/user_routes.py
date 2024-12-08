@@ -119,65 +119,85 @@ def dashboard():
     user_data = {"name": "Guest", "email": "Not Available", "profile_picture_id": None}
     return render_template('dashboard.html', user_data=user_data, active_count=0, total_count=0)
 
-
 @user_routes.route("/notifications.html")
 def notifications():
+    from flask import session, render_template
+    from bson import ObjectId
+
     # Step 1: Get the session user ID
     user_id = session.get('id')
-
     notifications = []  # Initialize an empty list for notifications
+    user_data = {}  # Initialize user data
 
     if user_id:
         # Step 2: Fetch user details from `users_collection` using the session ID
-        user = users_collection.find_one({"_id": ObjectId(user_id)})
-
+        user = users_collection.find_one({"_id": ObjectId(user_id)}, {"first_name": 1, "role": 1, "profile_picture_id": 1})
+        
         if user:
             first_name = user.get('first_name')  # Get the user's first name
-            role = user.get('role')  # Assuming role field determines farmer or landowner
+            role = user.get('role', 'N/A')  # Role can be farmer, landowner, or N/A
+            profile_picture_id = user.get('profile_picture_id')  # Get the profile picture ID
+
+            # Include user data to pass to the template
+            user_data = {
+                "first_name": first_name,
+                "role": role,
+                "profile_picture_id": profile_picture_id
+            }
 
             # Fetch all land listings where `name` matches the user's `first_name`
             land_listings = list(land_collection.find({"name": first_name}))
 
             if role == "farmer":
-                # Farmer notifications
+                # Farmer-specific notifications
+                notifications.append({
+                    "id": "1",
+                    "title": "Accepted and Reviewing Request",
+                    "message": "Thank you for submitting your land requirements! Your submission has been received and is currently being reviewed by our team.",
+                    "isUrgent": False,
+                    "isRead": False
+                })
+
+            if role == "landowner":
+                # Landowner-specific notifications
                 for listing in land_listings:
-                    notifications.append({
-                        "title": "Accepted and Reviewing Request",
-                        "message": "Thank you for submitting your land requirements! Your submission has been received and is currently being reviewed by our team."
-                    })
-            elif role == "landowner":
-                # Landowner notifications based on approval status
-                for listing in land_listings:
-                    if listing.get("approved") == "False":
+                    status = listing.get("approved", "Pending")
+                    if status == "False":
                         notifications.append({
+                            "id": str(listing["_id"]),
                             "title": "Accepted and Pending Verification",
-                            "message": "Thank you for listing your land! Your submission has been received and is awaiting verification by our team."
+                            "message": "Thank you for listing your land! Your submission has been received and is awaiting verification by our team.",
+                            "isUrgent": True,
+                            "isRead": False
                         })
-                    elif listing.get("approved") == "True":
+                    elif status == "True":
                         notifications.append({
+                            "id": str(listing["_id"]),
                             "title": "Approved",
-                            "message": "Congratulations! Your land listing has been approved and is now live for farmers to view and lease."
+                            "message": "Congratulations! Your land listing has been approved and is now live for farmers to view and lease.",
+                            "isUrgent": False,
+                            "isRead": False
                         })
-                    elif listing.get("approved") == "Rejected":
+                    elif status == "Rejected":
                         notifications.append({
+                            "id": str(listing["_id"]),
                             "title": "Rejected",
-                            "message": "We’re sorry, but your land listing was not approved. Please review our guidelines and re-upload your details or contact support for help."
+                            "message": "We’re sorry, but your land listing was not approved. Please review our guidelines and re-upload your details or contact support for help.",
+                            "isUrgent": True,
+                            "isRead": False
                         })
-        else:
-            # If user is not found in the database
-            notifications.append({
-                "title": "No Notifications",
-                "message": "No new notifications at this time."
-            })
     else:
         # Default: No notifications if user is not logged in
         notifications.append({
+            "id": "0",
             "title": "No Notifications",
-            "message": "You must log in to view notifications."
+            "message": "You must log in to view notifications.",
+            "isUrgent": False,
+            "isRead": False
         })
 
-    # Render the notifications page
-    return render_template("notifications.html", notifications=notifications)
+    # Render the notifications page with notifications and user data
+    return render_template("notifications.html", notifications=notifications, user_data=user_data)
 
 @user_routes.route('/edit_listing/<string:listing_id>', methods=['GET', 'POST'])
 def edit_listing(listing_id):
@@ -218,10 +238,10 @@ def profile():
 @user_routes.route("/farmer.html", methods=['GET', 'POST'])
 def farmer():
     if request.method == 'POST':
+        # Retrieve user ID from the session
         user_id = session.get('id')  # Get user ID from session
-        username = session.get('name')  # Get username from session
 
-        if not user_id or not username:
+        if not user_id:
             return redirect(url_for('user.login'))  # Redirect if not logged in
 
         # Collect form data
@@ -235,10 +255,9 @@ def farmer():
         if not all([land_size, location, crop_type, budget_per_acre, lease_duration, payment_method]):
             return render_template('farmer.html', msg='Please fill out all fields!')
 
-        # Insert land request into the 'farmer' collection with the user_id and username
+        # Insert land request into the 'farmer' collection with the user_id
         db['farmer'].insert_one({
-            # 'user_id': ObjectId(user_id),
-            'username': username,
+            'user_id': ObjectId(user_id),  # Store user_id as ObjectId for reference
             'land_size': land_size,
             'location': location,
             'crop_type': crop_type,
@@ -254,21 +273,23 @@ def farmer():
         if user is None:
             return render_template('farmer.html', msg='User not found!')
 
-        # Update role logic
+        # Update role logic based on current role
         current_role = user.get('role', 'N/A')
         if current_role == 'Landlord':
             new_role = 'Farmer, Landlord'
         else:
             new_role = 'Farmer'
 
+        # Update user role in the database
         user_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'role': new_role}})
 
         return render_template('farmer.html', msg='Land request submitted successfully!')
 
-    # Fetch county names for the dropdown
+    # Handle the GET request to render the form
     counties = counties_collection.find({}, {'_id': 0, 'County': 1})
     county_names = [county['County'] for county in counties]
     return render_template('farmer.html', county_names=county_names, msg='')
+
 
 @user_routes.route('/user-profile.html')
 def userprofile():

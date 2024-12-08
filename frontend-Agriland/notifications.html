@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notifications</title>
     <style>
+      /* Styling remains the same as the previous version */
       body {
         font-family: Arial, sans-serif;
-        margin: 0;
         margin: 0;
         background-color: #f4f4f9;
         color: #333;
@@ -22,12 +22,14 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
       header img {
-        height: 40px;
+        height: 30px;
+        max-width: 100px;
+        object-fit: contain;
       }
       .profile-notification {
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 15px;
       }
       .notification-icon {
         position: relative;
@@ -86,36 +88,6 @@
       .notifications-section {
         max-width: 600px;
         margin: 20px auto;
-        margin: 20px;
-        background-color: #f4f4f9;
-        color: #333;
-      }
-      header {
-        background-color: #4caf50; /* Agriland Theme Color */
-        color: white;
-        padding: 10px 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-      header img {
-        height: 40px;
-      }
-      header .badge {
-        background: red;
-        color: white;
-        border-radius: 50%;
-        padding: 5px 10px;
-        font-size: 14px;
-        font-weight: bold;
-        position: relative;
-        top: -10px;
-        right: -10px;
-      }
-      .notifications-section {
-        max-width: 600px;
-        margin: 20px auto;
         padding: 20px;
         background-color: #ffffff;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -134,21 +106,10 @@
       #notification-list li {
         background: #f9f9f9;
         border: 1px solid #ddd;
-        padding: px;
-        margin-bottom: 15px;
-        border-radius: 10px;
-        font-size: 20px;
-        color: #555;
-        transition: transform 0.2s, box-shadow 0.2s;
-      }
-      #notification-list li.urgent {
-        color: red;
-        font-weight: bold;
         padding: 15px;
         margin-bottom: 15px;
-        border-radius: 8px;
+        border-radius: 10px;
         font-size: 16px;
-        color: #555;
         transition: transform 0.2s, box-shadow 0.2s;
       }
       #notification-list li.urgent {
@@ -163,21 +124,17 @@
         margin-top: 20px;
         font-size: 14px;
       }
-      footer {
-        text-align: center;
-        padding: 10px;
-        background-color: #4caf50; /* Agriland Theme Color */
-        color: white;
-        margin-top: 20px;
-        font-size: 14px;
-      }
-      footer {
-        text-align: center;
-        padding: 10px;
-        background-color: #4caf50; /* Agriland Theme Color */
-        color: white;
-        margin-top: 20px;
-        font-size: 14px;
+      @media (max-width: 768px) {
+        header {
+          flex-direction: column;
+          text-align: center;
+        }
+        header img {
+          height: 25px;
+        }
+        .profile-notification {
+          justify-content: center;
+        }
       }
     </style>
   </head>
@@ -185,7 +142,6 @@
     <!-- Header Section -->
     <header>
       <img src="./images/logo001.png" alt="Agriland Logo" />
-      <h1>Notifications</h1>
       <div class="profile-notification">
         <!-- Notifications Icon -->
         <div class="notification-icon">
@@ -194,11 +150,11 @@
         </div>
         <!-- Profile Icon -->
         <div class="profile-icon">
-          <img src="./images/backImg.jpg" alt="Profile" />
+          <img src="{{ url_for('user.image', image_id=user_data['profile_picture_id']) if user_data.get('profile_picture_id') else url_for('static', filename='./images/04.jpg') }}" alt="Profile Picture" />
           <div class="dropdown">
-            <a href="/profile">View Profile</a>
+            <a href="./user-profile.html">View Profile</a>
             <a href="/settings">Settings</a>
-            <a href="/logout">Logout</a>
+            <a href="./logout.html">Logout</a>
           </div>
         </div>
       </div>
@@ -211,150 +167,60 @@
         <!-- Messages will be dynamically inserted here -->
       </ul>
     </div>
-        <h2>Your Notifications</h2>
-        <ul id="notification-list">
-          {% if notifications %}
-          {% for notification in notifications %}
-          <li>{{ notification.message }}</li>
-          {% endfor %}
-          {% else %}
-          <li>No new notifications</li>
-          {% endif %}
-        </ul>
-      </div>
-        <h2>Your Notifications</h2>
-        <ul id="notification-list">
-          {% if notifications %}
-          {% for notification in notifications %}
-          <li>{{ notification.message }}</li>
-          {% endfor %}
-          {% else %}
-          <li>No new notifications</li>
-          {% endif %}
-        </ul>
-      </div>
 
     <!-- Footer Section -->
     <footer>
-      <div style="text-align: center; background-color: #4caf50; color: white; padding: 10px;">
+      <div>
         © 2024 Agriland | All rights reserved
       </div>
     </footer>
 
+    <!-- JavaScript Section -->
     <script>
-      // Example data fetched from the backend
-      const notifications = [
-        { message: "Irrigation schedule updated", is_urgent: true },
-        { message: "New weather forecast available", is_urgent: false },
-        { message: "Crop health report ready", is_urgent: false },
-      ];
-
       const notificationList = document.getElementById("notification-list");
       const urgentCountBadge = document.getElementById("urgent-count");
-
-      // Populate the notifications and count urgent messages
-      let urgentCount = 0;
-
-      notifications.forEach((notification) => {
-        const li = document.createElement("li");
-        li.textContent = notification.message;
-
-        // Highlight urgent notifications
-        if (notification.is_urgent) {
-          li.classList.add("urgent");
-          urgentCount++;
-        }
-
-        notificationList.appendChild(li);
-      });
-
-      // Update the urgent count badge
-      urgentCountBadge.textContent = urgentCount;
-    </script>
-    <div class="notifications-section">
-      <h2>Your Notifications</h2>
-      <ul id="notification-list">
-        {% if notifications %}
-        {% for notification in notifications %}
-        <li>{{ notification.message }}</li>
-        {% endfor %}
-        {% else %}
-        <li>No new notifications</li>
-        {% endif %}
-      </ul>
-    </div>
-
-    <!-- Footer Section -->
-    <footer>
-      © 2024 Agriland | All rights reserved
-    </footer>
-
-    <script>
-      // Example data fetched from the backend
-      const notifications = [
-        { message: "Irrigation schedule updated", is_urgent: true },
-        { message: "New weather forecast available", is_urgent: false },
-        { message: "Crop health report ready", is_urgent: false },
-      ];
-
-      const notificationList = document.getElementById("notification-list");
-      const urgentCountBadge = document.getElementById("urgent-count");
-
-      // Populate the notifications and count urgent messages
-      let urgentCount = 0;
-
-      notifications.forEach((notification) => {
-        const li = document.createElement("li");
-        li.textContent = notification.message;
-
-        // Highlight urgent notifications
-        if (notification.is_urgent) {
-          li.classList.add("urgent");
-          urgentCount++;
-        }
-
-        notificationList.appendChild(li);
-      });
-
-      // Update the urgent count badge
-      urgentCountBadge.textContent = urgentCount;
-    </script>
     
-
-    <!-- Footer Section -->
-    <footer>
-      © 2024 Agriland | All rights reserved
-    </footer>
-
-    <script>
-      // Example data fetched from the backend
-      const notifications = [
-        { message: "Irrigation schedule updated", is_urgent: true },
-        { message: "New weather forecast available", is_urgent: false },
-        { message: "Crop health report ready", is_urgent: false },
-      ];
-
-      const notificationList = document.getElementById("notification-list");
-      const urgentCountBadge = document.getElementById("urgent-count");
-
-      // Populate the notifications and count urgent messages
-      let urgentCount = 0;
-
-      notifications.forEach((notification) => {
-        const li = document.createElement("li");
-        li.textContent = notification.message;
-
-        // Highlight urgent notifications
-        if (notification.is_urgent) {
-          li.classList.add("urgent");
-          urgentCount++;
-        }
-
-        notificationList.appendChild(li);
-      });
-
-      // Update the urgent count badge
-      urgentCountBadge.textContent = urgentCount;
+      let urgentCount = 0; // Keeps track of urgent notifications
+    
+      // Notifications passed from Flask as a JSON array
+      const notifications = {{ notifications | tojson }};
+    
+      // Function to render notifications
+      function renderNotifications() {
+        notificationList.innerHTML = ""; // Clear existing notifications
+        urgentCount = 0; // Reset urgent count
+    
+        notifications.forEach((notification) => {
+          // Create a new list item
+          const li = document.createElement("li");
+          li.textContent = `${notification.title}: ${notification.message}`;
+          li.dataset.id = notification.id;
+    
+          if (notification.isUrgent) {
+            li.classList.add("urgent");
+            urgentCount++;
+          }
+    
+          // Add click event to mark as read
+          li.addEventListener("click", () => markAsRead(notification.id, li));
+          notificationList.appendChild(li);
+        });
+    
+        // Update the urgent notification badge
+        urgentCountBadge.textContent = urgentCount;
+      }
+    
+      // Function to mark notifications as read
+      function markAsRead(notificationId, notificationElement) {
+        // Simulate marking the notification as read (e.g., server API call)
+        notificationElement.classList.remove("urgent");
+        urgentCount = Math.max(0, urgentCount - 1);
+        urgentCountBadge.textContent = urgentCount;
+      }
+    
+      // Initialize notifications on page load
+      document.addEventListener("DOMContentLoaded", renderNotifications);
     </script>
   </body>
 </html>
+
