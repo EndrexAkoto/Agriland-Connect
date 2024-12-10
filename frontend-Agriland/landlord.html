@@ -6,24 +6,79 @@
     <title>Landlord Information - Agriland Connect</title>
     <link rel="stylesheet" href="styles/style.css">
     <style>
+        /* Resetting default margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
             background-color: #23da23; /* A light green to symbolize nature */
             background-image: url('images/01.jpg');
             background-repeat: no-repeat;
-            background-size: cover; 
-            color: #831010;
-            padding: 20px; 
+            background-size: cover;
+            color: #000000;
+            display: flex;
+            flex-direction: column; /* Column layout for body */
+            height: 100vh; /* Full viewport height */
         }
 
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: rgba(0, 0, 0, 0.7); /* Dark sidebar */
+            color: white;
+            height: 100%; /* Full height of the viewport */
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            position: fixed; /* Fixed position */
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: white;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar .profile {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .profile img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        /* Form Container */
         .form-container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 40px;
+            margin-left: 270px; /* Space for sidebar */
+            max-width: calc(100% - 270px); /* Responsive form */
+            padding: 20px;
             background: rgba(84, 241, 78, 0.8); /* Slight transparency */
-            border-radius: 8px; 
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
+            flex-grow: 1; /* Allow the form container to grow */
         }
 
         h1 {
@@ -31,33 +86,61 @@
             color: #333;
         }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-            text-align: center; /* Center the labels */
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Uniform spacing */
+            padding: 20px;
         }
 
-        input, select {
-            width: 100%; /* Set to 100% to fill the container */
-            max-width: 400px; /* Maintain max width */
-            padding: 10px;
-            margin: 0 auto 15px; /* Center the input boxes */
+        .form-group {
+            flex: 1 1 calc(50% - 20px); /* Adjust width for horizontal alignment */
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            display: block; /* Make input elements block to center */
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.3s, border-color 0.3s;
+            font-size: 14px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.7);
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical; /* Allow resizing vertically */
+        }
+
+        .button-group {
+            flex: 1 1 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
         }
 
         button {
             padding: 10px 20px;
-            background-color: #4CAF50;
+            background-color: #0056b3;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
-            display: block;
-            width: 100%;
         }
 
         button:hover {
@@ -71,61 +154,118 @@
         .back-button:hover {
             background-color: #0056b3;
         }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.7); /* Footer background */
+            width: 100%;
+            position: relative;
+            bottom: 0;
+        }
     </style>
 </head>
 <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="profile">
+            <img src="./images/StockCake-Farmer planting crops_1727872514.jpg" alt="User Profile">
+            <p>User Email</p>
+        </div>
+        <a href="./edit-profile.html">Dashboard</a>
+        <a href="#">Settings</a>
+        <a href="./logout.html">Logout</a>
+    </div>
+
+    <!-- Form Container -->
     <div class="form-container">
         <h1>Landlord Information Form</h1>
 
         <form id="landlord-form" method="post">
-            <label for="landSize">Land Size (in acres):</label>
-            <input type="number" id="landSize" name="landSize" required>
+            <div class="form-group">
+                <label for="landSize">Land Size (in acres):</label>
+                <input type="number" id="landSize" name="landSize" required>
+            </div>
 
-            <label for="location">Location:</label>
-            <select id="location" name="location" required>
-                <option value="">Select a County</option>
-                {% for county in county_names %}
-                    <option value="{{ county }}">{{ county }}</option>
-                {% endfor %}
-            </select>
+            <div class="form-group">
+                <label for="location">Location:</label>
+                <select id="location" name="location" required>
+                    <option value="">Select a County</option>
+                    {% for county in county_names %}
+                        <option value="{{ county }}">{{ county }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-            <label for="pricePerAcre">Price Per Acre (in local currency):</label>
-            <input type="number" id="pricePerAcre" name="pricePerAcre" required>
+            <div class="form-group">
+                <label for="pricePerAcre">Price Per Acre (in local currency):</label>
+                <input type="number" id="pricePerAcre" name="pricePerAcre" required>
+            </div>
 
-            <label for="amenities">Amenities Available (e.g., water supply, irrigation):</label>
-            <input type="text" id="amenities" name="amenities" required>
+            <div class="form-group">
+                <label for="amenities">Amenities Available:</label>
+                <input type="text" id="amenities" name="amenities" required>
+            </div>
 
-            <label for="roadAccess">Road Access:</label>
-            <select id="roadAccess" name="roadAccess" required>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
+            <div class="form-group">
+                <label for="roadAccess">Road Access:</label>
+                <select id="roadAccess" name="roadAccess" required>
+                    <option value="none">None</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
 
-            <label for="fencing">Fencing:</label>
-            <select id="fencing" name="fencing" required>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
+            <div class="form-group">
+                <label for="fencing">Fencing:</label>
+                <select id="fencing" name="fencing" required>
+                    <option value="none">None</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
 
-            <label for="titleDeed">Title Deed Serial Number:</label>
-            <input type="text" id="titleDeed" name="titleDeed" required>
+            <div class="form-group">
+                <label for="titleDeed">Title Deed Serial Number:</label>
+                <input type="text" id="titleDeed" name="titleDeed" required>
+            </div>
 
-            <label for="leaseDuration">Lease Duration (minimum and maximum in months):</label>
-            <input type="text" id="leaseDuration" name="leaseDuration" placeholder="e.g., 6 months to 12 months" required>
+            <div class="form-group">
+                <label for="leaseDuration">Lease Duration (months):</label>
+                <input type="text" id="leaseDuration" name="leaseDuration" required>
+            </div>
 
-            <label for="paymentFrequency">Upfront Payment Frequency:</label>
-            <select id="paymentFrequency" name="paymentFrequency" required>
-                <option value="monthly">Monthly</option>
-                <option value="quarterly">Quarterly</option>
-                <option value="yearly">Yearly</option>
-            </select>
+            <div class="form-group">
+                <label for="paymentFrequency">Upfront Payment Frequency:</label>
+                <select id="paymentFrequency" name="paymentFrequency" required>
+                    <option value="monthly">Monthly</option>
+                    <option value="quarterly">Quarterly</option>
+                    <option value="yearly">Yearly</option>
+                </select>
+            </div>
 
-            <button id="submit" type="submit">Submit</button>
-            <button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+            <div class="form-group">
+                <label for="description">Land Description:</label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+
+            <div class="button-group">
+                <button id="submit" type="submit">Submit</button>
+                <button type="button" class="back-button" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+            </div>
+
             {% if msg %}
-            <p style="color: red">{{ msg }}</p>
+            <p style="color: rgb(245, 240, 240)">{{ msg }}</p>
             {% endif %}
         </form>
+    </div>
+
+    <!-- Footer (Always at the bottom) -->
+    <div class="footer">
+        <p>© 2024 Agriland Connect</p>
     </div>
 </body>
 </html>
