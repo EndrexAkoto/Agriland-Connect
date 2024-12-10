@@ -150,7 +150,7 @@
         </div>
         <!-- Profile Icon -->
         <div class="profile-icon">
-          <img src="{{ url_for('user.image', image_id=user_data['profile_picture_id']) if user_data.get('profile_picture_id') else url_for('static', filename='./images/04.jpg') }}" alt="Profile Picture" />
+          <img src="./images/user-profile.jpg" alt="" />
           <div class="dropdown">
             <a href="./user-profile.html">View Profile</a>
             <a href="/settings">Settings</a>
@@ -189,23 +189,30 @@
       function renderNotifications() {
         notificationList.innerHTML = ""; // Clear existing notifications
         urgentCount = 0; // Reset urgent count
-    
+        
+        if (!notifications || notifications.length === 0) {
+          const noNotifications = document.createElement("li");
+          noNotifications.textContent = "No notifications to display.";
+          notificationList.appendChild(noNotifications);
+          return;
+        }
+      
         notifications.forEach((notification) => {
           // Create a new list item
           const li = document.createElement("li");
           li.textContent = `${notification.title}: ${notification.message}`;
           li.dataset.id = notification.id;
-    
+        
           if (notification.isUrgent) {
             li.classList.add("urgent");
             urgentCount++;
           }
-    
+
           // Add click event to mark as read
           li.addEventListener("click", () => markAsRead(notification.id, li));
           notificationList.appendChild(li);
         });
-    
+
         // Update the urgent notification badge
         urgentCountBadge.textContent = urgentCount;
       }
@@ -223,4 +230,3 @@
     </script>
   </body>
 </html>
-
