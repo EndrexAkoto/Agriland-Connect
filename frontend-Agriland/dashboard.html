@@ -51,20 +51,6 @@
             cursor: pointer;
         }
 
-        .notification-icon #notification-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: red;
-            color: white;
-            font-size: 12px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
         .profile-icon {
             width: 45px;
             height: 45px;
@@ -227,7 +213,7 @@
             </div>
             <div class="nav-right">
                 <!-- Notification Icon -->
-                <div class="notification-icon" onclick="location.href='notifications.html'"><span id="notification-count">{{ unread_count }}</span></div>
+                <div class="notification-icon" onclick="location.href='notifications.html'"></div>
 
                 <!-- Profile Icon -->
                 <div class="profile-icon" 
