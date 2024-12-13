@@ -124,6 +124,7 @@ def notifications():
     # Step 1: Get the session user ID
     user_id = session.get('id')
     notifications = []  # Initialize an empty list for notifications
+    print(user_id)
 
     if user_id:
         # Step 2: Fetch user details from users_collection using the session ID
