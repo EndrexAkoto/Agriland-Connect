@@ -217,9 +217,9 @@ def unapproved_uploads():
     
     return render_template('admin_panel/unapproved_uploads.html', listings=listings)
 
-@admin_routes.route("/admin/user-details/users.html", methods=["GET"])
-def backtouser():
-    return render_template("/admin_panel/users.html")
+# @admin_routes.route("/admin/user-details/users.html", methods=["GET"])
+# def backtouser():
+#     return render_template("/admin_panel/users.html")
 
 @admin_routes.route("/admin/rejected-land-leases.html", methods=["GET"])
 def leases():
@@ -310,20 +310,39 @@ def serve_uploaded_image(listing_id, filename):
 
 @admin_routes.route("/admin/users.html", methods=["GET"], endpoint="users")
 def users():
-    users = list(users_collection.find())
-    return render_template('admin_panel/users.html', users=users)
+    # Get filter values from the request arguments
+    search_query = request.args.get("search", "").strip()  # Get the search term
+
+    # Create a MongoDB query filter
+    filters = {}
+    if search_query:
+        filters["$or"] = [
+            {"first_name": {"$regex": search_query, "$options": "i"}},  # Case-insensitive
+            {"last_name": {"$regex": search_query, "$options": "i"}},   # Case-insensitive
+            {"email": {"$regex": search_query, "$options": "i"}},       # Case-insensitive
+            {"id_number": {"$regex": search_query, "$options": "i"}},  # Case-insensitive
+            {"role": {"$regex": search_query, "$options": "i"}},        # Case-insensitive
+        ]
+
+    # Query the database with filters
+    users = list(users_collection.find(filters))
+
+    # Pass the filtered users to the template
+    return render_template('admin_panel/users.html', users=users, search_query=search_query)
 
 from bson.errors import InvalidId
 
 @admin_routes.route("/admin/user-details/<user_id>")
 def user_details(user_id):
-    print(f"Received user_id: {user_id}")  # Add this to debug
-    try:
-        user_id = ObjectId(user_id)  # Try to convert the user_id to ObjectId
-    except InvalidId:
-        return render_template('404.html')  # Handle invalid user_id (non-ObjectId)
+    # Save the previous page URL in the session
+    session["previous_page"] = request.referrer or "/admin/users.html"
 
-    # Fetch the user details from the database
+    try:
+        user_id = ObjectId(user_id)  # Convert the user_id to ObjectId
+    except InvalidId:
+        return render_template('404.html')
+
+    # Fetch the user details
     user = users_collection.find_one({"_id": user_id})
 
     if not user:
@@ -333,13 +352,13 @@ def user_details(user_id):
     id_image_id = user.get("id_image_id")
     id_image_url = None
     if id_image_id:
-        id_image_url = f"/admin/user-details/{user_id}/id-image"  # Create a route to serve the image
+        id_image_url = f"/admin/user-details/{user_id}/id-image"
 
     user_data = {
         "id_number": user.get("id_number", "N/A"),
         "kra_pin": user.get("kra_pin", "N/A"),
         "phone_number": user.get("phone", "N/A"),
-        "id_image_url": id_image_url
+        "id_image_url": id_image_url,
     }
     return render_template('admin_panel/user_details.html', user=user_data)
 
