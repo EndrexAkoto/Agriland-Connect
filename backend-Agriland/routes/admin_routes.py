@@ -45,7 +45,7 @@ def add_land_listing(lease_data):
     return result.inserted_id  # Return the inserted_id, not the entire result
 
 # In the add_land_lease route, update the listing_id handling:
-@admin_routes.route("/admin/add-land-lease.html", methods=['GET', 'POST'])
+@admin_routes.route("/admin/LandManagement/add-land-lease.html", methods=['GET', 'POST'])
 def add_land_lease():
     msg = ''
     if request.method == 'POST':
@@ -115,7 +115,7 @@ def add_land_lease():
     # Render the form template if the request is GET
     counties = db['Counties'].find({}, {'_id': 0, 'County': 1})
     county_names = [county['County'] for county in counties]
-    return render_template('admin_panel/add-land-lease.html', county_names=county_names, msg='')
+    return render_template('admin_panel/LandManagement/add-land-lease.html', county_names=county_names, msg='')
 
 @admin_routes.route("/admin/add-listing.html", methods=['GET', 'POST'])
 def add_listing():
@@ -170,7 +170,7 @@ def submit_form():
 
     return render_template('admin_panel/settings.html', msg=msg)
 
-@admin_routes.route("/admin/unapproved_uploads.html", methods=["GET", "POST"])
+@admin_routes.route("/admin/LandManagement/unapproved_uploads.html", methods=["GET", "POST"])
 def unapproved_uploads():
     # Handle form submission (approval, rejection, pending)
     if request.method == "POST":
@@ -215,7 +215,7 @@ def unapproved_uploads():
         for listing in land_listing_collection.find({'approved': 'False'})
     ]
     
-    return render_template('admin_panel/unapproved_uploads.html', listings=listings)
+    return render_template('admin_panel/LandManagement/unapproved_uploads.html', listings=listings)
 
 # @admin_routes.route("/admin/user-details/users.html", methods=["GET"])
 # def backtouser():
@@ -248,7 +248,7 @@ def fetch_rejected_leases():
 
 from bson import ObjectId
 
-@admin_routes.route("/admin/farmers-request.html")
+@admin_routes.route("/admin/LandManagement/farmers-request.html")
 def farmersrequest():
     # Connect to the MongoDB farmers and users collections
     farmers_collection = db['farmer']
@@ -282,7 +282,7 @@ def farmersrequest():
         })
 
     # Pass the enriched data to the HTML template
-    return render_template('admin_panel/farmers-request.html', farmers=enriched_farmers)
+    return render_template('admin_panel/LandManagement/farmers-request.html', farmers=enriched_farmers)
 
 
 def farmersrequest():
@@ -295,9 +295,9 @@ def farmersrequest():
     # Pass the data to the HTML template
     return render_template('admin_panel/farmers-request.html', farmers=farmers_data)
 
-@admin_routes.route("/admin/listings.html")
-def listings():
-    return render_template('admin_panel/listings.html')
+@admin_routes.route("/admin/LandManagement/land-management.html")
+def landmanagement():
+    return render_template('admin_panel/LandManagement/land-management.html')
 
 @admin_routes.route("/admin/payments.html")
 def payments():
@@ -385,3 +385,16 @@ def serve_admin_css(filename):
 @admin_routes.route('/admin/images/<path:filename>')
 def serve_admin_images(filename):
     return send_from_directory(os.path.join(frontend_path, 'images'), filename)
+
+@admin_routes.route('/admin/LandManagement/<path:filename>')
+def landmanagement_admin_css(filename):
+    # Define the full path to the LandManagement folder
+    land_management_path = os.path.join(frontend_path, 'LandManagement')
+    
+    # Check if the file exists in the specified directory
+    if not os.path.exists(os.path.join(land_management_path, filename)):
+        # If the file does not exist, return a 404 error
+        abort(404)
+    
+    # Serve the file from the LandManagement folder
+    return send_from_directory(land_management_path, filename)
