@@ -233,7 +233,7 @@
                     <td>{{ user.gender or 'N/A' }}</td>
                     <td>{{ user.age or 'N/A' }}</td>
                     <td>
-                        <button onclick="window.location.href='../admin_panel/user_details.html'">View KRA Pin, Phone Number & ID Images</button>                       
+                        <button onclick="redirectToDetails('{{ user._id }}')">View KRA Pin, Phone Number & ID Images</button>                       
 
                     </td>
                 </tr>
@@ -270,6 +270,15 @@
             })
             .catch(error => console.error("Error fetching filtered data:", error));
         }
+        function redirectToDetails(userId) {
+            if (userId && userId !== 'None') {
+                // Redirect to dynamic route with the user ID
+                window.location.href = /admin/user-details/${userId};
+            } else {
+                // Redirect to the static fallback page
+                window.location.href = '../adminpanel/user_details.html';
+            }
+        }    
     </script>
 </body>
 </html>

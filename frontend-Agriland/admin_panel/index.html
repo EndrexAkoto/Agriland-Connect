@@ -358,14 +358,13 @@
             new Chart(document.getElementById("genderDistributionChart"), {
               type: "bar",
               data: {
-                labels: ["Male", "Female", "Other"],
+                labels: ["Male", "Female"],
                 datasets: [
                   {
                     label: "Gender Distribution",
                     data: [
                       stats["Gender Distribution"]["Male"],
                       stats["Gender Distribution"]["Female"],
-                      stats["Gender Distribution"]["Other"],
                     ],
                     backgroundColor: ["#2196F3", "#E91E63", "#9C27B0"],
                   },

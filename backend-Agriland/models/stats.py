@@ -45,14 +45,16 @@ def get_user_statistics():
         male_percentage = (total_males / total_users) * 100 if total_users > 0 else 0
         female_percentage = (total_females / total_users) * 100 if total_users > 0 else 0
 
-        # Age bracket calculation based on the 'age' field
-        age_brackets = {'18-25': 0, '26-35': 0, '36-50': 0, 'Other': 0}
+        # Age bracket calculation based on the 'age' field (exclude 'Other')
+        age_brackets = {'18-25': 0, '26-35': 0, '36-50': 0}
         users = users_collection.find({}, {'age': 1})
         for user in users:
             age = user.get('age')
             if isinstance(age, int):
                 bracket = categorize_age_bracket(age)
-                age_brackets[bracket] += 1
+                if bracket in age_brackets:  # Ignore 'Other'
+                    age_brackets[bracket] += 1
+
         age_brackets_percentage = {k: (v / total_users) * 100 if total_users > 0 else 0 for k, v in age_brackets.items()}
 
         # Other statistics
@@ -77,12 +79,12 @@ def get_user_statistics():
                 'Male': male_percentage,
                 'Female': female_percentage
             },
-            'Age Bracket': age_brackets_percentage,
+            'Age Bracket': age_brackets_percentage,  # 'Other' field removed
             'Active Leases': active_leases,
             'Total Listings': total_listings,
             'Pending Payments': pending_payments,
             'County Lease Counts': county_lease_counts,
-            'County Lease Rates': county_lease_rates 
+            'County Lease Rates': county_lease_rates
         }
 
     except Exception as e:

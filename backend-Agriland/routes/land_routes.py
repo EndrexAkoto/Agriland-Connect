@@ -57,12 +57,13 @@ def landlord():
         title_deed = request.form.get('titleDeed')
         lease_duration = request.form.get('leaseDuration')
         payment_frequency = request.form.get('paymentFrequency')
+        description = request.form.get('description')  # New field
         approved = "False"
 
         # Validate form fields and files
-        files = request.files.getlist('farmImages')
+        files = request.files.getlist('images')  # Updated to match the new field name in HTML
 
-        if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency]) or not files:
+        if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency, description]) or not files:
             msg = 'Please fill out all fields and upload at least one image!'
             return render_template('landlord.html', county_names=county_names, msg=msg)
 
@@ -78,6 +79,7 @@ def landlord():
             'title_deed': title_deed,
             'lease_duration': lease_duration,
             'payment_frequency': payment_frequency,
+            'description': description,  # Add the description field
             'approved': approved,
             'images': []  # Initialize as empty; images will be added later
         }
