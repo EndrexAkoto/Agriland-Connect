@@ -4,12 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - Agriland Connect</title>
-    <link rel="stylesheet" href="styles/style.css" />
     <style>
       body {
         font-family: Arial, sans-serif;
         line-height: 1.6;
-        background-color: #ffffff; /* White background */
+        background-color: #ffffff;
         color: #831010;
         padding: 30px;
         margin: 0;
@@ -19,13 +18,13 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: #4caf50; /* Header background */
+        background-color: #4caf50;
         padding: 10px 20px;
         color: white;
       }
 
       .header img {
-        width: 150px; /* Adjust the size of the logo */
+        width: 150px;
       }
 
       .user-info {
@@ -39,7 +38,7 @@
         height: 40px;
         border-radius: 50%;
         margin-right: 10px;
-        cursor: pointer; /* Make image interactive */
+        cursor: pointer;
       }
 
       .dropdown-content {
@@ -51,7 +50,7 @@
         box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
         z-index: 1;
         border-radius: 5px;
-        top: 50px; /* Adjust for dropdown placement */
+        top: 50px;
       }
 
       .dropdown-content a {
@@ -75,36 +74,47 @@
       }
 
       .form-container {
-        background-color: rgba(32, 231, 49, 0.596);
-        border-radius: 4px;
-        padding: 20px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.904);
-        max-width: 1000px; /* Wider container to fit table */
-        margin: 0 auto;
-      }
+  background-color: rgba(32, 231, 49, 0.596);
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.904);
+  max-width: 1600px; /* Adjusts width for a better fit */
+  margin: 0 auto;
+  overflow-x: auto; /* Handles horizontal overflow for long content */
+  min-height: 400px; /* Increases the box height */
+}
 
-      table {
-        width: 100%;
-        margin-top: 20px;
-        border-collapse: collapse;
-        border: 1px solid #ddd;
-      }
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
 
-      table th,
-      table td {
-        padding: 10px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-      }
+table th,
+table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
 
-      table th {
-        background-color: #4caf50;
-        color: white;
-      }
+table th {
+  background-color: #4caf50;
+  color: white;
+}
 
-      table td {
-        background-color: #f9f9f9;
-      }
+table td {
+  background-color: #f9f9f9;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+table td:nth-child(8),
+table th:nth-child(8) {
+  width: 20%;
+  max-width: 20%;
+}
+
 
       .back-button {
         background-color: #007bff;
@@ -113,9 +123,9 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        display: block;
-        width: 100%;
         margin-top: 20px;
+        text-align: center;
+        width: auto;
       }
 
       .back-button:hover {
@@ -127,7 +137,7 @@
         margin-top: 30px;
         font-size: 14px;
         color: #555;
-        background-color: #4caf50; /* Footer background */
+        background-color: #4caf50;
         padding: 10px;
         color: white;
       }
@@ -139,17 +149,11 @@
     </style>
   </head>
   <body>
-    <!-- Header with logo and user info -->
     <div class="header">
-      <img src="../images/logo001.png" alt="Agriland Connect Logo" />
-      <!-- Adjust logo path -->
+      <img src="./imagesadmin/logo001.png" alt="Agriland Connect Logo" />
       <h1>Admin Dashboard</h1>
-
-      <!-- User profile image and dropdown for settings/logout -->
       <div class="user-info">
-        <img src="../images/community.jpg" alt="" />
-        <!-- Replace with actual user image path -->
-        <!-- Dropdown content -->
+        <img src="./imagesadmin/StockCake-Joyful Harvest Moment_1727869914.jpg" alt="" />
         <div class="dropdown-content">
           <a href="#">Profile Settings</a>
           <a href="../logout.html">Logout</a>
@@ -159,8 +163,6 @@
 
     <div class="form-container">
       <h2>Farmers Details</h2>
-
-      <!-- Table to display farmer data -->
       <table id="farmer-table">
         <thead>
           <tr>
@@ -177,15 +179,10 @@
         <tbody>
           {% for farmer in farmers %}
           <tr>
-
             <td>{{ farmer.name }}</td>
-
             <td>{{ farmer.username }}</td>
-
-            <td>{{farmer.phone_number if farmer.phone_number else 'N/A' }}</td>
-            <!-- Update if phone_number exists -->
+            <td>{{ farmer.phone_number if farmer.phone_number else 'N/A' }}</td>
             <td>{{ farmer.email if farmer.email else 'N/A' }}</td>
-            <!-- Update if email exists -->
             <td>{{ farmer.land_size }}</td>
             <td>{{ farmer.location }}</td>
             <td>{{ farmer.crop_type }}</td>
@@ -195,47 +192,38 @@
           {% endfor %}
         </tbody>
       </table>
-
       <button
         class="back-button"
-        onclick="window.location.href='../admin_panel/index.html'"
+        onclick="window.location.href='../LandManagement/land-management.html'"
       >
         Back to Dashboard
       </button>
     </div>
 
-    <!-- Footer with copyright -->
     <footer>
       <p>&copy; 2024 Agriland Connect. All rights reserved.</p>
     </footer>
 
     <script>
-      // Fetch the farmer registration data from the backend
       async function fetchFarmersData() {
         try {
           const response = await fetch("/api/farmers");
           if (response.ok) {
             const farmers = await response.json();
             const tableBody = document.querySelector("#farmer-table tbody");
-
-            // Clear existing rows
             tableBody.innerHTML = "";
-
-            // Populate the table with fetched data
             farmers.forEach((farmer) => {
               const row = document.createElement("tr");
-
               row.innerHTML = `
-                            <td>${farmer.name}</td>
-                            <td>${farmer.phoneNumber}</td>
-                            <td>${farmer.email}</td>
-                            <td>${farmer.landSize}</td>
-                            <td>${farmer.location}</td>
-                            <td>${farmer.typeOfFarming}</td>
-                            <td>${farmer.budgetPerAcre}</td>
-                            <td>${farmer.leaseDuration}</td>
-                        `;
-
+                <td>${farmer.name}</td>
+                <td>${farmer.phoneNumber}</td>
+                <td>${farmer.email}</td>
+                <td>${farmer.landSize}</td>
+                <td>${farmer.location}</td>
+                <td>${farmer.typeOfFarming}</td>
+                <td>${farmer.budgetPerAcre}</td>
+                <td>${farmer.leaseDuration}</td>
+              `;
               tableBody.appendChild(row);
             });
           } else {
@@ -245,8 +233,6 @@
           alert("Error fetching data: " + err.message);
         }
       }
-
-      // Fetch and display the farmer data when the page loads
       window.onload = fetchFarmersData;
     </script>
   </body>

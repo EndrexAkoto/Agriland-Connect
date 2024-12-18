@@ -10,7 +10,7 @@
       body {
         font-family: Arial, sans-serif;
         line-height: 1.6;
-        background-image: url("../images/frontImg.jpg");
+        background-image: url("../LandManagement/imagesadmin/landmanagement.jpg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -54,18 +54,74 @@
         margin: 0;
       }
 
-      .nav-links li {
-        margin: 0 15px;
+      /* Profile Container */
+      .profile-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
       }
 
-      .nav-links a {
+      .profile-pic {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid white;
+      }
+
+      .profile-name {
         color: white;
-        text-decoration: none;
         font-weight: bold;
       }
 
-      .nav-links a:hover {
-        text-decoration: underline;
+      /* Dropdown Styles */
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        min-width: 150px;
+        text-align: left;
+      }
+
+      .dropdown-menu a {
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        color: #333;
+        border-bottom: 1px solid #eee;
+      }
+
+      .dropdown-menu a:last-child {
+        border-bottom: none;
+      }
+
+      .dropdown-menu a:hover {
+        background-color: #f5f5f5;
+      }
+
+      /* Show Dropdown Menu on Hover */
+      .dropdown:hover .dropdown-menu {
+        display: block;
       }
 
       main {
@@ -162,16 +218,6 @@
           margin-bottom: 5px; /* Reduced space below the logo on smaller screens */
         }
 
-        .nav-links {
-          display: flex;
-          flex-direction: column; /* Stack navigation links vertically */
-          text-align: center; /* Center the links */
-        }
-
-        .nav-links li {
-          margin: 10px 0;
-        }
-
         .rejected-land-leases {
           padding: 15px;
         }
@@ -214,23 +260,31 @@
   <body>
     <header>
       <div class="logo-container">
-        <img class="logo" src="../images/logo001.png" alt="Agriland Logo" />
+        <img class="logo" src="../LandManagement/imagesadmin/logo001.png" alt="Agriland Logo" />
       </div>
       <nav>
         <ul class="nav-links">
-          <li><a href="index.html">Dashboard</a></li>
-          <li><a href="users.html">Users</a></li>
-          <li><a href="unapproved_uploads.html">Unapproved Uploads</a></li>
-          <li><a href="add-land-lease.html">Add Land Lease</a></li>
-          <li><a href="payments.html">Payments</a></li>
-          <li><a href="settings.html">Settings</a></li>
+          <li>
+            <!-- Profile Picture and Admin Name with Dropdown -->
+            <div class="profile-container">
+              <img class="profile-pic" src="../LandManagement/imagesadmin/StockCake-Joyful Harvest Moment_1727869914.jpg" alt="Admin Profile Picture" />
+              <span class="profile-name">Admin Email Address></span>
+              <div class="dropdown">
+                <button class="dropdown-btn">▼</button>
+                <div class="dropdown-menu">
+                  <a href="settings.html">Settings</a>
+                  <a href="logout.html">Logout</a>
+                </div>
+              </div>
+            </div>
+          </li>
         </ul>
       </nav>
     </header>
 
     <main>
       <!-- Back Button -->
-      <a href="index.html" class="back-btn">Back to Dashboard</a>
+      <a href="../LandManagement/land-management.html" class="back-btn">Back to Dashboard</a>
 
       <!-- Rejected Land Leases Section -->
       <section class="rejected-land-leases">
