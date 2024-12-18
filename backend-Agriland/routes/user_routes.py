@@ -121,31 +121,20 @@ def dashboard():
 
 @user_routes.route("/notifications.html")
 def notifications():
-    from flask import session, render_template
-    from bson import ObjectId
-
     # Step 1: Get the session user ID
     user_id = session.get('id')
     notifications = []  # Initialize an empty list for notifications
-    user_data = {}  # Initialize user data
+    print(user_id)
 
     if user_id:
-        # Step 2: Fetch user details from `users_collection` using the session ID
-        user = users_collection.find_one({"_id": ObjectId(user_id)}, {"first_name": 1, "role": 1, "profile_picture_id": 1})
-        
+        # Step 2: Fetch user details from users_collection using the session ID
+        user = users_collection.find_one({"_id": ObjectId(user_id)})
+
         if user:
             first_name = user.get('first_name')  # Get the user's first name
             role = user.get('role', 'N/A')  # Role can be farmer, landowner, or N/A
-            profile_picture_id = user.get('profile_picture_id')  # Get the profile picture ID
 
-            # Include user data to pass to the template
-            user_data = {
-                "first_name": first_name,
-                "role": role,
-                "profile_picture_id": profile_picture_id
-            }
-
-            # Fetch all land listings where `name` matches the user's `first_name`
+            # Fetch all land listings where name matches the user's first_name
             land_listings = list(land_collection.find({"name": first_name}))
 
             if role == "farmer":
@@ -186,6 +175,15 @@ def notifications():
                             "isUrgent": True,
                             "isRead": False
                         })
+        else:
+            # If user is not found in the database
+            notifications.append({
+                "id": "0",
+                "title": "No Notifications",
+                "message": "No new notifications at this time.",
+                "isUrgent": False,
+                "isRead": False
+            })
     else:
         # Default: No notifications if user is not logged in
         notifications.append({
@@ -196,8 +194,38 @@ def notifications():
             "isRead": False
         })
 
-    # Render the notifications page with notifications and user data
-    return render_template("notifications.html", notifications=notifications, user_data=user_data)
+    # Render the notifications page with serialized notifications
+    return render_template("notifications.html", notifications=notifications)
+
+# @user_routes.route('/notifications/update', methods=['POST'])
+# def update_notification():
+#     # Step 1: Get the session user ID
+#     user_id = session.get('id')
+#     if not user_id:
+#         return jsonify({"error": "Unauthorized access"}), 401
+
+#     # Step 2: Get notification ID and update parameters from the request
+#     data = request.get_json()
+#     notification_id = data.get('id')
+#     update_fields = data.get('update_fields', {})
+
+#     if not notification_id:
+#         return jsonify({"error": "Notification ID is required"}), 400
+
+#     # Step 3: Check if the notification belongs to the logged-in user
+#     # Here, notifications are derived dynamically, so we update related data such as land listings
+#     land_listing = land_collection.find_one({"_id": ObjectId(notification_id)})
+
+#     if not land_listing:
+#         return jsonify({"error": "Notification not found"}), 404
+
+#     # Step 4: Update the listing (e.g., `isRead` or `isUrgent`)
+#     land_collection.update_one(
+#         {"_id": ObjectId(notification_id)},
+#         {"$set": update_fields}
+#     )
+
+#     return jsonify({"success": True, "message": "Notification updated successfully"})
 
 @user_routes.route('/edit_listing/<string:listing_id>', methods=['GET', 'POST'])
 def edit_listing(listing_id):
