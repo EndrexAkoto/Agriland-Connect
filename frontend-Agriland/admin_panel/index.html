@@ -82,19 +82,6 @@
         margin: 3px 0;
       }
 
-      .close-btn {
-        display: none;
-        background-color: transparent;
-        color: white;
-        border: none;
-        cursor: pointer;
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        font-size: 20px;
-        z-index: 1001;
-      }
-
       main {
         padding: 20px;
       }
@@ -124,11 +111,6 @@
         margin-bottom: 10px;
       }
 
-      .box p {
-        font-size: 1.2rem;
-        font-weight: bold;
-      }
-
       footer {
         text-align: center;
         padding: 10px 0;
@@ -148,13 +130,11 @@
         background-color: rgba(255, 255, 255, 0.9);
         padding: 20px;
         border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
 
       .user-statistics h2 {
         color: #4caf50;
-        margin-bottom: 15px;
-        grid-column: span 4; /* Make the header span across all columns */
+        grid-column: span 4;
         text-align: center;
       }
 
@@ -170,7 +150,7 @@
         height: 300px !important;
       }
 
-      /* Profile Menu Styles */
+      /* Profile Menu */
       .profile-menu {
         position: relative;
         display: inline-block;
@@ -192,9 +172,8 @@
         display: none;
         position: absolute;
         right: 0;
-        top: 40px;
+        top: 50px;
         background-color: #fff;
-        border: 1px solid #ddd;
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         z-index: 1000;
       }
@@ -225,7 +204,6 @@
         .user-statistics {
           grid-template-columns: 1fr;
         }
-
         .nav-links {
           display: none;
           flex-direction: column;
@@ -234,7 +212,6 @@
           top: 60px;
           right: 0;
           width: 100%;
-          z-index: 1000;
         }
 
         .nav-links.active {
@@ -243,18 +220,6 @@
 
         .burger {
           display: flex;
-        }
-
-        .close-btn {
-          display: block;
-        }
-
-        .dashboard {
-          flex-direction: column;
-        }
-
-        .box {
-          margin: 10px 0;
         }
       }
     </style>
@@ -266,19 +231,12 @@
       </div>
       <nav class="navbar">
         <ul class="nav-links" id="navLinks">
+          <li><a href="LandManagement/land-management.html">Land Management</a></li>
           <li><a href="users.html">Users</a></li>
-          <li><a href="farmers-request.html">Farmers Request</a></li>
-          <li><a href="unapproved_uploads.html">Unapproved Uploads</a></li>
-          <li><a href="add-land-lease.html">Add Land Lease</a></li>
-          <li><a href="rejected-land-leases.html">Rejected Land Leases</a></li>
           <li><a href="payments.html">Payments</a></li>
           <li><a href="settings.html">Settings</a></li>
-          
-          <!-- Profile Menu Link after Settings -->
           <li class="profile-menu">
-            <div class="profile-icon">
-              <span>👤</span> <!-- Profile icon -->
-            </div>
+            <div class="profile-icon">👤</div>
             <div class="profile-menu-content">
               <a href="profile.html">View Profile</a>
               <a href="../logout.html">Logout</a>
@@ -298,23 +256,23 @@
       <section class="dashboard">
         <div class="box total-users">
           <h2>Total Users</h2>
-          <p id="totalUsers">{{ stats['Total Users'] }}</p>
+          <p>{{ stats['Total Users'] }}</p>
         </div>
         <div class="box total-listings">
           <h2>Total Listings</h2>
-          <p id="totalListings">{{ stats['Landowners'] }}</p>
+          <p>{{ stats['Total Listings'] }}</p>
         </div>
         <div class="box active-leases">
           <h2>Active Leases</h2>
-          <p id="activeLeases">{{ stats['Active Leases'] }}</p>
+          <p>{{ stats['Active Leases'] }}</p>
         </div>
         <div class="box pending-payments">
           <h2>Pending Payments</h2>
-          <p id="pendingPayments">{{ stats['Pending Payments'] }}</p>
+          <p>{{ stats['Pending Payments'] }}</p>
         </div>
       </section>
 
-      <!-- User Statistics with Charts -->
+       <!-- User Statistics with Charts -->
       <section class="user-statistics">
         <h2>User Statistics</h2>
         <div class="chart-container">
@@ -354,56 +312,7 @@
                 ],
               },
             });
-
-            new Chart(document.getElementById("genderDistributionChart"), {
-              type: "bar",
-              data: {
-                labels: ["Male", "Female", "Other"],
-                datasets: [
-                  {
-                    label: "Gender Distribution",
-                    data: [
-                      stats["Gender Distribution"]["Male"],
-                      stats["Gender Distribution"]["Female"],
-                      stats["Gender Distribution"]["Other"],
-                    ],
-                    backgroundColor: ["#2196F3", "#E91E63", "#9C27B0"],
-                  },
-                ],
-              },
-            });
-
-            new Chart(document.getElementById("ageBracketChart"), {
-              type: "bar",
-              data: {
-                labels: Object.keys(stats["Age Bracket"]),
-                datasets: [
-                  {
-                    label: "Age Distribution",
-                    data: Object.values(stats["Age Bracket"]),
-                    backgroundColor: "#6A1B9A",
-                  },
-                ],
-              },
-            });
-
-            new Chart(document.getElementById("countyLeaseRateChart"), {
-              type: "line",
-              data: {
-                labels: Object.keys(stats["County Lease Counts"]),
-                datasets: [
-                  {
-                    label: "County Lease Rate",
-                    data: Object.values(stats["County Lease Counts"]),
-                    fill: false,
-                    borderColor: "#4CAF50",
-                    tension: 0.1,
-                  },
-                ],
-              },
-            });
-          })
-          .catch((error) => console.error("Error fetching stats:", error));
+          });
       });
     </script>
   </body>

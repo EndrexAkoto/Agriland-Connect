@@ -1,0 +1,167 @@
+/* General Reset and Body Styling */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9; /* Light gray background */
+  color: #333; /* Dark text for readability */
+}
+
+/* Header Section Styling */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #4CAF50; /* Green header */
+  color: white;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+header .logo img {
+  width: 100px; /* Set logo size */
+  height: auto;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-right .profile-icon img {
+  width: 40px; /* Profile picture size */
+  height: 40px;
+  border-radius: 50%; /* Circular profile picture */
+  object-fit: cover;
+  border: 2px solid white; /* White border for better visibility */
+}
+
+/* Main Section Styling */
+main {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap; /* Ensure items wrap on smaller screens */
+  justify-content: center;
+  gap: 20px;
+}
+
+.land-management-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.land-management-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 250px; /* Increase width for larger images */
+  text-align: center;
+  position: relative; /* To position the number */
+}
+
+.land-management-item img {
+  width: 120px; /* Enlarge image */
+  height: 120px; /* Enlarge image */
+  object-fit: cover;
+  border-radius: 15px; /* Curved corners for the image */
+  margin-bottom: 10px;
+}
+
+.land-management-item .pending-number {
+  background-color: red; /* Red badge for pending numbers */
+  color: white;
+  font-size: 0.9em;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 50%;
+  position: absolute;
+  top: 5px; /* Position number at top-right corner */
+  right: 5px; /* Position number at top-right corner */
+}
+
+/* Link Styling */
+.land-management-item a {
+  text-decoration: none;
+  color: #4CAF50; /* Green text */
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 1.2em; /* Increase size of the link text */
+}
+
+.land-management-item a:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
+
+/* Footer Section Styling */
+footer {
+  text-align: center;
+  background-color: #4CAF50; /* Dark footer */
+  color: white;
+  padding: 15px 0;
+  position: relative;
+}
+
+footer p {
+  font-size: 1em;
+}
+
+footer .copyright {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+/* Back Button Styling (Outside Footer) */
+.back-button {
+  text-align: center;
+  margin: 20px 0; /* Space outside footer */
+}
+
+.back-button a {
+  text-decoration: none;
+  color: #e7f3e7; /* Green back button */
+  font-weight: bold;
+  padding: 10px 20px;
+  border: 2px solid #4CAF50;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.back-button a:hover {
+  background-color: #4CAF50; /* Green background on hover */
+  color: white; /* White text on hover */
+}
+
+/* Footer Text Update */
+footer .copyright p {
+  margin: 0;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .header-right {
+    justify-content: center;
+  }
+
+  .land-management-item {
+    width: 100%; /* Full width for smaller screens */
+  }
+}
