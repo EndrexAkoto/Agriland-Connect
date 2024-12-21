@@ -83,6 +83,19 @@
             padding: 20px;
             position: fixed;
             height: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar img {
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .sidebar .user-email {
+            font-size: 14px;
+            margin-bottom: 20px;
         }
 
         .sidebar ul {
@@ -91,6 +104,8 @@
 
         .sidebar ul li {
             margin: 20px 0;
+            display: flex;
+            align-items: center;
         }
 
         .sidebar ul li a {
@@ -103,6 +118,15 @@
 
         .sidebar ul li a:hover {
             text-decoration: underline;
+        }
+
+        .sidebar .close-btn {
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
         }
 
         /* Form Container */
@@ -178,6 +202,18 @@
             .form-container form {
                 grid-template-columns: 1fr;
             }
+
+            .sidebar {
+                width: 60px;
+            }
+
+            .sidebar ul li {
+                justify-content: center;
+            }
+
+            .sidebar .user-email, .sidebar img {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -197,14 +233,19 @@
     </div>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
+        <div>
+            <img src="../frontend-Agriland/images/build.jpeg" alt="Profile Picture">
+            <div class="user-email">user@example.com</div>
+        </div>
         <ul>
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Logout</a></li>
+            <li><a href="#"><img src="../frontend-Agriland/images/dashboards.png" alt="Dashboard Icon"> Dashboard</a></li>
+            <li><a href="#"><img src="../frontend-Agriland/images/user.png" alt="Profile Icon"> Profile</a></li>
+            <li><a href="#"><img src="../frontend-Agriland/images/profit-report.png" alt="Reports Icon"> Reports</a></li>
+            <li><a href="#"><img src="../frontend-Agriland/images/settings.png" alt="Settings Icon"> Settings</a></li>
+            <li><a href="#"><img src="../frontend-Agriland/images/logout.png" alt="Logout Icon"> Logout</a></li>
         </ul>
+        <span class="close-btn" onclick="toggleSidebar()">×</span>
     </div>
 
     <!-- Main Form Container -->
@@ -280,6 +321,17 @@
     <div class="footer">
         &copy; 2024 Agriland. All rights reserved.
     </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.style.width === '60px') {
+                sidebar.style.width = '250px';
+            } else {
+                sidebar.style.width = '60px';
+            }
+        }
+    </script>
 
 </body>
 </html>
