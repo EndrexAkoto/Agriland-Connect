@@ -292,7 +292,7 @@
           <canvas id="countyLeaseRateChart"></canvas>
         </div>
         <div class="chart-container">
-          <canvas id="Banking Payments & M-PESA"></canvas>
+          <canvas id="paymentMethodChart"></canvas>
         </div>
       </section>
     </main>
@@ -302,6 +302,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         fetch("/api/user-stats")
@@ -319,7 +320,128 @@
                 ],
               },
             });
+            new Chart(document.getElementById("genderDistributionChart"), {
+              type: "bar",
+              data: {
+                labels: ["Male", "Female"],
+                datasets: [
+                  {
+                    label: "Gender Distribution",
+                    data: [
+                      stats["Gender Distribution"]["Male"],
+                      stats["Gender Distribution"]["Female"],
+                    ],
+                    backgroundColor: ["#2196F3", "#E91E63"],
+                  },
+                ],
+              },
+              plugins: [ChartDataLabels],
+              options: {
+                responsive: true,
+                plugins: {
+                  datalabels: {
+                    color: "#000",
+                    anchor: "end",
+                    align: "top",
+                    formatter: (value) => `${value} people`, // Show actual value
+                  },
+                  tooltip: {
+                    callbacks: {
+                      label: (tooltipItem) => {
+                        const dataset = tooltipItem.dataset;
+                        const value = dataset.data[tooltipItem.dataIndex];
+                        const percentage = ((value / totalUsers) * 100).toFixed(2);
+                        return `${value} people (${percentage}%)`; // Show percentage in tooltip
+                      },
+                    },
+                  },
+                },
+              },
+            });
+
+            new Chart(document.getElementById("ageBracketChart"), {
+              type: "bar",
+              data: {
+                labels: Object.keys(stats["Age Bracket"]),
+                datasets: [
+                  {
+                    label: "Age Distribution",
+                    data: Object.values(stats["Age Bracket"]),
+                    backgroundColor: "#6A1B9A",
+                  },
+                ],
+              },
+              plugins: [ChartDataLabels],
+              options: {
+                responsive: true,
+                plugins: {
+                  datalabels: {
+                    color: "#000",
+                    anchor: "end",
+                    align: "top",
+                    formatter: (value) => `${Math.round(value)}%`
+                  },
+                  tooltip: {
+                    callbacks: {
+                      label: (context) => {
+                        const value = context.raw;
+                        const actualCount = Math.round((value / 100) * ageTotalUsers);
+                        return [
+                          `Count: ${actualCount} people`,
+                          `Percentage: ${value.toFixed(1)}%`
+                        ];
+                      }
+                    }
+                  },
+                  title: {
+                    display: true,
+                    text: 'Age Distribution'
+                  }
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: {
+                      callback: (value) => `${value}%`
+                    }
+                  }
+                }
+              }
+            });
+
+            new Chart(document.getElementById("countyLeaseRateChart"), {
+              type: "line",
+              data: {
+                labels: Object.keys(stats["County Lease Counts"]),
+                datasets: [
+                  {
+                    label: "County Lease Rate",
+                    data: Object.values(stats["County Lease Counts"]),
+                    fill: false,
+                    borderColor: "#4CAF50",
+                    tension: 0.1,
+                  },
+                ],
+              },
+            });
+
+            const paymentData = stats["Payment Methods"];
+            new Chart(document.getElementById("paymentMethodChart"), {
+              type: "pie",
+              data: {
+                labels: Object.keys(paymentData),
+                datasets: [
+                  {
+                    data: Object.values(paymentData),
+                    backgroundColor: ["#4CAF50", "#FF9800"], // Customize colors
+                  },
+                ],
+              },
+            });
           });
+          
+          
+            
       });
     </script>
   </body>

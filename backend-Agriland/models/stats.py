@@ -7,6 +7,14 @@ users_collection = db['users']  # Use 'profiles' as per your description
 leases_collection = db['land_listings']
 payments_collection = db['payments']
 
+def get_payment_method_statistics():
+    """Aggregates payment counts by payment method."""
+    pipeline = [
+        {"$group": {"_id": "$Payment Method", "count": {"$sum": 1}}},
+        {"$project": {"payment_method": "$_id", "count": 1, "_id": 0}}
+    ]
+    results = payments_collection.aggregate(pipeline)
+    return {result["payment_method"]: result["count"] for result in results}
 def categorize_age_bracket(age):
     """Categorizes the given age into specific age brackets."""
     if 18 <= age <= 25:
@@ -61,6 +69,7 @@ def get_user_statistics():
         active_leases = leases_collection.count_documents({'approved': "False"})
         total_listings = leases_collection.count_documents({})
         pending_payments = payments_collection.count_documents({'Payment Status': 'Completed'})
+        payment_stats = get_payment_method_statistics()
         county_lease_counts = {}
         leases = leases_collection.find({}, {'location': 1})
         for lease in leases:
@@ -84,7 +93,8 @@ def get_user_statistics():
             'Total Listings': total_listings,
             'Pending Payments': pending_payments,
             'County Lease Counts': county_lease_counts,
-            'County Lease Rates': county_lease_rates
+            'County Lease Rates': county_lease_rates,
+            'Payment Methods': payment_stats
         }
 
     except Exception as e:
