@@ -233,7 +233,7 @@
                     <td>{{ user.gender or 'N/A' }}</td>
                     <td>{{ user.age or 'N/A' }}</td>
                     <td>
-                        <button onclick="redirectToDetails('{{ user._id }}')">View KRA Pin, Phone Number & ID Images</button>                       
+                        <button onclick="window.location.href='/admin/user-details/{{ user._id }}'">View KRA Pin, Phone Number & ID Images</button>                       
 
                     </td>
                 </tr>

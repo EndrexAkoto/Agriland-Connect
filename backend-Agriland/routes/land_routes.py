@@ -36,7 +36,6 @@ def upload_file():
 @land_routes.route('/landlord.html', methods=['GET', 'POST'])
 def landlord(): 
     msg = ''
-    # Fetch county names for rendering
     counties = counties_collection.find({}, {'_id': 0, 'County': 1})
     county_names = [county['County'] for county in counties]
 
@@ -57,17 +56,14 @@ def landlord():
         title_deed = request.form.get('titleDeed')
         lease_duration = request.form.get('leaseDuration')
         payment_frequency = request.form.get('paymentFrequency')
-        description = request.form.get('description')  # New field
-        approved = "False"
-
-        # Validate form fields and files
-        files = request.files.getlist('images')  # Updated to match the new field name in HTML
+        description = request.form.get('description')
+        files = request.files.getlist('images')  # Get list of uploaded images
 
         if not all([land_size, location, price_per_acre, amenities, road_access, fencing, title_deed, lease_duration, payment_frequency, description]) or not files:
             msg = 'Please fill out all fields and upload at least one image!'
-            return render_template('landlord.html', county_names=county_names, msg=msg)
+            return msg  # Return plain message for fetch API response
 
-        # Prepare data for MongoDB
+        # Insert land listing data into MongoDB
         land_listing_data = {
             'name': username,
             'land_size': land_size,
@@ -79,47 +75,38 @@ def landlord():
             'title_deed': title_deed,
             'lease_duration': lease_duration,
             'payment_frequency': payment_frequency,
-            'description': description,  # Add the description field
-            'approved': approved,
-            'images': []  # Initialize as empty; images will be added later
+            'description': description,
+            'approved': "False",
+            'images': []
         }
 
-        # Insert the initial data into MongoDB to get the ObjectId
         try:
             result = land_collection.insert_one(land_listing_data)
             listing_id = result.inserted_id
-            print(f"Inserted land listing with ID: {listing_id}")
         except Exception as e:
-            print(f"Error: {e}")
-            msg = 'An error occurred while saving the land listing.'
-            return render_template('landlord.html', county_names=county_names, msg=msg)
+            print(f"Error inserting land listing: {e}")
+            return "Error saving land listing."
 
-        # Set up directory to store images using ObjectId
+        # Create directory for images
         listing_folder = os.path.join(current_app.config['UPLOAD_FOLDER'], str(listing_id), 'images')
         os.makedirs(listing_folder, exist_ok=True)
 
-        # Handle image uploads
+        # Save images and update MongoDB
         image_filenames = []
         for file in files:
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file_path = os.path.join(listing_folder, filename)
                 file.save(file_path)
-                image_filenames.append(filename)  # Store filename only
+                image_filenames.append(filename)
 
-        # Update MongoDB with the image filenames
         try:
-            land_collection.update_one(
-                {'_id': listing_id},
-                {'$set': {'images': image_filenames}}
-            )
-            msg = 'Land listing submitted successfully!'
+            land_collection.update_one({'_id': listing_id}, {'$set': {'images': image_filenames}})
+            return "Land listing submitted successfully!"
         except Exception as e:
-            print(f"Error while updating images: {e}")
-            msg = 'An error occurred while saving the images.'
+            print(f"Error updating land listing with images: {e}")
+            return "Error saving images."
 
-        return render_template('landlord.html', county_names=county_names, msg=msg)
-
-    # Render the form with county names for a GET request
     return render_template('landlord.html', county_names=county_names, msg=msg)
+
 

@@ -265,7 +265,7 @@
     <div class="form-container">
         <h1>Landlord Information Form</h1>
 
-        <form id="landlord-form" method="post">
+        <form id="landlord-form" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="landSize">Land Size (in acres):</label>
                 <input type="number" id="landSize" name="landSize" required>
@@ -335,7 +335,7 @@
 
             <div class="form-group">
                 <label for="images">Upload Image:</label>
-                <input type="file" id="images" name="images" accept="image/*" onchange="handleFileSelect(event)">
+                <input type="file" id="images" name="images" accept="image/*" multiple onchange="handleFileSelect(event)">
                 <div class="image-upload" id="imagePreviewContainer"></div>
             </div>
 
@@ -366,26 +366,30 @@
         let images = []; // Array to store images
 
         function handleFileSelect(event) {
-            const file = event.target.files[0];
+            const files = event.target.files;
 
-            if (file) {
-                const reader = new FileReader();
+            for (const file of files) {
+                if (file) {
+                    const reader = new FileReader();
 
-                reader.onload = function (e) {
-                    // Limit to 5 images
-                    if (images.length < 5) {
-                        images.push(e.target.result); // Store image in array
+                    reader.onload = function (e) {
+                        // Limit to 5 images
+                        if (images.length < 5) {
+                            images.push(e.target.result); // Store image in array
 
-                        const imgPreview = document.createElement('div');
-                        imgPreview.classList.add('image-preview');
-                        imgPreview.innerHTML = `
-                            <img src="${e.target.result}" alt="Image Preview" onclick="openModal('${e.target.result}')">
-                            <button class="remove-btn" onclick="removeImage(${images.length - 1})">X</button>
-                        `;
-                        document.getElementById('imagePreviewContainer').appendChild(imgPreview);
-                    }
-                };
-                reader.readAsDataURL(file);
+                            const imgPreview = document.createElement('div');
+                            imgPreview.classList.add('image-preview');
+                            imgPreview.innerHTML = `
+                                <img src="${e.target.result}" alt="Image Preview" onclick="openModal('${e.target.result}')">
+                                <button class="remove-btn" onclick="removeImage(${images.length - 1})">X</button>
+                            `;
+                            document.getElementById('imagePreviewContainer').appendChild(imgPreview);
+                        } else {
+                            alert("You can upload a maximum of 5 images.");
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
             }
         }
 
