@@ -1,337 +1,438 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Profile</title>
     <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      /* General Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
 
-        /* Navbar Styling */
-        .navbar {
-            background-color: #4caf50;
-            padding: 15px;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      /* Navbar Styling */
+      .navbar {
+        background-color: #4caf50;
+        padding: 15px;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-        .navbar img {
-            height: 50px;
-            width: 50px;
-            border-radius: 50%;
-        }
+      .navbar img {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+      }
 
-        .navbar h2 {
-            margin: 0;
-        }
+      .navbar h2 {
+        margin: 0;
+      }
 
-        .navbar .dropdown {
-            position: relative;
-        }
+      .navbar .dropdown {
+        position: relative;
+      }
 
-        .navbar .dropdown span {
-            cursor: pointer;
-        }
+      .navbar .dropdown span {
+        cursor: pointer;
+      }
 
-        .navbar .dropdown-menu {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 40px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 150px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+      .navbar .dropdown-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 40px;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 150px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
 
-        .navbar .dropdown:hover .dropdown-menu {
-            display: block;
-        }
+      .navbar .dropdown:hover .dropdown-menu {
+        display: block;
+      }
 
-        .navbar .dropdown-menu a {
-            text-decoration: none;
-            color: black;
-            padding: 10px;
-            display: block;
-        }
+      .navbar .dropdown-menu a {
+        text-decoration: none;
+        color: black;
+        padding: 10px;
+        display: block;
+      }
 
-        .navbar .dropdown-menu a:hover {
-            background-color: #f0f0f0;
-        }
+      .navbar .dropdown-menu a:hover {
+        background-color: #f0f0f0;
+      }
 
-        /* Sidebar Styling */
-        .sidebar {
-            width: 250px;
-            background-color: #4caf50;
-            color: white;
-            padding: 20px;
-            position: fixed;
-            height: 100%;
-            transition: all 0.3s ease;
-        }
+      /* Sidebar Styling */
+      .sidebar {
+        width: 250px;
+        background-color: #4caf50;
+        color: white;
+        padding: 20px;
+        position: fixed;
+        height: 100%;
+        transition: all 0.3s ease;
+      }
 
-        .sidebar img {
-            height: 100px;
-            width: 100px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
+      .sidebar img {
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
 
-        .sidebar .user-email {
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
+      .sidebar .user-email {
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
 
-        .sidebar ul {
-            list-style: none;
-        }
+      .sidebar ul {
+        list-style: none;
+      }
 
-        .sidebar ul li {
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-        }
+      .sidebar ul li {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+      }
 
-        .sidebar ul li a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
+      .sidebar ul li a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+      }
 
-        .sidebar ul li a:hover {
-            text-decoration: underline;
-        }
+      .sidebar ul li a:hover {
+        text-decoration: underline;
+      }
 
-        .sidebar .close-btn {
-            font-size: 30px;
-            color: white;
-            cursor: pointer;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
+      .sidebar .close-btn {
+        font-size: 30px;
+        color: white;
+        cursor: pointer;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
 
-        /* Form Container */
+      /* Form Container */
+      .form-container {
+        margin-left: 270px;
+        padding: 40px;
+        flex: 1;
+      }
+
+      .form-container h1 {
+        color: #4caf50;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .form-container form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      form label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+      }
+
+      form input,
+      form select,
+      form button {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        width: 100%;
+      }
+
+      form input:focus,
+      form select:focus {
+        border-color: #4caf50;
+        outline: none;
+      }
+
+      button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        grid-column: span 2;
+        padding: 12px;
+      }
+
+      button:hover {
+        background-color: #388e3c;
+      }
+
+      /* Footer Styling */
+      .footer {
+        text-align: center;
+        padding: 15px;
+        background-color: #4caf50;
+        color: white;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
         .form-container {
-            margin-left: 270px;
-            padding: 40px;
-            flex: 1;
-        }
-
-        .form-container h1 {
-            color: #4caf50;
-            margin-bottom: 20px;
-            text-align: center;
+          margin-left: 0;
+          padding: 20px;
         }
 
         .form-container form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          grid-template-columns: 1fr;
         }
 
-        form label {
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
+        .sidebar {
+          width: 60px;
         }
 
-        form input, form select, form button {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-            width: 100%;
+        .sidebar ul li {
+          justify-content: center;
         }
 
-        form input:focus, form select:focus {
-            border-color: #4caf50;
-            outline: none;
+        .sidebar .user-email,
+        .sidebar img {
+          display: none;
         }
-
-        button {
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            grid-column: span 2;
-            padding: 12px;
-        }
-
-        button:hover {
-            background-color: #388e3c;
-        }
-
-        /* Footer Styling */
-        .footer {
-            text-align: center;
-            padding: 15px;
-            background-color: #4caf50;
-            color: white;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .form-container {
-                margin-left: 0;
-                padding: 20px;
-            }
-
-            .form-container form {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar {
-                width: 60px;
-            }
-
-            .sidebar ul li {
-                justify-content: center;
-            }
-
-            .sidebar .user-email, .sidebar img {
-                display: none;
-            }
-        }
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- Navbar -->
     <div class="navbar">
-        <img src="./images/logo001.png" alt="Logo">
-        <h2>Welcome to Agriland Edit Profile</h2>
-        <div class="dropdown">
-            <span>Welcome, User ▼</span>
-            <div class="dropdown-menu">
-                <a href="profile.html">My Profile</a>
-                <a href="logout.html">Logout</a>
-            </div>
+      <img src="./images/logo001.png" alt="Logo" />
+      <h2>Welcome to Agriland Edit Profile</h2>
+      <div class="dropdown">
+        <span>Welcome, User ▼</span>
+        <div class="dropdown-menu">
+          <a href="profile.html">My Profile</a>
+          <a href="logout.html">Logout</a>
         </div>
+      </div>
     </div>
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <div>
-            <img src="../frontend-Agriland/images/build.jpeg" alt="Profile Picture">
-            <div class="user-email">user@example.com</div>
-        </div>
-        <ul>
-            <li><a href="#"><img src="../frontend-Agriland/images/dashboards.png" alt="Dashboard Icon"> Dashboard</a></li>
-            <li><a href="#"><img src="../frontend-Agriland/images/user.png" alt="Profile Icon"> Profile</a></li>
-            <li><a href="#"><img src="../frontend-Agriland/images/profit-report.png" alt="Reports Icon"> Reports</a></li>
-            <li><a href="#"><img src="../frontend-Agriland/images/settings.png" alt="Settings Icon"> Settings</a></li>
-            <li><a href="#"><img src="../frontend-Agriland/images/logout.png" alt="Logout Icon"> Logout</a></li>
-        </ul>
-        <span class="close-btn" onclick="toggleSidebar()">×</span>
+      <div>
+        <img
+          src="../frontend-Agriland/images/build.jpeg"
+          alt="Profile Picture"
+        />
+        <div class="user-email">user@example.com</div>
+      </div>
+      <ul>
+        <li>
+          <a href="#"
+            ><img
+              src="../frontend-Agriland/images/dashboards.png"
+              alt="Dashboard Icon"
+            />
+            Dashboard</a
+          >
+        </li>
+        <li>
+          <a href="#"
+            ><img
+              src="../frontend-Agriland/images/user.png"
+              alt="Profile Icon"
+            />
+            Profile</a
+          >
+        </li>
+        <li>
+          <a href="#"
+            ><img
+              src="../frontend-Agriland/images/profit-report.png"
+              alt="Reports Icon"
+            />
+            Reports</a
+          >
+        </li>
+        <li>
+          <a href="#"
+            ><img
+              src="../frontend-Agriland/images/settings.png"
+              alt="Settings Icon"
+            />
+            Settings</a
+          >
+        </li>
+        <li>
+          <a href="#"
+            ><img
+              src="../frontend-Agriland/images/logout.png5"
+              alt="Logout Icon"
+            />
+            Logout</a
+          >
+        </li>
+      </ul>
+      <span class="close-btn" onclick="toggleSidebar()">×</span>
     </div>
 
     <!-- Main Form Container -->
     <div class="form-container">
-        <h1>Edit Profile</h1>
-        <form id="edit-profile-form" method="post" enctype="multipart/form-data" action="">
-            <!-- Profile Picture -->
-            <div>
-                <label for="profile-picture">Profile Picture:</label>
-                <input type="file" id="profile-picture" name="profile-picture" accept="image/*">
-            </div>
+      <h1>Edit Profile</h1>
+      <form
+        id="edit-profile-form"
+        method="post"
+        enctype="multipart/form-data"
+        action=""
+      >
+        <!-- Profile Picture -->
+        <div>
+          <label for="profile-picture">Profile Picture:</label>
+          <input
+            type="file"
+            id="profile-picture"
+            name="profile-picture"
+            accept="image/*"
+          />
+        </div>
 
-            <!-- Personal Details -->
-            <div>
-                <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" name="firstName" value="{{ user.first_name }}" readonly>
-            </div>
-            <div>
-                <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" name="lastName" value="{{ user.last_name }}" readonly>
-            </div>
-            <div>
-                <label for="middleName">Middle Name:</label>
-                <input type="text" id="middleName" name="middleName" placeholder="Enter your middle name">
-            </div>
-            <div>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
-            </div>
-            <div>
-                <label for="dob">Date of Birth:</label>
-                <input type="date" id="dob" name="dob">
-            </div>
-            <div>
-                <label for="gender">Gender:</label>
-                <select id="gender" name="gender">
-                    <option value="none" selected>None</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
+        <!-- Personal Details -->
+        <div>
+          <label for="firstName">First Name:</label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            value="{{ user.first_name }}"
+            readonly
+          />
+        </div>
+        <div>
+          <label for="lastName">Last Name:</label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            value="{{ user.last_name }}"
+            readonly
+          />
+        </div>
+        <div>
+          <label for="middleName">Middle Name:</label>
+          <input
+            type="text"
+            id="middleName"
+            name="middleName"
+            placeholder="Enter your middle name"
+          />
+        </div>
+        <div>
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value="{{ user.email }}"
+            readonly
+          />
+        </div>
+        <div>
+          <label for="dob">Date of Birth:</label>
+          <input type="date" id="dob" name="dob" />
+        </div>
+        <div>
+          <label for="gender">Gender:</label>
+          <select id="gender" name="gender">
+            <option value="none" selected>None</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
 
-            <!-- Contact Details -->
-            <div>
-                <label for="phone">Phone Number:</label>
-                <input type="text" id="phone" name="phone" placeholder="Enter your phone number">
-            </div>
-            <div>
-                <label for="idNumber">ID Number:</label>
-                <input type="text" id="idNumber" name="idNumber" placeholder="Enter your ID number">
-            </div>
-            <div>
-                <label for="kraPin">KRA PIN:</label>
-                <input type="text" id="kraPin" name="kraPin" placeholder="Enter your KRA PIN">
-            </div>
+        <!-- Contact Details -->
+        <div>
+          <label for="phone">Phone Number:</label>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            placeholder="Enter your phone number"
+          />
+        </div>
+        <div>
+          <label for="idNumber">ID Number:</label>
+          <input
+            type="text"
+            id="idNumber"
+            name="idNumber"
+            placeholder="Enter your ID number"
+          />
+        </div>
+        <div>
+          <label for="kraPin">KRA PIN:</label>
+          <input
+            type="text"
+            id="kraPin"
+            name="kraPin"
+            placeholder="Enter your KRA PIN"
+          />
+        </div>
 
-            <!-- Next of Kin -->
-            <h2 style="grid-column: span 2;">Next of Kin</h2>
-            <div>
-                <label for="kinName">Name:</label>
-                <input type="text" id="kinName" name="kinName" placeholder="Enter next of kin's name">
-            </div>
-            <div>
-                <label for="kinRelationship">Relationship:</label>
-                <input type="text" id="kinRelationship" name="kinRelationship" placeholder="Enter relationship to next of kin">
-            </div>
+        <!-- Next of Kin -->
+        <h2 style="grid-column: span 2">Next of Kin</h2>
+        <div>
+          <label for="kinName">Name:</label>
+          <input
+            type="text"
+            id="kinName"
+            name="kinName"
+            placeholder="Enter next of kin's name"
+          />
+        </div>
+        <div>
+          <label for="kinRelationship">Relationship:</label>
+          <input
+            type="text"
+            id="kinRelationship"
+            name="kinRelationship"
+            placeholder="Enter relationship to next of kin"
+          />
+        </div>
 
-            <button type="submit">Save Changes</button>
-        </form>
+        <button type="submit">Save Changes</button>
+      </form>
     </div>
 
     <!-- Footer -->
-    <div class="footer">
-        &copy; 2024 Agriland. All rights reserved.
-    </div>
+    <div class="footer">&copy; 2024 Agriland. All rights reserved.</div>
 
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar.style.width === '60px') {
-                sidebar.style.width = '250px';
-            } else {
-                sidebar.style.width = '60px';
-            }
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        if (sidebar.style.width === "60px") {
+          sidebar.style.width = "250px";
+        } else {
+          sidebar.style.width = "60px";
         }
+      }
     </script>
-
-</body>
+  </body>
 </html>
